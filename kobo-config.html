@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="开发工具">
+
+
+<meta name="description" content="** kobo aura one导出笔记高级配置：** &lt;Excerpt in index | 首页摘要&gt;kobo电子书折腾记，导出笔记，从激活到设置，打补丁实现自定义配置，还是自己...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    kobo aura one导出笔记高级配置 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                Home</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/前端/"><i class="fa "></i>
+                                前端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/后端/"><i class="fa "></i>
+                                后端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="kobo aura one导出笔记高级配置">
+            
+            kobo aura one导出笔记高级配置
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/others/">others</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/开发工具/">开发工具</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2017/06/23</span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                789</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** kobo aura one导出笔记高级配置：** &lt;Excerpt in index | 首页摘要&gt;<br>kobo电子书折腾记，导出笔记，从激活到设置，打补丁实现自定义配置，还是自己折腾起来有意思啊。</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><p>买电子书是为了阅读和学习，不是天天折腾电子书，一天刷一次机，如果只是看书，做笔记，学个英文什么的<br>原生系统是最好的。如果看pdf为主，不建议买这电子书，看pdf首选电脑，平板，sony dsp系列，用普通的电子书阅读器，体验太差。</p>
+<h2 id="kobo原生系统的功能（推荐原生系统，打上补丁）"><a href="#kobo原生系统的功能（推荐原生系统，打上补丁）" class="headerlink" title="kobo原生系统的功能（推荐原生系统，打上补丁）"></a>kobo原生系统的功能（推荐原生系统，打上补丁）</h2><ol>
+<li>格式支持epub，mobi，cbz漫画，txt，kobo epub格式</li>
+<li>高亮，笔记，导出笔记（需要配置一下）</li>
+<li>字典（英文，中文，法文等多国字典，可以自己修改）</li>
+<li>阅读pocket文章（可以把网页保存到pocket，实用pocket同步到阅读器）</li>
+<li>自动亮度（最大的优点）</li>
+</ol>
+<h2 id="koreader的功能"><a href="#koreader的功能" class="headerlink" title="koreader的功能"></a>koreader的功能</h2><ol>
+<li>格式支持epub，mobi，cbz漫画，txt，kobo epub格式</li>
+<li>扫描版pdf支持重拍，切边（最大特色）</li>
+<li>笔记导出到印象笔记</li>
+<li>字典（强大的字典扩展）</li>
+</ol>
+<h2 id="激活"><a href="#激活" class="headerlink" title="激活"></a>激活</h2><p><strong>说明：wifi激活需要翻墙，可以实用笔记连接vpn，然后共享wifi给kobo</strong></p>
+<ol>
+<li>wifi激活,</li>
+<li>kobo setup desktop激活，去kobo官网下载软件，然后电脑需要翻墙，电子书连接上电脑，用软件登录激活。这个软件很不好用，bug也多，建议使用wifi激活。</li>
+</ol>
+<h2 id="更新固件，打补丁"><a href="#更新固件，打补丁" class="headerlink" title="更新固件，打补丁"></a>更新固件，打补丁</h2><p>kobo的更新固件，更新补丁都是一个模式，把固件或者补丁放到.kobo文件夹，弹出设备就会自动重启</p>
+<h2 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h2><p>电脑连接kobo，在根目录建立一个fonts文件夹，把需要的字体放进去即可</p>
+<h2 id="词典"><a href="#词典" class="headerlink" title="词典"></a>词典</h2><p>下载网上改好的字典，直接放到.kobo文件夹下的dict目录下，然后重启就可以了</p>
+<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><ol>
+<li>刷新页数（打补丁）</li>
+<li>上下页宽（打补丁）</li>
+<li>全屏模式（修改配置文件）</li>
+<li>字体高级设置（修改配置文件）</li>
+<li>导出笔记和高亮（修改配置文件）</li>
+</ol>
+<h2 id="kobo高级配置文件详解"><a href="#kobo高级配置文件详解" class="headerlink" title="kobo高级配置文件详解"></a>kobo高级配置文件详解</h2><p>用电脑连接kobo电子书，打开Kobo找到eReader.conf文件，最好用notepad++修改，或者其他文本编辑器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">[FeatureSettings]</span><br><span class="line">#导出笔记</span><br><span class="line">ExportHighlightsEnabled=true</span><br><span class="line">#显示全书的页码，而不是章节的页码</span><br><span class="line">FullBookPageNumbers=true</span><br><span class="line">#用在线等维基百科代替词典查询</span><br><span class="line">OnlineWikipedia=true</span><br><span class="line">#全屏阅读</span><br><span class="line">FullScreenReading=true</span><br><span class="line">#图片缩放</span><br><span class="line">ImageZoom=true</span><br><span class="line">#浏览器全屏</span><br><span class="line">FullScreenBrowser=true</span><br><span class="line">#关机键截图，但是关机键就无法关机了，不要设置这个鸡肋的功能</span><br><span class="line">Screenshots=true</span><br><span class="line">[Reading]</span><br><span class="line">#翻页刷新的页数，20页全刷一次</span><br><span class="line">numPartialUpdatePageTurns=20</span><br><span class="line">#左边距</span><br><span class="line">readingLeftMargin=0</span><br><span class="line">#右边距</span><br><span class="line">readingRightMargin=0</span><br><span class="line">#行高</span><br><span class="line">readingLineHeight=1.4</span><br><span class="line"></span><br><span class="line">[PowerOptions]</span><br><span class="line">#自动关机时间</span><br><span class="line">AutoOffMinutes=60</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>博客搬家，请访问新博客地址吧! <a href="https://www.duduhuahua.cn" target="_blank" rel="noopener">我的博客</a></p>
+</blockquote>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/java-interview.html" class="pre-post btn btn-default" title='java面试大全自制版'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            java面试大全自制版</span>
+    </a>
+    
+    
+    <a href="/mysql-collation.html" class="next-post btn btn-default" title='Illegal mix of collations'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Illegal mix of collations</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'en'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            Table of Contents
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#建议"><span class="toc-text">建议</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kobo原生系统的功能（推荐原生系统，打上补丁）"><span class="toc-text">kobo原生系统的功能（推荐原生系统，打上补丁）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#koreader的功能"><span class="toc-text">koreader的功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#激活"><span class="toc-text">激活</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新固件，打补丁"><span class="toc-text">更新固件，打补丁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#字体"><span class="toc-text">字体</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#词典"><span class="toc-text">词典</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义配置"><span class="toc-text">自定义配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kobo高级配置文件详解"><span class="toc-text">kobo高级配置文件详解</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2017
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+</body>
+</html>

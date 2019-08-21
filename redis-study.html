@@ -1,0 +1,361 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="redis">
+
+
+<meta name="description" content="** redis学习笔记：** &lt;Excerpt in index | 首页摘要&gt;    redis数据库的基本操作，增删改查
+
+&lt;The rest of contents |...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    redis学习笔记 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                Home</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/前端/"><i class="fa "></i>
+                                前端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/后端/"><i class="fa "></i>
+                                后端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="redis学习笔记">
+            
+            redis学习笔记
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/数据库/">数据库</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/redis/">redis</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2016/05/23</span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                1185</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** redis学习笔记：** &lt;Excerpt in index | 首页摘要&gt;<br>    redis数据库的基本操作，增删改查</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="keys"><a href="#keys" class="headerlink" title="keys"></a>keys</h2><p>redis本质上是一个key-value数据库</p>
+<ol>
+<li>设置：set key value</li>
+<li>获取：get key</li>
+<li>判断存在：exists key</li>
+<li>删除：del key        del  test:fan:age</li>
+<li>重命名：rename  oldkey newkey        </li>
+<li>数量：dbsize  返回数据</li>
+<li>获取所有key（通配符）：<code>Keys test:*:age</code><br><code>Keys test:?:age</code></li>
+<li>清空：flushdb    flushall</li>
+<li>设置有效时间：expire test:fan:age 30</li>
+<li>查询有效时间：ttl test:fan:age</li>
+</ol>
+<h2 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h2><ol>
+<li>设置：<br> set key value<br> setnx ky value(nx是not exist)<br> mset key1 value1 keyN valueN<br> msetnx key1 value1 keyN valueN</li>
+<li>获取：<br> get            不存在返回nil<br> getset        设置key的值，并返回key的旧值，不存在返回nil<br> mget        </li>
+<li>自增减：<br> incr key   对key的值进行++操作，返回新的值<br> decr key<br> incrby key integer        对key加上一个数值<br> decrby key integer</li>
+<li>截取：<br> substr key indexStart indexEnd             下标从0开始</li>
+<li>追加：<br> append key value</li>
+</ol>
+<h2 id="list类型"><a href="#list类型" class="headerlink" title="list类型"></a>list类型</h2><p>redis的list其实就是一个每个元素都是string 的双向链表，所以push和pop的时间复杂度都是O（1）</p>
+<ol>
+<li>添加<br> lpush key string         在头部添加<br> rpush key string        在尾部添加</li>
+<li>修改<br> lset key index value  修改指定下标的key的值</li>
+<li>删除<br> lpop key     从头部返回删除<br> rpop key  从尾部<br> lrem key count value  删除count个相同的value，count为0删除全部<br> blpop key …keyN timeout<br> brpop 从尾部删除</li>
+<li>获取<br> lrange key indexStart indexEnd</li>
+<li>数量<br> llen key        返回key对应的list长度</li>
+<li>截取<br> ltrim key start end</li>
+<li>转移<br> rpoplpush key1 key2    从key1尾部移到key2头部</li>
+</ol>
+<h2 id="set集合"><a href="#set集合" class="headerlink" title="set集合"></a>set集合</h2><p>redis的set就是String的无序集合，通过hashtable实现</p>
+<ol>
+<li>添加<br> sadd key member</li>
+<li>删除<br> srem key member        移除指定的元素<br> spop key                     删除并返回一个随机的</li>
+<li>获取<br> smembers key            返回所有<br> srandmember            随机取一个不删除</li>
+<li>判断存在<br> sismember key member</li>
+<li>数量<br> scard key                     返回元素个数</li>
+<li>转移<br> smove srckey dstkey member</li>
+<li>取交集<br> sinter key1 key2 keyN<br> sinterstore dstkey key1 keyN        将交集存在dstkey</li>
+<li>取并集<br> sunion key1 key2 keyN<br> sunionstore dstkey key1 keyN    将并集存在dstkey</li>
+<li>取差集<br> sdiff key1 key2 keyN<br> sdiffstore dstkey key1 keyN        将差集存在dstkey</li>
+</ol>
+<h2 id="有序set类型"><a href="#有序set类型" class="headerlink" title="有序set类型"></a>有序set类型</h2><p>和set一样，不同的是每个元素关联一个double类型的score，根据score排序，sorted set的实现由skip list和hashtable</p>
+<ol>
+<li>添加<br> zadd key score member</li>
+<li>删除<br> zrem key member<br> zremrangebyrank key min max<br> zremrangebyscore key min max     删除集合score在给定区间的元素</li>
+<li>获取<br> zrange key start end<br> zrevrange    key start end            按score的逆序<br> zrangebyscore key min max        </li>
+<li>判断存在<br> zrank key member        返回下标<br> zrerank key member        返回逆序的下标</li>
+<li>数量<br> zcard key                        总数<br> zcount key min max         区间的数量</li>
+<li>修改<br> zincrby key incr member    增加member的score值并排序</li>
+</ol>
+<h2 id="hash类型"><a href="#hash类型" class="headerlink" title="hash类型"></a>hash类型</h2><p>redis的hash是一个string类型的field和value的映射表，hash特别适合存储对象，</p>
+<ol>
+<li>设置：<br> hset key field value<br> hmset key field1 value1 field2 value2</li>
+<li>获取：<br> hget key field<br> hmget key field1 field2</li>
+<li>判断存在<br> hexists key field</li>
+<li>删除<br> hdel key field</li>
+<li>查找<br> hkeys key            返回所有 field<br> hvals key            返回所有的value<br> hgetall key        返回所有field和value</li>
+<li>数量<br> hlen key</li>
+<li>值加减<br> hincrby key field integer    将指定的hash field加上定值</li>
+</ol>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/node-develop.html" class="pre-post btn btn-default" title='nodejs开发规范'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            nodejs开发规范</span>
+    </a>
+    
+    
+    <a href="/git-svn.html" class="next-post btn btn-default" title='git比svn的优势'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            git比svn的优势</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'en'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            Table of Contents
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#keys"><span class="toc-text">keys</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String类型"><span class="toc-text">String类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#list类型"><span class="toc-text">list类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#set集合"><span class="toc-text">set集合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有序set类型"><span class="toc-text">有序set类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hash类型"><span class="toc-text">hash类型</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2017
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+</body>
+</html>

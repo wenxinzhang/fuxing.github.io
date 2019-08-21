@@ -1,0 +1,349 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="mysql">
+
+
+<meta name="description" content="** mysql学习笔记：** &lt;Excerpt in index | 首页摘要&gt;    mysql学习，基础的增删改查，数据库优化，索引，分片，集群搭建等等。
+
+&lt;The r...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    mysql学习笔记 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                Home</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/前端/"><i class="fa "></i>
+                                前端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/后端/"><i class="fa "></i>
+                                后端</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="mysql学习笔记">
+            
+            mysql学习笔记
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/数据库/">数据库</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/mysql/">mysql</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2016/05/28</span>
+    </span>
+    
+    
+</div>
+        
+        
+        <p class="fa fa-exclamation-triangle warning">
+            本文于<strong>
+                1180</strong>
+            天之前发表，文中内容可能已经过时。
+        </p>
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** mysql学习笔记：** &lt;Excerpt in index | 首页摘要&gt;<br>    mysql学习，基础的增删改查，数据库优化，索引，分片，集群搭建等等。</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="mysql的特点"><a href="#mysql的特点" class="headerlink" title="mysql的特点"></a>mysql的特点</h2><ol>
+<li>关系型数据库，免费使用，</li>
+<li>插入式存储引擎，</li>
+<li>性能高，</li>
+</ol>
+<h2 id="基础的增删改查"><a href="#基础的增删改查" class="headerlink" title="基础的增删改查"></a>基础的增删改查</h2><ol>
+<li><p>ddl语句，数据定义语句</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create database test1;</span><br><span class="line">drop database test1;</span><br><span class="line">use test1;</span><br><span class="line">create table emp(ename varchar(10),hiredate date,sal decimal(10,2),deptno int(2));</span><br><span class="line">drop table emp;</span><br><span class="line">alter table emp modify ename varchar(20);</span><br><span class="line">alter table emp add column age int(3);</span><br><span class="line">alter table emp drop column age;</span><br><span class="line">alter table emp change age age1 int(4);</span><br><span class="line">alter table emp add birth date after ename;</span><br><span class="line">alter table emp modify age int(3) first;</span><br><span class="line">alter table emp rename emp1;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dml语句，数据操纵语句</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">insert into emp(ename,hiredate,sal,deptno) values(&apos;zzx1&apos;,&apos;2000-10-11&apos;,2000,1);</span><br><span class="line">insert into emp values(&apos;lisa&apos;,&apos;2004-05-09&apos;,3000,2);</span><br><span class="line">insert into dept values(5,&apos;dept5&apos;),(6,&apos;dept6&apos;);</span><br><span class="line">update emp set sal=4000 where ename=&apos;lisa&apos;;</span><br><span class="line">update emp a,dept b set a.sal=a.sal*b.deptno,b.deptname=a.ename where a.deptno=b.deptno;</span><br><span class="line">delete from emp where ename=&apos;dony&apos;;</span><br><span class="line">delete a,b from emp a,dept b where a.deptno=b.deptno and a.deptno=3;</span><br><span class="line">select * from emp where ename=&apos;lisa&apos;;</span><br><span class="line">select distinct deptno from emp;</span><br><span class="line">select * from emp order by sal(desc);</span><br><span class="line">select * from emp order by sal limit 5;</span><br><span class="line">select * from emp order by sal limit 1,5;ss</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>dcl语句，数据控制语句</p>
+</li>
+</ol>
+<h2 id="sql优化"><a href="#sql优化" class="headerlink" title="sql优化"></a>sql优化</h2><ol>
+<li>尽量使用 prepareStatement(java)，利用预处理功能。</li>
+<li>在进行多条记录的增加、修改、删除时，建议使用批处理功能，批处理的次数以整<br>个 SQL 语句不超过相应数据库的 SQL 语句大小的限制为准。</li>
+<li>建议每条 SQL 语句中 in 中的元素个数在 200 以下，如果个数超过时，应拆分为多<br>条 SQL 语句。禁止使用 xx in(‘’,’’….) or xx in(‘’,’’,’’)。 ★</li>
+<li>禁止使用 or 超过 200，如 xx =’123’ or xx=’456’。 ★</li>
+<li>尽量不使用外连接。</li>
+<li>禁止使用 not in 语句，建议用 not exist。 ★</li>
+<li>禁止使用 Union, 如果有业务需要，请拆分为两个查询。 ★</li>
+<li>禁止在一条 SQL 语句中使用 3 层以上的嵌套查询，如果有，请考虑使用临时表或<br>中间结果集。</li>
+<li>尽量避免在一条 SQL 语句中从&gt;= 4 个表中同时取数， 对于仅是作为过滤条件关联，<br>但不涉及取数的表，不参与表个数计算</li>
+<li>查询条件里任何对列的操作都将导致表扫描，所以应尽量将数据库函数、计算表达<br>式写在逻辑操作符右边。</li>
+<li>在对 char 类型比较时,建议不要使用 rtrim()函数,应该在程序中将不足的长度补<br>齐。</li>
+<li>用多表连接代替 EXISTS 子句。</li>
+<li>如果有多表连接时， 应该有主从之分， 并尽量从一个表取数， 如 select a.col1, a.col2<br>from a join b on a.col3=b.col4 where b.col5 = ‘a’。</li>
+<li>在使用 Like 时，建议 Like 的一边是字符串，表列在一边出现。</li>
+<li>不允许将 where 子句的条件放到 having 中。</li>
+<li>将更新操作放到事务的最后执行。如</li>
+<li>一个事务需更新多个对象时，需保证更新的顺序一致以避免死锁的发生。如总是先<br>更新子表再更新主表，根据存货档案批量更新现存量时，对传入的存货档案 PK 进<br>行排序，再做更新处理等。</li>
+<li>禁止随意使用临时表，在临时数据不超过 200 行的情况下禁止使用临时表。</li>
+<li>禁止随意使用 distinct，避免造成不必要的排序。</li>
+</ol>
+<h2 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h2><ol>
+<li><p>创建索引，删除索引</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create index cityname on city(city(10));</span><br><span class="line">drop index cityname on city;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>搜索的索引列最好在where的字句或者连接子句</p>
+</li>
+<li><p>使用唯一索引</p>
+</li>
+<li><p>使用短索引，对于较长的字段，使用其前缀做索引</p>
+</li>
+<li><p>不要过度使用索引，索引引起额外的性能开销和维护</p>
+</li>
+</ol>
+<h2 id="高级优化措施"><a href="#高级优化措施" class="headerlink" title="高级优化措施"></a>高级优化措施</h2><h2 id="集群搭建"><a href="#集群搭建" class="headerlink" title="集群搭建"></a>集群搭建</h2>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/mac-mysql-unicode.html" class="pre-post btn btn-default" title='mac下mysql5.6字符集设置'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            mac下mysql5.6字符集设置</span>
+    </a>
+    
+    
+    <a href="/node-develop.html" class="next-post btn btn-default" title='nodejs开发规范'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            nodejs开发规范</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'xOKV9J4UeQAtVkvnJC7Kq2Jn-gzGzoHsz',
+    appKey: 'erIpQac4azoCmgfBB7Dl9maa',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'en'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            Table of Contents
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql的特点"><span class="toc-text">mysql的特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基础的增删改查"><span class="toc-text">基础的增删改查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sql优化"><span class="toc-text">sql优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#索引优化"><span class="toc-text">索引优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高级优化措施"><span class="toc-text">高级优化措施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群搭建"><span class="toc-text">集群搭建</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2017
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+</body>
+</html>
