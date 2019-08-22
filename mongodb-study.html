@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="zh-CN">
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <!--Setting-->
@@ -102,7 +102,7 @@
                         
                         <li role="presentation" class="text-center">
                             <a href="/"><i class="fa "></i>
-                                Home</a>
+                                首页</a>
                         </li>
                         
                         <li role="presentation" class="text-center">
@@ -166,6 +166,11 @@
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
             2017/05/26</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
     </span>
     
     
@@ -323,7 +328,7 @@
         <div>
             
             转载声明：
-            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="" target="_blank">Snippet</a>
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
             
             
         </div>
@@ -368,7 +373,7 @@ new Valine({
     meta: 'nick,mail'.split(','),
     pageSize: '10',
     path: window.location.pathname,
-    lang: 'en'.toLowerCase()
+    lang: 'zh-CN'.toLowerCase()
 })
 </script>
 
@@ -380,7 +385,7 @@ new Valine({
                     <aside id="article-toc" role="navigation" class="col-md-4">
     <div class="widget">
         <h3 class="title">
-            Table of Contents
+            文章目录
         </h3>
         
         <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mongodb学习"><span class="toc-text">mongodb学习</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-mongodb特性"><span class="toc-text">1.mongodb特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-mongo常用操作"><span class="toc-text">2.mongo常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增删操作"><span class="toc-text">增删操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新操作"><span class="toc-text">更新操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查询操作"><span class="toc-text">查询操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作符"><span class="toc-text">操作符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数组查询"><span class="toc-text">数组查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-索引的使用"><span class="toc-text">3.索引的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建索引"><span class="toc-text">创建索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改索引"><span class="toc-text">修改索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除索引"><span class="toc-text">删除索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#唯一索引"><span class="toc-text">唯一索引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#强制使用索引"><span class="toc-text">强制使用索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-mongo数据库管理"><span class="toc-text">4.mongo数据库管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安全与认证"><span class="toc-text">安全与认证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#冷备份"><span class="toc-text">冷备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#热备份"><span class="toc-text">热备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主从复制备份"><span class="toc-text">主从复制备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修复db-repairDatabase"><span class="toc-text">修复db.repairDatabase();</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-mongo复制-集群"><span class="toc-text">5.mongo复制(集群)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-MONGODB分片"><span class="toc-text">6.MONGODB分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分片与自动分片"><span class="toc-text">分片与自动分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三个组成部分"><span class="toc-text">三个组成部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建分片"><span class="toc-text">创建分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#管理分片"><span class="toc-text">管理分片</span></a></li></ol></li></ol>
@@ -406,11 +411,21 @@ new Valine({
             <div class="col-sm-12">
                 <div class="busuanzi">
     
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
 </div>
             </div>
             <div class="col-sm-12">
                 <span>Copyright &copy;
-                    2017
+                    2018
                 </span> |
                 <span>
                     Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
@@ -425,6 +440,8 @@ new Valine({
 
 
 
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
 <script src="/js/app.js?rev=@@hash"></script>
-</body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
 </html>
