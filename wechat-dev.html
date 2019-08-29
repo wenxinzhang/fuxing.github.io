@@ -64,6 +64,20 @@
 
     
 
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 </head></html>
 <!--[if lte IE 8]>
 <style>
@@ -237,10 +251,7 @@
 <li>redirect_uri不合法，是创建授权菜单的redirect_uri和<strong>网页授权域名</strong>配置不一样</li>
 <li>关注公众号，服务端设置的欢迎消息发不过去，如果自己代码无异常，一般是因为<strong>token过期</strong></li>
 </ol>
-<h2 id="以后遇到其他问题继续补充"><a href="#以后遇到其他问题继续补充" class="headerlink" title="以后遇到其他问题继续补充"></a>以后遇到其他问题继续补充</h2><blockquote>
-<p>博客搬家，请访问新博客地址吧! <a href="https://www.duduhuahua.cn" target="_blank" rel="noopener">我的博客</a></p>
-</blockquote>
-
+<h2 id="以后遇到其他问题继续补充"><a href="#以后遇到其他问题继续补充" class="headerlink" title="以后遇到其他问题继续补充"></a>以后遇到其他问题继续补充</h2>
     </div>
     
     <div class="post-footer">

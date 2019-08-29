@@ -61,6 +61,20 @@
 
     
 
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 </head></html>
 <!--[if lte IE 8]>
 <style>
@@ -221,9 +235,6 @@
 <li>npm install,npm start即可运行</li>
 </ol>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>其实无论是写爬虫还是些其他程序，使用nodejs很大一部分都是要处理异步，要学好nodejs必须学好异步处理。</p>
-<blockquote>
-<p>博客搬家，请访问新博客地址吧! <a href="https://www.duduhuahua.cn" target="_blank" rel="noopener">我的博客</a></p>
-</blockquote>
 
     </div>
     

@@ -61,6 +61,20 @@
 
     
 
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 </head></html>
 <!--[if lte IE 8]>
 <style>
@@ -243,10 +257,7 @@
 <li>增加observer不影响集群事务处理能力，还能提升非事务请求的处理能力</li>
 </ol>
 <h2 id="zookeeper集群为什么是奇数？"><a href="#zookeeper集群为什么是奇数？" class="headerlink" title="zookeeper集群为什么是奇数？"></a>zookeeper集群为什么是奇数？</h2><p>zookeeper事务请求提议需要超过半数的机器，假如是2(n+1)台,需要n+2台机器同意，<br>由于在增删改操作中需要半数以上服务器通过，来分析以下情况。<br>2台服务器，至少2台正常运行才行（2的半数为1，半数以上最少为2），正常运行1台服务器都不允许挂掉<br>3台服务器，至少2台正常运行才行（3的半数为1.5，半数以上最少为2），正常运行可以允许1台服务器挂掉<br>4台服务器，至少3台正常运行才行（4的半数为2，半数以上最少为3），正常运行可以允许1台服务器挂掉<br>5台服务器，至少3台正常运行才行（5的半数为2.5，半数以上最少为3），正常运行可以允许2台服务器挂掉<br>6台服务器，至少3台正常运行才行（6的半数为3，半数以上最少为4），正常运行可以允许2台服务器挂掉</p>
-<h2 id="zookeeper日志管理？"><a href="#zookeeper日志管理？" class="headerlink" title="zookeeper日志管理？"></a>zookeeper日志管理？</h2><h2 id="leader选举的原理"><a href="#leader选举的原理" class="headerlink" title="leader选举的原理"></a>leader选举的原理</h2><h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2><blockquote>
-<p>博客搬家，请访问新博客地址吧! <a href="https://www.duduhuahua.cn" target="_blank" rel="noopener">我的博客</a></p>
-</blockquote>
-
+<h2 id="zookeeper日志管理？"><a href="#zookeeper日志管理？" class="headerlink" title="zookeeper日志管理？"></a>zookeeper日志管理？</h2><h2 id="leader选举的原理"><a href="#leader选举的原理" class="headerlink" title="leader选举的原理"></a>leader选举的原理</h2><h2 id="未完待续"><a href="#未完待续" class="headerlink" title="未完待续"></a>未完待续</h2>
     </div>
     
     <div class="post-footer">

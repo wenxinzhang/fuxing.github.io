@@ -63,6 +63,20 @@
 
     
 
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
 </head></html>
 <!--[if lte IE 8]>
 <style>
@@ -283,8 +297,8 @@
 <li><p>在用户主目录下有一个 .bashrc 文件，可以在此文件中加入 PATH 的设置如下：<br><code>export PATH=”$PATH:/your path1/:/your path2/…..”</code></p>
 </li>
 <li><p>在 /etc/profile中增加</p>
-<pre><code class="bash">PATH=<span class="string">"<span class="variable">$PATH</span>:/home/zhengb66/bin"</span> 
-<span class="built_in">export</span> PATH</code></pre>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/home/zhengb66/bin"</span> </span><br><span class="line"><span class="built_in">export</span> PATH</span><br></pre></td></tr></table></figure>
+
 </li>
 </ol>
 <h2 id="开机自启动"><a href="#开机自启动" class="headerlink" title="开机自启动"></a>开机自启动</h2><ol>
@@ -306,9 +320,6 @@
 <li>gitlab配置</li>
 <li>git服务器</li>
 </ol>
-<blockquote>
-<p>博客搬家，请访问新博客地址吧! <a href="https://www.duduhuahua.cn" target="_blank" rel="noopener">我的博客</a></p>
-</blockquote>
 
     </div>
     
