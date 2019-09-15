@@ -19,11 +19,11 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Hadoop">
+<meta name="keywords" content="CDH">
 
 
-<meta name="description" content="** Hadoop伪分布式搭建：** &lt;Excerpt in index | 首页摘要&gt;
-​        大数据（Big Data），指无法在一定时间范围内用常规软件工具进行捕捉、...">
+<meta name="description" content="** CM+CDH离线安装：** &lt;Excerpt in index | 首页摘要&gt;
+​        Cloudera Manager可以轻松管理任何生产规模的Hadoop部署。通...">
 
 
 <meta name="robots" content="all">
@@ -34,7 +34,7 @@
 
 <title>
     
-    Hadoop伪分布式搭建 |
+    CM+CDH离线安装 |
     
     福星
 </title>
@@ -173,16 +173,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="Hadoop伪分布式搭建">
+        <h1 id="CM+CDH离线安装">
             
-            Hadoop伪分布式搭建
+            CM+CDH离线安装
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+        <a class="category-link" href="/categories/CDH/">CDH</a>
     </span>
     
     
@@ -190,7 +190,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            <a class="tag-link" href="/tags/CDH/">CDH</a>
             
         </span>
     </span>
@@ -200,7 +200,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/08/30</span>
+            2019/09/06</span>
     </span>
     
     <span class="fa-wrap">
@@ -215,12 +215,29 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** Hadoop伪分布式搭建：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        大数据（Big Data），指无法在一定时间范围内用常规软件工具进行捕捉、管理和处理的数据集合，是需要新处理模式才能具有更强的决策力、洞察发现力和流程优化能力的海量、高增长率和多样化的信息资产。<br>​        大数据的定义是4Vs：数据量大、处理速度快、数据源多样、真实性。用中文简单描述就是大、快、多、真。</p>
+        <p>** CM+CDH离线安装：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Cloudera Manager可以轻松管理任何生产规模的Hadoop部署。通过直观的用户界面快速部署，配置和监控群集 - 完成滚动升级，备份和灾难恢复以及可定制警报。</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
-<h2 id="1-1Hadoop简介"><a href="#1-1Hadoop简介" class="headerlink" title="1.1Hadoop简介"></a>1.1Hadoop简介</h2><h3 id="1-1-1Hadoop创始人"><a href="#1-1-1Hadoop创始人" class="headerlink" title="1.1.1Hadoop创始人"></a>1.1.1Hadoop创始人</h3><p>​        1985年，<strong>Doug Cutting</strong>毕业于美国斯坦福大学。他并不是一开始就决心投身IT行业的，在大学时代的头两年，Cutting学习了诸如物理、地理等常规课程。因为学费的压力，Cutting开始意识到，自己必须学习一些更加实用、有趣的技能。这样，一方面可以帮助自己还清贷款，另一方面，也是为自己未来的生活做打算。因为斯坦福大学座落在IT行业的“圣地”硅谷，所以学习软件对年轻人来说是再自然不过的事情了。 1997年底，Cutting开始以每周两天的时间投入，在家里试着用Java把这个想法变成现实，不久之后，Lucene诞生了。作为第一个提供全文文本搜索的开源函数库，Lucene的伟大自不必多言。</p>
-<p>Doug Cutting是<strong>Lucence,Nutch,Hadoop</strong>的创始人。</p>
+<h2 id="1-1-Cloudera-简介"><a href="#1-1-Cloudera-简介" class="headerlink" title="1.1 Cloudera 简介"></a>1.1 Cloudera 简介</h2><h3 id="1-1-1Cloudera-简介"><a href="#1-1-1Cloudera-简介" class="headerlink" title="1.1.1Cloudera 简介"></a>1.1.1Cloudera 简介</h3><p>官网：<a href="https://www.cloudera.com/" target="_blank" rel="noopener">https://www.cloudera.com/</a></p>
+<p>文档：<a href="https://www.cloudera.com/documentation/enterprise/5-12-x/topics/cdh_intro.html" target="_blank" rel="noopener">https://www.cloudera.com/documentation/enterprise/5-12-x/topics/cdh_intro.html</a></p>
+<p>​        CDH是Apache Hadoop和相关项目中最完整，经过测试和最流行的发行版。CDH提供了Hadoop的核心元素 - 可扩展存储和分布式计算 - 以及基于Web的用户界面和重要的企业功能。CDH是Apache许可的开源软件，是唯一提供统一批处理，交互式SQL和交互式搜索以及基于角色的访问控制的Hadoop解决方案。</p>
+<p>CDH提供：</p>
+<ul>
+<li><p>灵活性 - 存储任何类型的数据并使用各种不同的计算框架对其进行操作，包括批处理，交互式SQL，自由文本搜索，机器学习和统计计算。</p>
+</li>
+<li><p>集成 - 在完整的Hadoop平台上快速启动和运行，该平台可与各种硬件和软件解决方案配合使用。</p>
+</li>
+<li><p>安全 - 处理和控制敏感数据。</p>
+</li>
+<li><p>可扩展性 - 支持广泛的应用程序，并扩展和扩展它们以满足您的要求。</p>
+</li>
+<li><p>高可用性 - 充满信心地执行任务关键型业务任务。</p>
+</li>
+<li><p>兼容性 - 利用您现有的IT基础架构和投资。</p>
+<p><img src="https://www.cloudera.com/documentation/enterprise/latest/images/cdh.png" alt="img"></p>
+</li>
+</ul>
 <h3 id="1-1-2Hadoop起源"><a href="#1-1-2Hadoop起源" class="headerlink" title="1.1.2Hadoop起源"></a>1.1.2Hadoop起源</h3><p>​        2004年，Cutting和同为程序员出身的Mike Cafarella决定开发一款可以代替当时的主流搜索产品的开源搜索引擎，这个项目被命名为Nutch。Nutch基于Lucence实现的搜索引擎，能够从互联网上抓取网页数据。抓取来的海量数据的存储问题。但是，这些海量数据都是非结构化数据，不能存在关系型数据库里。如果连数据的存储和管理都解决不了化，就谈不上后续为用户提供搜索服务，包括通过算法去优化检索速度。那时的Cutting正处在Freelancer的生涯 中，所以他希望自己的项目能通过一种低开销的方式来构建网页中的大量算法。幸运的是，Google这时正好发布了一项研究报告，报告中介绍了两款Google为支持自家的搜索引擎而开发的软件平台。这两个平台一个是GFS（Google File System），用于存储不同设备所产生的海量数据；另一个是MapReduce，它运行在GFS之上，负责分布式大规模数据。</p>
 <p>​        2006年cutting根据《Google File System》设计了Nutch的HDFS,hadoop distributed file system。</p>
 <p>Hadoop最开始是nutch的子项目，目的是解决nutch的海量数据存储问题。在nutch 0.8版本之后，Hadoop独立处理，成为一个独立的项目。后来，又根据《Google MapReduce》设计了基于HDFS的MapRedce计算框架。</p>
@@ -394,17 +411,11 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/CDH-hadoop.html" class="pre-post btn btn-default" title='CM+CDH离线安装'>
-        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-        <span class="hidden-xs">
-            CM+CDH离线安装</span>
-    </a>
     
-    
-    <a href="/buy-computer.html" class="next-post btn btn-default" title='如何选购合适的电脑'>
+    <a href="/hadoop-single.html" class="next-post btn btn-default" title='Hadoop伪分布式搭建'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            如何选购合适的电脑</span><i class="fa fa-angle-right fa-fw"></i>
+            Hadoop伪分布式搭建</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -443,7 +454,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1Hadoop简介"><span class="toc-text">1.1Hadoop简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1Hadoop创始人"><span class="toc-text">1.1.1Hadoop创始人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2Hadoop起源"><span class="toc-text">1.1.2Hadoop起源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1Hadoop搭建"><span class="toc-text">2.1Hadoop搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-单机伪分布模式"><span class="toc-text">3.1 单机伪分布模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-准备Linux环境，最低的工作内存1G"><span class="toc-text">3.1.1 准备Linux环境，最低的工作内存1G</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-关闭防火墙"><span class="toc-text">3.1.2  关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-配置主机名"><span class="toc-text">3.1.3 配置主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-配置hosts文件"><span class="toc-text">3.1.4 配置hosts文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-5-配置免密码登录"><span class="toc-text">3.1.5 配置免密码登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-5-1-免密登陆原理"><span class="toc-text">3.1.5.1 免密登陆原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-5-1-免密登陆实现"><span class="toc-text">3.1.5.1 免密登陆实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-6-安装和配置jdk"><span class="toc-text">3.1.6 安装和配置jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-7-上传和安装hadoop"><span class="toc-text">3.1.7 上传和安装hadoop</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-7-1-解压Hadoop文件包"><span class="toc-text">3.1.7.1 解压Hadoop文件包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-7-2-Hadoop目录说明"><span class="toc-text">3.1.7.2 Hadoop目录说明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-8-配置hadoop配置文件"><span class="toc-text">3.1.8 配置hadoop配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-1-hadoop-env-sh"><span class="toc-text">3.1.8.1 hadoop-env.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-2-core-site-xml"><span class="toc-text">3.1.8.2 core-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-3-hdfs-site-xml"><span class="toc-text">3.1.8.3 hdfs-site .xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-4-mapred-site-xml"><span class="toc-text">3.1.8.4 mapred-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-5-yarn-site-xml"><span class="toc-text">3.1.8.5 yarn-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-6-slaves"><span class="toc-text">3.1.8.6 slaves</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-9-配置hadoop的环境变量"><span class="toc-text">3.1.9 配置hadoop的环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-10-格式化Namenode"><span class="toc-text">3.1.10 格式化Namenode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-11-启动Hadoop"><span class="toc-text">3.1.11 启动Hadoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-12-验证启动成功"><span class="toc-text">3.1.12 验证启动成功</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Cloudera-简介"><span class="toc-text">1.1 Cloudera 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1Cloudera-简介"><span class="toc-text">1.1.1Cloudera 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2Hadoop起源"><span class="toc-text">1.1.2Hadoop起源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1Hadoop搭建"><span class="toc-text">2.1Hadoop搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-单机伪分布模式"><span class="toc-text">3.1 单机伪分布模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-准备Linux环境，最低的工作内存1G"><span class="toc-text">3.1.1 准备Linux环境，最低的工作内存1G</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-关闭防火墙"><span class="toc-text">3.1.2  关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-配置主机名"><span class="toc-text">3.1.3 配置主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-4-配置hosts文件"><span class="toc-text">3.1.4 配置hosts文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-5-配置免密码登录"><span class="toc-text">3.1.5 配置免密码登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-5-1-免密登陆原理"><span class="toc-text">3.1.5.1 免密登陆原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-5-1-免密登陆实现"><span class="toc-text">3.1.5.1 免密登陆实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-6-安装和配置jdk"><span class="toc-text">3.1.6 安装和配置jdk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-7-上传和安装hadoop"><span class="toc-text">3.1.7 上传和安装hadoop</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-7-1-解压Hadoop文件包"><span class="toc-text">3.1.7.1 解压Hadoop文件包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-7-2-Hadoop目录说明"><span class="toc-text">3.1.7.2 Hadoop目录说明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-8-配置hadoop配置文件"><span class="toc-text">3.1.8 配置hadoop配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-1-hadoop-env-sh"><span class="toc-text">3.1.8.1 hadoop-env.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-2-core-site-xml"><span class="toc-text">3.1.8.2 core-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-3-hdfs-site-xml"><span class="toc-text">3.1.8.3 hdfs-site .xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-4-mapred-site-xml"><span class="toc-text">3.1.8.4 mapred-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-5-yarn-site-xml"><span class="toc-text">3.1.8.5 yarn-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-8-6-slaves"><span class="toc-text">3.1.8.6 slaves</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-9-配置hadoop的环境变量"><span class="toc-text">3.1.9 配置hadoop的环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-10-格式化Namenode"><span class="toc-text">3.1.10 格式化Namenode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-11-启动Hadoop"><span class="toc-text">3.1.11 启动Hadoop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-12-验证启动成功"><span class="toc-text">3.1.12 验证启动成功</span></a></li></ol></li></ol>
         
     </div>
 </aside>
