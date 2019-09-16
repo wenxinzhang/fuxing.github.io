@@ -1,0 +1,502 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （二）Spark2.3 HA集群的分布式安装：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （二）Spar...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （二）Spark2.3 HA集群的分布式安装 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （二）Spark2.3 HA集群的分布式安装">
+            
+            Spark学习之路 （二）Spark2.3 HA集群的分布式安装
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/02</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （二）Spark2.3 HA集群的分布式安装：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （二）Spark2.3 HA集群的分布式安装</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、下载Spark安装包"><a href="#一、下载Spark安装包" class="headerlink" title="一、下载Spark安装包"></a>一、下载Spark安装包</h2><h3 id="1、从官网下载"><a href="#1、从官网下载" class="headerlink" title="1、从官网下载"></a>1、从官网下载</h3><p><a href="http://spark.apache.org/downloads.html" target="_blank" rel="noopener">http://spark.apache.org/downloads.html</a></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420084850299-679933183.png" alt="img"></p>
+<h2 id="二、安装基础"><a href="#二、安装基础" class="headerlink" title="二、安装基础"></a>二、安装基础</h2><p>1、Java8安装成功</p>
+<p>2、Zookeeper安装成功</p>
+<p>3、hadoop2.7.5 HA安装成功</p>
+<p>4、Scala安装成功（不安装进程也可以启动）</p>
+<h2 id="三、Spark安装过程"><a href="#三、Spark安装过程" class="headerlink" title="三、Spark安装过程"></a>三、Spark安装过程</h2><h3 id="1、上传并解压缩"><a href="#1、上传并解压缩" class="headerlink" title="1、上传并解压缩"></a>1、上传并解压缩</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps     data      exam        inithive.conf  movie     spark-2.3.0-bin-hadoop2.7.tgz  udf.jar</span><br><span class="line">cookies  data.txt  executions  json.txt       projects  student                        zookeeper.out</span><br><span class="line">course   emp       hive.sql    log            sougou    temp</span><br><span class="line">[hadoop@hadoop1 ~]$ tar -zxvf spark-2.3.0-bin-hadoop2.7.tgz -C apps/</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、为安装包创建一个软连接"><a href="#2、为安装包创建一个软连接" class="headerlink" title="2、为安装包创建一个软连接"></a>2、为安装包创建一个软连接</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop1 apps]$ ls</span><br><span class="line">hadoop-2.7.5  hbase-1.2.6  spark-2.3.0-bin-hadoop2.7  zookeeper-3.4.10  zookeeper.out</span><br><span class="line">[hadoop@hadoop1 apps]$ ln -s spark-2.3.0-bin-hadoop2.7/ spark</span><br><span class="line">[hadoop@hadoop1 apps]$ ll</span><br><span class="line">总用量 36</span><br><span class="line">drwxr-xr-x. 10 hadoop hadoop  4096 3月  23 20:29 hadoop-2.7.5</span><br><span class="line">drwxrwxr-x.  7 hadoop hadoop  4096 3月  29 13:15 hbase-1.2.6</span><br><span class="line">lrwxrwxrwx.  1 hadoop hadoop    26 4月  20 13:48 spark -&gt; spark-2.3.0-bin-hadoop2.7/</span><br><span class="line">drwxr-xr-x. 13 hadoop hadoop  4096 2月  23 03:42 spark-2.3.0-bin-hadoop2.7</span><br><span class="line">drwxr-xr-x. 10 hadoop hadoop  4096 3月  23 2017 zookeeper-3.4.10</span><br><span class="line">-rw-rw-r--.  1 hadoop hadoop 17559 3月  29 13:37 zookeeper.out</span><br><span class="line">[hadoop@hadoop1 apps]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、进入spark-conf修改配置文件"><a href="#3、进入spark-conf修改配置文件" class="headerlink" title="3、进入spark/conf修改配置文件"></a>3、进入spark/conf修改配置文件</h3><p>（1）进入配置文件所在目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/spark/conf/</span><br><span class="line">[hadoop@hadoop1 conf]$ ll</span><br><span class="line">总用量 36</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop  996 2月  23 03:42 docker.properties.template</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 1105 2月  23 03:42 fairscheduler.xml.template</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 2025 2月  23 03:42 log4j.properties.template</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 7801 2月  23 03:42 metrics.properties.template</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop  865 2月  23 03:42 slaves.template</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop 1292 2月  23 03:42 spark-defaults.conf.template</span><br><span class="line">-rwxr-xr-x. 1 hadoop hadoop 4221 2月  23 03:42 spark-env.sh.template</span><br><span class="line">[hadoop@hadoop1 conf]$</span><br></pre></td></tr></table></figure>
+
+<p>（2）复制spark-env.sh.template并重命名为spark-env.sh，并在文件最后添加配置内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ cp spark-env.sh.template spark-env.sh</span><br><span class="line">[hadoop@hadoop1 conf]$ vi spark-env.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73</span><br><span class="line">#export SCALA_HOME=/usr/share/scala</span><br><span class="line">export HADOOP_HOME=/home/hadoop/apps/hadoop-2.7.5</span><br><span class="line">export HADOOP_CONF_DIR=/home/hadoop/apps/hadoop-2.7.5/etc/hadoop</span><br><span class="line">export SPARK_WORKER_MEMORY=500m</span><br><span class="line">export SPARK_WORKER_CORES=1</span><br><span class="line">export SPARK_DAEMON_JAVA_OPTS="-Dspark.deploy.recoveryMode=ZOOKEEPER -Dspark.deploy.zookeeper.url=hadoop1:2181,hadoop2:2181,hadoop3:2181,hadoop4:2181 -Dspark.deploy.zookeeper.dir=/spark"</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注：</p>
+<p>#export SPARK_MASTER_IP=hadoop1  这个配置要注释掉。<br>集群搭建时配置的spark参数可能和现在的不一样，主要是考虑个人电脑配置问题，如果memory配置太大，机器运行很慢。<br>说明：<br>-Dspark.deploy.recoveryMode=ZOOKEEPER    #说明整个集群状态是通过zookeeper来维护的，整个集群状态的恢复也是通过zookeeper来维护的。就是说用zookeeper做了spark的HA配置，Master(Active)挂掉的话，Master(standby)要想变成Master（Active）的话，Master(Standby)就要像zookeeper读取整个集群状态信息，然后进行恢复所有Worker和Driver的状态信息，和所有的Application状态信息；<br>-Dspark.deploy.zookeeper.url=hadoop1:2181,hadoop2:2181,hadoop3:2181,hadoop4:2181#将所有配置了zookeeper，并且在这台机器上有可能做master(Active)的机器都配置进来；（我用了4台，就配置了4台） </p>
+<p>-Dspark.deploy.zookeeper.dir=/spark<br>这里的dir和zookeeper配置文件zoo.cfg中的dataDir的区别？？？<br>-Dspark.deploy.zookeeper.dir是保存spark的元数据，保存了spark的作业运行状态；<br>zookeeper会保存spark集群的所有的状态信息，包括所有的Workers信息，所有的Applactions信息，所有的Driver信息,如果集群 </p>
+</blockquote>
+<p>（3）复制slaves.template成slaves</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ cp slaves.template slaves</span><br><span class="line">[hadoop@hadoop1 conf]$ vi slaves</span><br></pre></td></tr></table></figure>
+
+<p>添加如下内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hadoop1</span><br><span class="line">hadoop2</span><br><span class="line">hadoop3</span><br><span class="line">hadoop4</span><br></pre></td></tr></table></figure>
+
+<p>（4）将安装包分发给其他节点</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r spark-2.3.0-bin-hadoop2.7/ hadoop2:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r spark-2.3.0-bin-hadoop2.7/ hadoop3:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r spark-2.3.0-bin-hadoop2.7/ hadoop4:$PWD</span><br></pre></td></tr></table></figure>
+
+<p>创建软连接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop2 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop2 apps]$ ls</span><br><span class="line">hadoop-2.7.5  hbase-1.2.6  spark-2.3.0-bin-hadoop2.7  zookeeper-3.4.10</span><br><span class="line">[hadoop@hadoop2 apps]$ ln -s spark-2.3.0-bin-hadoop2.7/ spark</span><br><span class="line">[hadoop@hadoop2 apps]$ ll</span><br><span class="line">总用量 16</span><br><span class="line">drwxr-xr-x 10 hadoop hadoop 4096 3月  23 20:29 hadoop-2.7.5</span><br><span class="line">drwxrwxr-x  7 hadoop hadoop 4096 3月  29 13:15 hbase-1.2.6</span><br><span class="line">lrwxrwxrwx  1 hadoop hadoop   26 4月  20 19:26 spark -&gt; spark-2.3.0-bin-hadoop2.7/</span><br><span class="line">drwxr-xr-x 13 hadoop hadoop 4096 4月  20 19:24 spark-2.3.0-bin-hadoop2.7</span><br><span class="line">drwxr-xr-x 10 hadoop hadoop 4096 3月  21 19:31 zookeeper-3.4.10</span><br><span class="line">[hadoop@hadoop2 apps]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、配置环境变量"><a href="#4、配置环境变量" class="headerlink" title="4、配置环境变量"></a>4、配置环境变量</h3><p>所有节点均要配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 spark]$ vi ~/.bashrc </span><br><span class="line"><span class="meta">#</span><span class="bash">Spark</span></span><br><span class="line">export SPARK_HOME=/home/hadoop/apps/spark</span><br><span class="line">export PATH=$PATH:$SPARK_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>保存并使其立即生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 spark]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、启动"><a href="#四、启动" class="headerlink" title="四、启动"></a>四、启动</h2><h3 id="1、先启动zookeeper集群"><a href="#1、先启动zookeeper集群" class="headerlink" title="1、先启动zookeeper集群"></a>1、先启动zookeeper集群</h3><p>所有节点均要执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ zkServer.sh start</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /home/hadoop/apps/zookeeper-3.4.10/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[hadoop@hadoop1 ~]$ zkServer.sh status</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /home/hadoop/apps/zookeeper-3.4.10/bin/../conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、在启动HDFS集群"><a href="#2、在启动HDFS集群" class="headerlink" title="2、在启动HDFS集群"></a>2、在启动HDFS集群</h3><p>任意一个节点执行即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ start-dfs.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、在启动Spark集群"><a href="#3、在启动Spark集群" class="headerlink" title="3、在启动Spark集群"></a>3、在启动Spark集群</h3><p>在一个节点上执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/spark/sbin/</span><br><span class="line">[hadoop@hadoop1 sbin]$ start-all.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="4、查看进程"><a href="#4、查看进程" class="headerlink" title="4、查看进程"></a>4、查看进程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420201419188-161981735.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420201445760-578558622.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420201503589-1845421183.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420201519992-501293445.png" alt="img"></p>
+<h3 id="5、问题"><a href="#5、问题" class="headerlink" title="5、问题"></a>5、问题</h3><p>查看进程发现spark集群只有hadoop1成功启动了Master进程，其他3个节点均没有启动成功，需要手动启动，进入到/home/hadoop/apps/spark/sbin目录下执行以下命令，3个节点都要执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop2 ~]$ cd ~/apps/spark/sbin/</span><br><span class="line">[hadoop@hadoop2 sbin]$ start-master.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、执行之后再次查看进程"><a href="#6、执行之后再次查看进程" class="headerlink" title="6、执行之后再次查看进程"></a>6、执行之后再次查看进程</h3><p>Master进程和Worker进程都以启动成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420201942655-1416446127.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202004959-38463551.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202024084-1987751130.png" alt="img"></p>
+<h2 id="五、验证"><a href="#五、验证" class="headerlink" title="五、验证"></a>五、验证</h2><h3 id="1、查看Web界面Master状态"><a href="#1、查看Web界面Master状态" class="headerlink" title="1、查看Web界面Master状态"></a>1、查看Web界面Master状态</h3><p>hadoop1是ALIVE状态，hadoop2、hadoop3和hadoop4均是STANDBY状态</p>
+<p><strong>hadoop1节点</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202404904-1216450970.png" alt="img"></p>
+<p><strong>hadoop2节点</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202505998-2125653978.png" alt="img"></p>
+<p><strong>hadoop3</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202714859-448500440.png" alt="img"></p>
+<p><strong>hadoop4</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420202843592-757375998.png" alt="img"></p>
+<h3 id="2、验证HA的高可用"><a href="#2、验证HA的高可用" class="headerlink" title="2、验证HA的高可用"></a>2、验证HA的高可用</h3><p>手动干掉hadoop1上面的Master进程，观察是否会自动进行切换</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420203250642-1623659016.png" alt="img"></p>
+<p>干掉hadoop1上的Master进程之后，再次查看web界面</p>
+<p><strong>hadoo1节点</strong>，由于Master进程被干掉，所以界面无法访问</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420203421981-757224448.png" alt="img"></p>
+<p><strong>hadoop2节点</strong>，Master被干掉之后，hadoop2节点上的Master成功篡位成功，成为ALIVE状态</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420203548607-1978973082.png" alt="img"></p>
+<p><strong>hadoop3节点</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420203751677-1108153453.png" alt="img"></p>
+<p><strong>hadoop4节点</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180420203824105-812085082.png" alt="img"></p>
+<h3 id="1、执行第一个Spark程序"><a href="#1、执行第一个Spark程序" class="headerlink" title="1、执行第一个Spark程序"></a>1、执行第一个Spark程序</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 ~]$ /home/hadoop/apps/spark/bin/spark-submit \</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --class org.apache.spark.examples.SparkPi \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --master spark://hadoop1:7077 \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --total-executor-cores 1 \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> /home/hadoop/apps/spark/examples/jars/spark-examples_2.11-2.3.0.jar \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 100</span></span><br></pre></td></tr></table></figure>
+
+<p>其中的spark://hadoop1:7077是下图中的地址</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421115203993-483927862.png" alt="img"></p>
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421115300933-1021926480.png" alt="img"></p>
+<h3 id="2、启动spark-shell"><a href="#2、启动spark-shell" class="headerlink" title="2、启动spark shell"></a>2、启动spark shell</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ /home/hadoop/apps/spark/bin/spark-shell \</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --master spark://hadoop1:7077 \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --total-executor-cores 1</span></span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<blockquote>
+<p><strong>–master spark://hadoop1:</strong>7077 指定Master的地址</p>
+<p><strong>–executor-memory 500m:</strong>指定每个worker可用内存为500m</p>
+<p><strong>–total-executor-cores 1:</strong> 指定整个集群使用的cup核数为1个</p>
+</blockquote>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421115600861-294197793.png" alt="img"></p>
+<p>注意：</p>
+<p>如果启动spark shell时没有指定master地址，但是也可以正常启动spark shell和执行spark shell中的程序，其实是启动了spark的local模式，该模式仅在本机启动一个进程，没有与集群建立联系。</p>
+<p>Spark Shell中已经默认将SparkContext类初始化为对象sc。用户代码如果需要用到，则直接应用sc即可</p>
+<p>Spark Shell中已经默认将SparkSQl类初始化为对象spark。用户代码如果需要用到，则直接应用spark即可</p>
+<h3 id="3、-在spark-shell中编写WordCount程序"><a href="#3、-在spark-shell中编写WordCount程序" class="headerlink" title="3、 在spark shell中编写WordCount程序"></a>3、 在spark shell中编写WordCount程序</h3><p>（1）编写一个hello.txt文件并上传到HDFS上的spark目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ vi hello.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mkdir -p /spark</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -put hello.txt /spark</span><br></pre></td></tr></table></figure>
+
+<p>hello.txt的内容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">you,jump</span><br><span class="line">i,jump</span><br><span class="line">you,jump</span><br><span class="line">i,jump</span><br><span class="line">jump</span><br></pre></td></tr></table></figure>
+
+<p>（2）在spark shell中用scala语言编写spark程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; sc.textFile(&quot;/spark/hello.txt&quot;).flatMap(_.split(&quot;,&quot;)).map((_,1)).reduceByKey(_+_).saveAsTextFile(&quot;/spark/out&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<blockquote>
+<p>sc是SparkContext对象，该对象是提交spark程序的入口</p>
+<p>textFile(“/spark/hello.txt”)是hdfs中读取数据</p>
+<p>flatMap(_.split(“ “))先map再压平</p>
+<p>map((_,1))将单词和1构成元组</p>
+<p>reduceByKey(<em>+</em>)按照key进行reduce，并将value累加</p>
+<p>saveAsTextFile(“/spark/out”)将结果写入到hdfs中</p>
+</blockquote>
+<p>（3）使用hdfs命令查看结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop2 ~]$ hadoop fs -cat /spark/out/p*</span><br><span class="line">(jump,5)</span><br><span class="line">(you,2)</span><br><span class="line">(i,2)</span><br><span class="line">[hadoop@hadoop2 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421131948389-32143897.png" alt="img"></p>
+<h2 id="七、-执行Spark程序on-YARN"><a href="#七、-执行Spark程序on-YARN" class="headerlink" title="七、 执行Spark程序on YARN"></a>七、 执行Spark程序on YARN</h2><h3 id="1、前提"><a href="#1、前提" class="headerlink" title="1、前提"></a>1、前提</h3><p>成功启动zookeeper集群、HDFS集群、YARN集群</p>
+<h3 id="2、启动Spark-on-YARN"><a href="#2、启动Spark-on-YARN" class="headerlink" title="2、启动Spark on YARN"></a>2、启动Spark on YARN</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 bin]$ spark-shell --master yarn --deploy-mode client</span><br></pre></td></tr></table></figure>
+
+<p>报错如下：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421172825817-1328970589.png" alt="img"></p>
+<p><strong>报错原因：内存资源给的过小，yarn直接kill掉进程，则报rpc连接失败、ClosedChannelException等错误。</strong></p>
+<p><strong>解决方法：</strong></p>
+<p><strong>先停止YARN服务，然后修改yarn-site.xml，增加如下内容</strong></p>
+<p><a href="javascript:void(0);" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.vmem-check-enabled&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;false&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;Whether virtual memory limits will be enforced for containers&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">        &lt;name&gt;yarn.nodemanager.vmem-pmem-ratio&lt;/name&gt;</span><br><span class="line">        &lt;value&gt;4&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;Ratio between virtual memory to physical memory when setting memory limits for containers&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p><a href="javascript:void(0);" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>将新的yarn-site.xml文件分发到其他Hadoop节点对应的目录下，最后在重新启动YARN。 </p>
+<p>重新执行以下命令启动spark on yarn</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ spark-shell --master yarn --deploy-mode client</span><br></pre></td></tr></table></figure>
+
+<p>启动成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421173924763-194192730.png" alt="img"></p>
+<h3 id="3、打开YARN的web界面"><a href="#3、打开YARN的web界面" class="headerlink" title="3、打开YARN的web界面"></a>3、打开YARN的web界面</h3><p>打开YARN WEB页面：<a href="http://hadoop4:8088" target="_blank" rel="noopener">http://hadoop4:8088</a><br>可以看到Spark shell应用程序正在运行</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421174140672-405904964.png" alt="img"></p>
+<p> 单击ID号链接，可以看到该应用程序的详细信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421174305638-985452065.png" alt="img"></p>
+<p>单击“ApplicationMaster”链接</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421174408279-1529306592.png" alt="img"></p>
+<h3 id="4、运行程序"><a href="#4、运行程序" class="headerlink" title="4、运行程序"></a>4、运行程序</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scala&gt; <span class="keyword">val</span> array = <span class="type">Array</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line">array: <span class="type">Array</span>[<span class="type">Int</span>] = <span class="type">Array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</span><br><span class="line"></span><br><span class="line">scala&gt; <span class="keyword">val</span> rdd = sc.makeRDD(array)</span><br><span class="line">rdd: org.apache.spark.rdd.<span class="type">RDD</span>[<span class="type">Int</span>] = <span class="type">ParallelCollectionRDD</span>[<span class="number">0</span>] at makeRDD at &lt;console&gt;:<span class="number">26</span></span><br><span class="line"></span><br><span class="line">scala&gt; rdd.count</span><br><span class="line">res0: <span class="type">Long</span> = <span class="number">5</span>                                                                  </span><br><span class="line"></span><br><span class="line">scala&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421174609129-1153563069.png" alt="img"></p>
+<p>再次查看YARN的web界面</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421174716496-1159210602.png" alt="img"></p>
+<p> 查看executors</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421175002608-557719051.png" alt="img"></p>
+<h3 id="5、执行Spark自带的示例程序PI"><a href="#5、执行Spark自带的示例程序PI" class="headerlink" title="5、执行Spark自带的示例程序PI"></a>5、执行Spark自带的示例程序PI</h3><p><a href="javascript:void(0);" target="_blank" rel="noopener"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ spark-submit --class org.apache.spark.examples.SparkPi \</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --master yarn \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --deploy-mode cluster \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --driver-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-cores 1 \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> /home/hadoop/apps/spark/examples/jars/spark-examples_2.11-2.3.0.jar </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 10</span></span><br></pre></td></tr></table></figure>
+
+<p>执行过程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ spark-submit --class org.apache.spark.examples.SparkPi \</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --master yarn \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --deploy-mode cluster \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --driver-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-memory 500m \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> --executor-cores 1 \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> /home/hadoop/apps/spark/examples/jars/spark-examples_2.11-2.3.0.jar \</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> 10</span></span><br><span class="line">2018-04-21 17:57:32 WARN  NativeCodeLoader:62 - Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</span><br><span class="line">2018-04-21 17:57:34 INFO  ConfiguredRMFailoverProxyProvider:100 - Failing over to rm2</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Requesting a new application from cluster with 4 NodeManagers</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Verifying our application has not requested more than the maximum memory capability of the cluster (8192 MB per container)</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Will allocate AM container, with 884 MB memory including 384 MB overhead</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Setting up container launch context for our AM</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Setting up the launch environment for our AM container</span><br><span class="line">2018-04-21 17:57:34 INFO  Client:54 - Preparing resources for our AM container</span><br><span class="line">2018-04-21 17:57:36 WARN  Client:66 - Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.</span><br><span class="line">2018-04-21 17:57:39 INFO  Client:54 - Uploading resource file:/tmp/spark-93bd68c9-85de-482e-bbd7-cd2cee60e720/__spark_libs__8262081479435245591.zip -&gt; hdfs://myha01/user/hadoop/.sparkStaging/application_1524303370510_0005/__spark_libs__8262081479435245591.zip</span><br><span class="line">2018-04-21 17:57:44 INFO  Client:54 - Uploading resource file:/home/hadoop/apps/spark/examples/jars/spark-examples_2.11-2.3.0.jar -&gt; hdfs://myha01/user/hadoop/.sparkStaging/application_1524303370510_0005/spark-examples_2.11-2.3.0.jar</span><br><span class="line">2018-04-21 17:57:44 INFO  Client:54 - Uploading resource file:/tmp/spark-93bd68c9-85de-482e-bbd7-cd2cee60e720/__spark_conf__2498510663663992254.zip -&gt; hdfs://myha01/user/hadoop/.sparkStaging/application_1524303370510_0005/__spark_conf__.zip</span><br><span class="line">2018-04-21 17:57:44 INFO  SecurityManager:54 - Changing view acls to: hadoop</span><br><span class="line">2018-04-21 17:57:44 INFO  SecurityManager:54 - Changing modify acls to: hadoop</span><br><span class="line">2018-04-21 17:57:44 INFO  SecurityManager:54 - Changing view acls groups to: </span><br><span class="line">2018-04-21 17:57:44 INFO  SecurityManager:54 - Changing modify acls groups to: </span><br><span class="line">2018-04-21 17:57:44 INFO  SecurityManager:54 - SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(hadoop); groups with view permissions: Set(); users  with modify permissions: Set(hadoop); groups with modify permissions: Set()</span><br><span class="line">2018-04-21 17:57:44 INFO  Client:54 - Submitting application application_1524303370510_0005 to ResourceManager</span><br><span class="line">2018-04-21 17:57:44 INFO  YarnClientImpl:273 - Submitted application application_1524303370510_0005</span><br><span class="line">2018-04-21 17:57:45 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:45 INFO  Client:54 - </span><br><span class="line">     client token: N/A</span><br><span class="line">     diagnostics: N/A</span><br><span class="line">     ApplicationMaster host: N/A</span><br><span class="line">     ApplicationMaster RPC port: -1</span><br><span class="line">     queue: default</span><br><span class="line">     start time: 1524304664749</span><br><span class="line">     final status: UNDEFINED</span><br><span class="line">     tracking URL: http://hadoop4:8088/proxy/application_1524303370510_0005/</span><br><span class="line">     user: hadoop</span><br><span class="line">2018-04-21 17:57:46 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:47 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:48 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:49 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:50 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:51 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:52 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:53 INFO  Client:54 - Application report for application_1524303370510_0005 (state: ACCEPTED)</span><br><span class="line">2018-04-21 17:57:54 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:57:54 INFO  Client:54 - </span><br><span class="line">     client token: N/A</span><br><span class="line">     diagnostics: N/A</span><br><span class="line">     ApplicationMaster host: 192.168.123.104</span><br><span class="line">     ApplicationMaster RPC port: 0</span><br><span class="line">     queue: default</span><br><span class="line">     start time: 1524304664749</span><br><span class="line">     final status: UNDEFINED</span><br><span class="line">     tracking URL: http://hadoop4:8088/proxy/application_1524303370510_0005/</span><br><span class="line">     user: hadoop</span><br><span class="line">2018-04-21 17:57:55 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:57:56 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:57:57 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:57:58 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:57:59 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:00 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:01 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:02 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:03 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:04 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:05 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:06 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:07 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:08 INFO  Client:54 - Application report for application_1524303370510_0005 (state: RUNNING)</span><br><span class="line">2018-04-21 17:58:09 INFO  Client:54 - Application report for application_1524303370510_0005 (state: FINISHED)</span><br><span class="line">2018-04-21 17:58:09 INFO  Client:54 - </span><br><span class="line">     client token: N/A</span><br><span class="line">     diagnostics: N/A</span><br><span class="line">     ApplicationMaster host: 192.168.123.104</span><br><span class="line">     ApplicationMaster RPC port: 0</span><br><span class="line">     queue: default</span><br><span class="line">     start time: 1524304664749</span><br><span class="line">     final status: SUCCEEDED</span><br><span class="line">     tracking URL: http://hadoop4:8088/proxy/application_1524303370510_0005/</span><br><span class="line">     user: hadoop</span><br><span class="line">2018-04-21 17:58:09 INFO  Client:54 - Deleted staging directory hdfs://myha01/user/hadoop/.sparkStaging/application_1524303370510_0005</span><br><span class="line">2018-04-21 17:58:09 INFO  ShutdownHookManager:54 - Shutdown hook called</span><br><span class="line">2018-04-21 17:58:09 INFO  ShutdownHookManager:54 - Deleting directory /tmp/spark-93bd68c9-85de-482e-bbd7-cd2cee60e720</span><br><span class="line">2018-04-21 17:58:09 INFO  ShutdownHookManager:54 - Deleting directory /tmp/spark-06de6905-8067-4f1e-a0a0-bc8a51daf535</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-02-Spark中parallelize函数和makeRDD函数的区别.html" class="pre-post btn btn-default" title='Spark中parallelize函数和makeRDD函数的区别'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark中parallelize函数和makeRDD函数的区别</span>
+    </a>
+    
+    
+    <a href="/2019-06-01-Spark学习之路 （一）Spark初识.html" class="next-post btn btn-default" title='Spark学习之路 （一）Spark初识'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （一）Spark初识</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、下载Spark安装包"><span class="toc-text">一、下载Spark安装包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、从官网下载"><span class="toc-text">1、从官网下载</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、安装基础"><span class="toc-text">二、安装基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Spark安装过程"><span class="toc-text">三、Spark安装过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、上传并解压缩"><span class="toc-text">1、上传并解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、为安装包创建一个软连接"><span class="toc-text">2、为安装包创建一个软连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、进入spark-conf修改配置文件"><span class="toc-text">3、进入spark/conf修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、配置环境变量"><span class="toc-text">4、配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、启动"><span class="toc-text">四、启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、先启动zookeeper集群"><span class="toc-text">1、先启动zookeeper集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、在启动HDFS集群"><span class="toc-text">2、在启动HDFS集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、在启动Spark集群"><span class="toc-text">3、在启动Spark集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、查看进程"><span class="toc-text">4、查看进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、问题"><span class="toc-text">5、问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、执行之后再次查看进程"><span class="toc-text">6、执行之后再次查看进程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、验证"><span class="toc-text">五、验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、查看Web界面Master状态"><span class="toc-text">1、查看Web界面Master状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、验证HA的高可用"><span class="toc-text">2、验证HA的高可用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、执行第一个Spark程序"><span class="toc-text">1、执行第一个Spark程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、启动spark-shell"><span class="toc-text">2、启动spark shell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、-在spark-shell中编写WordCount程序"><span class="toc-text">3、 在spark shell中编写WordCount程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、-执行Spark程序on-YARN"><span class="toc-text">七、 执行Spark程序on YARN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、前提"><span class="toc-text">1、前提</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、启动Spark-on-YARN"><span class="toc-text">2、启动Spark on YARN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、打开YARN的web界面"><span class="toc-text">3、打开YARN的web界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、运行程序"><span class="toc-text">4、运行程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、执行Spark自带的示例程序PI"><span class="toc-text">5、执行Spark自带的示例程序PI</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark调度模式-FIFO和FAIR：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark调度模式-FIFO和FAIR
+
+&lt;The r...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark调度模式-FIFO和FAIR |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark调度模式-FIFO和FAIR">
+            
+            Spark调度模式-FIFO和FAIR
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/02</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark调度模式-FIFO和FAIR：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark调度模式-FIFO和FAIR</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>　　<strong>Spark中的调度模式主要有两种：FIFO和FAIR。</strong>默认情况下Spark的调度模式是FIFO（先进先出），谁先提交谁先执行，后面的任务需要等待前面的任务执行。而FAIR（公平调度）模式支持在调度池中为任务进行分组，不同的调度池权重不同，任务可以按照权重来决定执行顺序。对这两种调度模式的具体实现，接下来会根据spark-1.6.0的源码来进行详细的分析。使用哪种调度器由参数spark.scheduler.mode来设置，可选的参数有FAIR和FIFO，默认是FIFO。</p>
+<h2 id="一、源码入口"><a href="#一、源码入口" class="headerlink" title="一、源码入口"></a>一、源码入口</h2><p>　　在Scheduler模块中，当Stage划分好，然后提交Task的过程中，会进入TaskSchedulerImpl#submitTasks方法。</p>
+<blockquote>
+<p>schedulableBuilder.addTaskSetManager(manager, manager.taskSet.properties)   </p>
+<p>//目前支持FIFO和FAIR两种调度策略。</p>
+</blockquote>
+<p>在上面代码中有一个schedulableBuilder对象，这个对象在TaskSchedulerImpl类中的定义及实现可以参考下面这段源代码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> schedulableBuilder: <span class="type">SchedulableBuilder</span> = <span class="literal">null</span></span><br><span class="line">...</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">initialize</span></span>(backend: <span class="type">SchedulerBackend</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.backend = backend</span><br><span class="line">    <span class="comment">// temporarily set rootPool name to empty</span></span><br><span class="line">    rootPool = <span class="keyword">new</span> <span class="type">Pool</span>(<span class="string">""</span>, schedulingMode, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    schedulableBuilder = &#123;</span><br><span class="line">      schedulingMode <span class="keyword">match</span> &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="type">SchedulingMode</span>.<span class="type">FIFO</span> =&gt;</span><br><span class="line">          <span class="keyword">new</span> <span class="type">FIFOSchedulableBuilder</span>(rootPool)  <span class="comment">//rootPool包含了一组TaskSetManager</span></span><br><span class="line">        <span class="keyword">case</span> <span class="type">SchedulingMode</span>.<span class="type">FAIR</span> =&gt;</span><br><span class="line">          <span class="keyword">new</span> <span class="type">FairSchedulableBuilder</span>(rootPool, conf)  <span class="comment">//rootPool包含了一组Pool树，这棵树的叶子节点都是TaskSetManager</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    schedulableBuilder.buildPools() <span class="comment">//在FIFO中的实现是空</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　根据用户配置的SchedulingMode决定是生成FIFOSchedulableBuilder还是生成FairSchedulableBuilder类型的schedulableBuilder对象。<br>　 <img src="https://img-blog.csdn.net/20160528143551855" alt="SchedulableBuilder继承关系" style="zoom:150%;"></p>
+<p>　　在生成schedulableBuilder后，调用其buildPools方法生成调度池。 调度模式由配置参数spark.scheduler.mode（默认值为FIFO）来确定。 两种模式的调度逻辑图如下：<br>　<img src="https://img-blog.csdn.net/20160528181016610" alt="调度模式逻辑图" style="zoom:150%;"></p>
+<h2 id="二、FIFOSchedulableBuilder"><a href="#二、FIFOSchedulableBuilder" class="headerlink" title="二、FIFOSchedulableBuilder"></a>二、FIFOSchedulableBuilder</h2><p>　　FIFO的rootPool包含一组TaskSetManager。从上面的类继承图中看出在FIFOSchedulableBuilder中有两个方法：</p>
+<h3 id="1、buildPools"><a href="#1、buildPools" class="headerlink" title="1、buildPools"></a>1、buildPools</h3><p>实现为空:</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">buildPools</span></span>() &#123;</span><br><span class="line">    <span class="comment">// nothing</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>所以，对于FIFO模式，获取到schedulableBuilder对象后，在调用buildPools方法后，不做任何操作。</p>
+<h3 id="2、addTaskSetManager"><a href="#2、addTaskSetManager" class="headerlink" title="2、addTaskSetManager"></a>2、addTaskSetManager</h3><p>　　该方法将TaskSetManager装载到rootPool中。直接调用的方法是Pool#addSchedulable()。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">addTaskSetManager</span></span>(manager: <span class="type">Schedulable</span>, properties: <span class="type">Properties</span>) &#123;</span><br><span class="line">  rootPool.addSchedulable(manager)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Pool#addSchedulable()方法：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> schedulableQueue = <span class="keyword">new</span> <span class="type">ConcurrentLinkedQueue</span>[<span class="type">Schedulable</span>]</span><br><span class="line">...</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">addSchedulable</span></span>(schedulable: <span class="type">Schedulable</span>) &#123;</span><br><span class="line">    require(schedulable != <span class="literal">null</span>)</span><br><span class="line">    schedulableQueue.add(schedulable)</span><br><span class="line">    schedulableNameToSchedulable.put(schedulable.name, schedulable)</span><br><span class="line">    schedulable.parent = <span class="keyword">this</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>将该TaskSetManager加入到调度队列schedulableQueue中。</p>
+<h2 id="三、FairSchedulableBuilder"><a href="#三、FairSchedulableBuilder" class="headerlink" title="三、FairSchedulableBuilder"></a>三、FairSchedulableBuilder</h2><p>　　FAIR的rootPool中包含一组Pool，在Pool中包含了TaskSetManager。</p>
+<h3 id="1、buildPools-1"><a href="#1、buildPools-1" class="headerlink" title="1、buildPools"></a>1、buildPools</h3><p>　　在该方法中，会读取配置文件，按照配置文件中的配置参数调用buildFairSchedulerPool生成配置的调度池，以及调用buildDefaultPool生成默认调度池。<br>　　默认情况下FAIR模式的配置文件是位于SPARK_HOME/conf/fairscheduler.xml文件，也可以通过参数spark.scheduler.allocation.file设置用户自定义配置文件。<br>spark中提供的fairscheduler.xml模板如下所示：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">allocations</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pool</span> <span class="attr">name</span>=<span class="string">"production"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">schedulingMode</span>&gt;</span>FAIR<span class="tag">&lt;/<span class="name">schedulingMode</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">weight</span>&gt;</span>1<span class="tag">&lt;/<span class="name">weight</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">minShare</span>&gt;</span>2<span class="tag">&lt;/<span class="name">minShare</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pool</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">pool</span> <span class="attr">name</span>=<span class="string">"test"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">schedulingMode</span>&gt;</span>FIFO<span class="tag">&lt;/<span class="name">schedulingMode</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">weight</span>&gt;</span>2<span class="tag">&lt;/<span class="name">weight</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">minShare</span>&gt;</span>3<span class="tag">&lt;/<span class="name">minShare</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">pool</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">allocations</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数含义：<br>（1）name: 该调度池的名称，可根据该参数使用指定pool，入sc.setLocalProperty(“spark.scheduler.pool”, “test”)<br>（2）weight: 该调度池的权重，各调度池根据该参数分配系统资源。每个调度池得到的资源数为weight / sum(weight)，weight为2的分配到的资源为weight为1的两倍。<br>（3）minShare: 该调度池需要的最小资源数（CPU核数）。fair调度器首先会尝试为每个调度池分配最少minShare资源，然后剩余资源才会按照weight大小继续分配。<br>（4）schedulingMode: 该调度池内的调度模式。</p>
+<h3 id="2、buildFairSchedulerPool"><a href="#2、buildFairSchedulerPool" class="headerlink" title="2、buildFairSchedulerPool"></a>2、buildFairSchedulerPool</h3><p>　　从上面的配置文件可以看到，每一个调度池有一个name属性指定名字，然后在该pool中可以设置其schedulingMode(可为空，默认为FIFO), weight(可为空，默认值是1), 以及minShare(可为空，默认值是0)参数。然后使用这些参数生成一个Pool对象，把该pool对象放入rootPool中。入下所示：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> pool = <span class="keyword">new</span> <span class="type">Pool</span>(poolName, schedulingMode, minShare, weight)</span><br><span class="line">rootPool.addSchedulable(pool)</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、buildDefaultPool"><a href="#3、buildDefaultPool" class="headerlink" title="3、buildDefaultPool"></a>3、buildDefaultPool</h3><p>　　如果如果配置文件中没有设置一个name为default的pool，系统才会自动生成一个使用默认参数生成的pool对象。各项参数的默认值在buildFairSchedulerPool中有提到。</p>
+<h3 id="4、addTaskSetManager"><a href="#4、addTaskSetManager" class="headerlink" title="4、addTaskSetManager"></a>4、addTaskSetManager</h3><p>　　这一段逻辑中是把配置文件中的pool，或者default pool放入rootPool中，然后把TaskSetManager存入rootPool对应的子pool。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">addTaskSetManager</span></span>(manager: <span class="type">Schedulable</span>, properties: <span class="type">Properties</span>) &#123;</span><br><span class="line">   <span class="keyword">var</span> poolName = <span class="type">DEFAULT_POOL_NAME</span></span><br><span class="line">   <span class="keyword">var</span> parentPool = rootPool.getSchedulableByName(poolName)</span><br><span class="line">   <span class="keyword">if</span> (properties != <span class="literal">null</span>) &#123;</span><br><span class="line">     poolName = properties.getProperty(<span class="type">FAIR_SCHEDULER_PROPERTIES</span>, <span class="type">DEFAULT_POOL_NAME</span>)</span><br><span class="line">     parentPool = rootPool.getSchedulableByName(poolName)</span><br><span class="line">     <span class="keyword">if</span> (parentPool == <span class="literal">null</span>) &#123;</span><br><span class="line">       <span class="comment">// we will create a new pool that user has configured in app</span></span><br><span class="line">       <span class="comment">// instead of being defined in xml file</span></span><br><span class="line">       parentPool = <span class="keyword">new</span> <span class="type">Pool</span>(poolName, <span class="type">DEFAULT_SCHEDULING_MODE</span>,</span><br><span class="line">         <span class="type">DEFAULT_MINIMUM_SHARE</span>, <span class="type">DEFAULT_WEIGHT</span>)</span><br><span class="line">       rootPool.addSchedulable(parentPool)</span><br><span class="line">       logInfo(<span class="string">"Created pool %s, schedulingMode: %s, minShare: %d, weight: %d"</span>.format(</span><br><span class="line">         poolName, <span class="type">DEFAULT_SCHEDULING_MODE</span>, <span class="type">DEFAULT_MINIMUM_SHARE</span>, <span class="type">DEFAULT_WEIGHT</span>))</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   parentPool.addSchedulable(manager)</span><br><span class="line">   logInfo(<span class="string">"Added task set "</span> + manager.name + <span class="string">" tasks to pool "</span> + poolName)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、FAIR调度池使用方法"><a href="#5、FAIR调度池使用方法" class="headerlink" title="5、FAIR调度池使用方法"></a>5、FAIR调度池使用方法</h3><p>　　在Spark-1.6.1官方文档中写道：</p>
+<blockquote>
+<p>如果不加设置，jobs会提交到default调度池中。由于调度池的使用是Thread级别的，只能通过具体的SparkContext来设置local属性（即无法在配置文件中通过参数spark.scheduler.pool来设置，因为配置文件中的参数会被加载到SparkConf对象中）。所以需要使用指定调度池的话，需要在具体代码中通过SparkContext对象sc来按照如下方法进行设置：<br>sc.setLocalProperty(“spark.scheduler.pool”, “test”)<br>设置该参数后，在该thread中提交的所有job都会提交到test Pool中。<br>如果接下来不再需要使用到该test调度池，<br>sc.setLocalProperty(“spark.scheduler.pool”, null)</p>
+</blockquote>
+<h2 id="四、FIFO和FAIR的调度顺序"><a href="#四、FIFO和FAIR的调度顺序" class="headerlink" title="四、FIFO和FAIR的调度顺序"></a>四、FIFO和FAIR的调度顺序</h2><p>这里必须提到的一个类是上面提到的Pool，在这个类中实现了不同调度模式的调度算法。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> taskSetSchedulingAlgorithm: <span class="type">SchedulingAlgorithm</span> = &#123;</span><br><span class="line">  schedulingMode <span class="keyword">match</span> &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="type">SchedulingMode</span>.<span class="type">FAIR</span> =&gt;</span><br><span class="line">      <span class="keyword">new</span> <span class="type">FairSchedulingAlgorithm</span>()</span><br><span class="line">    <span class="keyword">case</span> <span class="type">SchedulingMode</span>.<span class="type">FIFO</span> =&gt;</span><br><span class="line">      <span class="keyword">new</span> <span class="type">FIFOSchedulingAlgorithm</span>()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>FIFO模式的算法类是FIFOSchedulingAlgorithm，FAIR模式的算法实现类是FairSchedulingAlgorithm。</p>
+<p>　　接下来的两节中comparator方法传入参数Schedulable类型是一个trait，具体实现主要有两个：1，Pool；2，TaskSetManager。与最前面那个调度模式的逻辑图相对应。</p>
+<h3 id="1、FIFO模式的调度算法FIFOSchedulingAlgorithm"><a href="#1、FIFO模式的调度算法FIFOSchedulingAlgorithm" class="headerlink" title="1、FIFO模式的调度算法FIFOSchedulingAlgorithm"></a>1、FIFO模式的调度算法FIFOSchedulingAlgorithm</h3><p>在这个类里面，主要逻辑是一个comparator方法。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">comparator</span></span>(s1: <span class="type">Schedulable</span>, s2: <span class="type">Schedulable</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">  <span class="keyword">val</span> priority1 = s1.priority   <span class="comment">//实际上是Job ID</span></span><br><span class="line">  <span class="keyword">val</span> priority2 = s2.priority</span><br><span class="line">  <span class="keyword">var</span> res = math.signum(priority1 - priority2)</span><br><span class="line">  <span class="keyword">if</span> (res == <span class="number">0</span>) &#123; <span class="comment">//如果Job ID相同，就比较Stage ID</span></span><br><span class="line">    <span class="keyword">val</span> stageId1 = s1.stageId</span><br><span class="line">    <span class="keyword">val</span> stageId2 = s2.stageId</span><br><span class="line">    res = math.signum(stageId1 - stageId2)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (res &lt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="literal">true</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果有两个调度任务s1和s2，首先获得两个任务的priority，在FIFO中该优先级实际上是Job ID。首先比较两个任务的Job ID，如果priority1比priority2小，那么返回true，表示s1的优先级比s2的高。我们知道Job ID是顺序生成的，先生成的Job ID比较小，所以先提交的job肯定比后提交的job先执行。但是如果是同一个job的不同任务，接下来就比较各自的Stage ID，类似于比较Job ID，Stage ID小的优先级高。</p>
+<h3 id="2、FAIR模式的调度算法FairSchedulingAlgorithm"><a href="#2、FAIR模式的调度算法FairSchedulingAlgorithm" class="headerlink" title="2、FAIR模式的调度算法FairSchedulingAlgorithm"></a>2、FAIR模式的调度算法FairSchedulingAlgorithm</h3><p>　　这个类中的comparator方法源代码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">comparator</span></span>(s1: <span class="type">Schedulable</span>, s2: <span class="type">Schedulable</span>): <span class="type">Boolean</span> = &#123;</span><br><span class="line">   <span class="keyword">val</span> minShare1 = s1.minShare <span class="comment">//在这里share理解成份额，即每个调度池要求的最少cpu核数</span></span><br><span class="line">   <span class="keyword">val</span> minShare2 = s2.minShare</span><br><span class="line">   <span class="keyword">val</span> runningTasks1 = s1.runningTasks <span class="comment">// 该Pool或者TaskSetManager中正在运行的任务数</span></span><br><span class="line">   <span class="keyword">val</span> runningTasks2 = s2.runningTasks</span><br><span class="line">   <span class="keyword">val</span> s1Needy = runningTasks1 &lt; minShare1 <span class="comment">// 如果正在运行任务数比该调度池最小cpu核数要小</span></span><br><span class="line">   <span class="keyword">val</span> s2Needy = runningTasks2 &lt; minShare2</span><br><span class="line">   <span class="keyword">val</span> minShareRatio1 = runningTasks1.toDouble / math.max(minShare1, <span class="number">1.0</span>).toDouble</span><br><span class="line">   <span class="keyword">val</span> minShareRatio2 = runningTasks2.toDouble / math.max(minShare2, <span class="number">1.0</span>).toDouble</span><br><span class="line">   <span class="keyword">val</span> taskToWeightRatio1 = runningTasks1.toDouble / s1.weight.toDouble</span><br><span class="line">   <span class="keyword">val</span> taskToWeightRatio2 = runningTasks2.toDouble / s2.weight.toDouble</span><br><span class="line">   <span class="keyword">var</span> compare: <span class="type">Int</span> = <span class="number">0</span></span><br><span class="line">   <span class="keyword">if</span> (s1Needy &amp;&amp; !s2Needy) &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (!s1Needy &amp;&amp; s2Needy) &#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (s1Needy &amp;&amp; s2Needy) &#123;</span><br><span class="line">     compare = minShareRatio1.compareTo(minShareRatio2)</span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     compare = taskToWeightRatio1.compareTo(taskToWeightRatio2)</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> (compare &lt; <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="literal">true</span></span><br><span class="line">   &#125; <span class="keyword">else</span> <span class="keyword">if</span> (compare &gt; <span class="number">0</span>) &#123;</span><br><span class="line">     <span class="literal">false</span></span><br><span class="line">   &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     s1.name &lt; s2.name</span><br><span class="line">   &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>　　minShare对应fairscheduler.xml配置文件中的minShare属性。<br>（1）如果s1所在Pool或者TaskSetManager中运行状态的task数量比minShare小，s2所在Pool或者TaskSetManager中运行状态的task数量比minShare大，那么s1会优先调度。反之，s2优先调度。<br>（2）如果s1和s2所在Pool或者TaskSetManager中运行状态的task数量都比各自minShare小，那么minShareRatio小的优先被调度。<br>minShareRatio是运行状态task数与minShare的比值，即相对来说minShare使用较少的先被调度。<br>（3）如果minShareRatio相同，那么最后比较各自Pool的名字。</p>
+<p>原文链接：<a href="https://blog.csdn.net/dabokele/article/details/51526048" target="_blank" rel="noopener">https://blog.csdn.net/dabokele/article/details/51526048</a></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-02-Hadoop 的三种调度器FIFO、Capacity Scheduler、Fair Scheduler.html" class="pre-post btn btn-default" title='Hadoop 的三种调度器FIFO、Capacity Scheduler、Fair Scheduler'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop 的三种调度器FIFO、Capacity Scheduler、Fair Scheduler</span>
+    </a>
+    
+    
+    <a href="/2019-06-02-Spark中parallelize函数和makeRDD函数的区别.html" class="next-post btn btn-default" title='Spark中parallelize函数和makeRDD函数的区别'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark中parallelize函数和makeRDD函数的区别</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、源码入口"><span class="toc-text">一、源码入口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、FIFOSchedulableBuilder"><span class="toc-text">二、FIFOSchedulableBuilder</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、buildPools"><span class="toc-text">1、buildPools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、addTaskSetManager"><span class="toc-text">2、addTaskSetManager</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、FairSchedulableBuilder"><span class="toc-text">三、FairSchedulableBuilder</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、buildPools-1"><span class="toc-text">1、buildPools</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、buildFairSchedulerPool"><span class="toc-text">2、buildFairSchedulerPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、buildDefaultPool"><span class="toc-text">3、buildDefaultPool</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、addTaskSetManager"><span class="toc-text">4、addTaskSetManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、FAIR调度池使用方法"><span class="toc-text">5、FAIR调度池使用方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、FIFO和FAIR的调度顺序"><span class="toc-text">四、FIFO和FAIR的调度顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、FIFO模式的调度算法FIFOSchedulingAlgorithm"><span class="toc-text">1、FIFO模式的调度算法FIFOSchedulingAlgorithm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、FAIR模式的调度算法FairSchedulingAlgorithm"><span class="toc-text">2、FAIR模式的调度算法FairSchedulingAlgorithm</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
