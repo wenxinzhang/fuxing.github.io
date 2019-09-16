@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** cache和persist的区别：** &lt;Excerpt in index | 首页摘要&gt;
+cache和persist都是用于将一个RDD进行缓存的，这样在之后使用的过程中就不...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    cache和persist的区别 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="cache和persist的区别">
+            
+            cache和persist的区别
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/08</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** cache和persist的区别：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>cache和persist都是用于将一个RDD进行缓存的，这样在之后使用的过程中就不需要重新计算了，可以大大节省程序运行时间。</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h1 id="cache和persist的区别"><a href="#cache和persist的区别" class="headerlink" title="cache和persist的区别"></a>cache和persist的区别</h1><p>基于Spark 1.6.1 的源码，可以看到</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Persist this RDD with the default storage level (`MEMORY_ONLY`). */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cache</span></span>(): <span class="keyword">this</span>.<span class="keyword">type</span> = persist()</span><br></pre></td></tr></table></figure>
+
+<p>说明是cache()调用了persist(), 想要知道二者的不同还需要看一下persist函数：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Persist this RDD with the default storage level (`MEMORY_ONLY`). */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">persist</span></span>(): <span class="keyword">this</span>.<span class="keyword">type</span> = persist(<span class="type">StorageLevel</span>.<span class="type">MEMORY_ONLY</span>)</span><br></pre></td></tr></table></figure>
+
+<p>可以看到persist()内部调用了persist(StorageLevel.MEMORY_ONLY)，继续深入：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Set this RDD's storage level to persist its values across operations after the first time</span></span><br><span class="line"><span class="comment"> * it is computed. This can only be used to assign a new storage level if the RDD does not</span></span><br><span class="line"><span class="comment"> * have a storage level set yet..</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">persist</span></span>(newLevel: <span class="type">StorageLevel</span>): <span class="keyword">this</span>.<span class="keyword">type</span> = &#123;</span><br><span class="line">  <span class="comment">// <span class="doctag">TODO:</span> Handle changes of StorageLevel</span></span><br><span class="line">  <span class="keyword">if</span> (storageLevel != <span class="type">StorageLevel</span>.<span class="type">NONE</span> &amp;&amp; newLevel != storageLevel) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">UnsupportedOperationException</span>(</span><br><span class="line">      <span class="string">"Cannot change storage level of an RDD after it was already assigned a level"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  sc.persistRDD(<span class="keyword">this</span>)</span><br><span class="line">  <span class="comment">// Register the RDD with the ContextCleaner for automatic GC-based cleanup</span></span><br><span class="line">  sc.cleaner.foreach(_.registerRDDForCleanup(<span class="keyword">this</span>))</span><br><span class="line">  storageLevel = newLevel</span><br><span class="line">  <span class="keyword">this</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看出来persist有一个 StorageLevel 类型的参数，这个表示的是RDD的缓存级别。</p>
+<p>至此便可得出cache和persist的区别了：cache只有一个默认的缓存级别MEMORY_ONLY ，而persist可以根据情况设置其它的缓存级别。</p>
+<h1 id="RDD的缓存级别"><a href="#RDD的缓存级别" class="headerlink" title="RDD的缓存级别"></a>RDD的缓存级别</h1><p>顺便看一下RDD都有哪些缓存级别，查看 StorageLevel 类的源码：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">StorageLevel</span> </span>&#123;</span><br><span class="line">  <span class="keyword">val</span> <span class="type">NONE</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">DISK_ONLY</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">DISK_ONLY_2</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_ONLY</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_ONLY_2</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_ONLY_SER</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_ONLY_SER_2</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_AND_DISK</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_AND_DISK_2</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_AND_DISK_SER</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">MEMORY_AND_DISK_SER_2</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">true</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="number">2</span>)</span><br><span class="line">  <span class="keyword">val</span> <span class="type">OFF_HEAP</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>)</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到这里列出了12种缓存级别，但这些有什么区别呢？可以看到每个缓存级别后面都跟了一个StorageLevel的构造函数，里面包含了4个或5个参数，如下</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> <span class="type">MEMORY_ONLY</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+
+<p>查看其构造函数</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StorageLevel</span> <span class="title">private</span>(<span class="params"></span></span></span><br><span class="line"><span class="class"><span class="params">    private var _useDisk: <span class="type">Boolean</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">    private var _useMemory: <span class="type">Boolean</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">    private var _useOffHeap: <span class="type">Boolean</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">    private var _deserialized: <span class="type">Boolean</span>,</span></span></span><br><span class="line"><span class="class"><span class="params">    private var _replication: <span class="type">Int</span> = 1</span>)</span></span><br><span class="line"><span class="class">  <span class="keyword">extends</span> <span class="title">Externalizable</span> </span>&#123;</span><br><span class="line">  ......</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">useDisk</span></span>: <span class="type">Boolean</span> = _useDisk</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">useMemory</span></span>: <span class="type">Boolean</span> = _useMemory</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">useOffHeap</span></span>: <span class="type">Boolean</span> = _useOffHeap</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">deserialized</span></span>: <span class="type">Boolean</span> = _deserialized</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">replication</span></span>: <span class="type">Int</span> = _replication</span><br><span class="line">  ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到StorageLevel类的主构造器包含了5个参数：</p>
+<ul>
+<li>useDisk：使用硬盘（外存）</li>
+<li>useMemory：使用内存</li>
+<li>useOffHeap：使用堆外内存，这是Java虚拟机里面的概念，堆外内存意味着把内存对象分配在Java虚拟机的堆以外的内存，这些内存直接受操作系统管理（而不是虚拟机）。这样做的结果就是能保持一个较小的堆，以减少垃圾收集对应用的影响。</li>
+<li>deserialized：反序列化，其逆过程序列化（Serialization）是java提供的一种机制，将对象表示成一连串的字节；而反序列化就表示将字节恢复为对象的过程。序列化是对象永久化的一种机制，可以将对象及其属性保存起来，并能在反序列化后直接恢复这个对象</li>
+<li>replication：备份数（在多个节点上备份）</li>
+</ul>
+<p>理解了这5个参数，StorageLevel 的12种缓存级别就不难理解了。</p>
+<p>val MEMORY_AND_DISK_SER_2 = new StorageLevel(true, true, false, false, 2) 就表示使用这种缓存级别的RDD将存储在硬盘以及内存中，使用序列化（在硬盘中），并且在多个节点上备份2份（正常的RDD只有一份）</p>
+<p>另外还注意到有一种特殊的缓存级别</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> <span class="type">OFF_HEAP</span> = <span class="keyword">new</span> <span class="type">StorageLevel</span>(<span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用了堆外内存，StorageLevel 类的源码中有一段代码可以看出这个的特殊性，它不能和其它几个参数共存。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (useOffHeap) &#123;</span><br><span class="line">  require(!useDisk, <span class="string">"Off-heap storage level does not support using disk"</span>)</span><br><span class="line">  require(!useMemory, <span class="string">"Off-heap storage level does not support using heap memory"</span>)</span><br><span class="line">  require(!deserialized, <span class="string">"Off-heap storage level does not support deserialized storage"</span>)</span><br><span class="line">  require(replication == <span class="number">1</span>, <span class="string">"Off-heap storage level does not support multiple replication"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-09-Spark学习之路 （九）SparkCore的调优之数据倾斜调优.html" class="pre-post btn btn-default" title='Spark学习之路 （九）SparkCore的调优之数据倾斜调优'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （九）SparkCore的调优之数据倾斜调优</span>
+    </a>
+    
+    
+    <a href="/2019-06-08-Spark学习之路 （八）SparkCore的调优之开发调优.html" class="next-post btn btn-default" title='Spark学习之路 （八）SparkCore的调优之开发调优'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （八）SparkCore的调优之开发调优</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#cache和persist的区别"><span class="toc-text">cache和persist的区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#RDD的缓存级别"><span class="toc-text">RDD的缓存级别</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

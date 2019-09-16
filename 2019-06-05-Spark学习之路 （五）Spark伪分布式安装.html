@@ -1,0 +1,464 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （五）Spark伪分布式安装：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （五）Spark伪分布式安装
+...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （五）Spark伪分布式安装 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （五）Spark伪分布式安装">
+            
+            Spark学习之路 （五）Spark伪分布式安装
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/05</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （五）Spark伪分布式安装：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （五）Spark伪分布式安装</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p><strong>Hadoop部分建议参考hadoop伪分布部署</strong></p>
+<h2 id="一、JDK的安装"><a href="#一、JDK的安装" class="headerlink" title="一、JDK的安装"></a>一、JDK的安装</h2><p>​    LINUX系统安装jdk（最好是1.8版本）</p>
+<h3 id="1-1-上传安装包并解压"><a href="#1-1-上传安装包并解压" class="headerlink" title="1.1　上传安装包并解压"></a>1.1　上传安装包并解压</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# tar -zxvf jdk-8u73-linux-x64.tar.gz -C /usr/local/</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-配置环境变量"><a href="#1-2-配置环境变量" class="headerlink" title="1.2　配置环境变量"></a>1.2　配置环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# vi /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">JAVA</span></span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73</span><br><span class="line">export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib </span><br><span class="line">export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH:$HOME/bin</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-验证Java版本"><a href="#1-3-验证Java版本" class="headerlink" title="1.3　验证Java版本"></a>1.3　验证Java版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# java -version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421201645784-1699980464.png" alt="img"></p>
+<h2 id="二、配置免密登陆"><a href="#二、配置免密登陆" class="headerlink" title="二、配置免密登陆"></a>二、配置免密登陆</h2><h3 id="2-1-检测"><a href="#2-1-检测" class="headerlink" title="2.1　检测"></a>2.1　检测</h3><p>正常情况下，本机通过ssh连接自己也是需要输入密码的</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421202047798-1815346135.png" alt="img"></p>
+<h3 id="2-2-生成私钥和公钥秘钥对"><a href="#2-2-生成私钥和公钥秘钥对" class="headerlink" title="2.2　生成私钥和公钥秘钥对"></a>2.2　生成私钥和公钥秘钥对</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421202332319-461480990.png" alt="img"></p>
+<h3 id="2-3-将公钥添加到authorized-keys"><a href="#2-3-将公钥添加到authorized-keys" class="headerlink" title="2.3　将公钥添加到authorized_keys"></a>2.3　将公钥添加到authorized_keys</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cat ~/.ssh/id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-赋予authorized-keys文件600的权限"><a href="#2-4-赋予authorized-keys文件600的权限" class="headerlink" title="2.4　赋予authorized_keys文件600的权限"></a>2.4　赋予authorized_keys文件600的权限</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ chmod 600 ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-修改Linux映射文件-root用户"><a href="#2-5-修改Linux映射文件-root用户" class="headerlink" title="2.5　修改Linux映射文件(root用户)"></a>2.5　修改Linux映射文件(root用户)</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]$ vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421202658345-1846477390.png" alt="img"></p>
+<h3 id="2-6-验证"><a href="#2-6-验证" class="headerlink" title="2.6　验证"></a>2.6　验证</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ssh hadoop1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421203427884-1155695129.png" alt="img"></p>
+<p>此时不需要输入密码，免密登录设置成功。</p>
+<h2 id="三、安装Hadoop-2-7-5"><a href="#三、安装Hadoop-2-7-5" class="headerlink" title="三、安装Hadoop-2.7.5"></a>三、安装Hadoop-2.7.5</h2><h3 id="3-1-上传解压缩"><a href="#3-1-上传解压缩" class="headerlink" title="3.1　上传解压缩"></a>3.1　上传解压缩</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ tar -zxvf hadoop-2.7.5-centos-6.7.tar.gz -C apps/</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-创建安装包对应的软连接"><a href="#3-2-创建安装包对应的软连接" class="headerlink" title="3.2　创建安装包对应的软连接"></a>3.2　创建安装包对应的软连接</h3><p>为解压的hadoop包创建软连接</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop1 apps]$ ll</span><br><span class="line">总用量 4</span><br><span class="line">drwxr-xr-x. 9 hadoop hadoop 4096 12月 24 13:43 hadoop-2.7.5</span><br><span class="line">[hadoop@hadoop1 apps]$ ln -s hadoop-2.7.5/ hadoop</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421203914403-1198562712.png" alt="img"></p>
+<h3 id="3-3-修改配置文件"><a href="#3-3-修改配置文件" class="headerlink" title="3.3　修改配置文件"></a>3.3　修改配置文件</h3><p>进入/home/hadoop/apps/hadoop/etc/hadoop/目录下修改配置文件</p>
+<h4 id="（1）修改hadoop-env-sh"><a href="#（1）修改hadoop-env-sh" class="headerlink" title="（1）修改hadoop-env.sh"></a>（1）修改hadoop-env.sh</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi hadoop-env.sh </span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421204243611-778828987.png" alt="img"></p>
+<h4 id="（2）修改core-site-xml"><a href="#（2）修改core-site-xml" class="headerlink" title="（2）修改core-site.xml"></a>（2）修改core-site.xml</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi core-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop1:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421204517804-907096171.png" alt="img"></p>
+<h4 id="（3）修改hdfs-site-xml"><a href="#（3）修改hdfs-site-xml" class="headerlink" title="（3）修改hdfs-site.xml"></a>（3）修改hdfs-site.xml</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>dfs的备份数目，单机用1份就行</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>为了保证元数据的安全一般配置多个不同目录<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>datanode 的数据存储目录<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span>2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">description</span>&gt;</span>HDFS 的数据块的副本存储个数, 默认是3<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421204809515-38083445.png" alt="img"></p>
+<h4 id="（4）修改mapred-site-xml"><a href="#（4）修改mapred-site-xml" class="headerlink" title="（4）修改mapred-site.xml"></a>（4）修改mapred-site.xml</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ cp mapred-site.xml.template mapred-site.xml</span><br><span class="line">[hadoop@hadoop1 hadoop]$ vi mapred-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>mapreduce.framework.name：指定mr框架为yarn方式,Hadoop二代MP也基于资源管理系统Yarn来运行 。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421205034511-1378796109.png" alt="img"></p>
+<h4 id="（5）修改yarn-site-xml"><a href="#（5）修改yarn-site-xml" class="headerlink" title="（5）修改yarn-site.xml"></a>（5）修改yarn-site.xml</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi yarn-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">description</span>&gt;</span>YARN 集群为 MapReduce 程序提供的 shuffle 服务<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421205232938-938870356.png" alt="img"></p>
+<h3 id="3-4-配置环境变量"><a href="#3-4-配置环境变量" class="headerlink" title="3.4　配置环境变量"></a>3.4　配置环境变量</h3><p>千万注意：</p>
+<p>1、如果你使用root用户进行安装。 vi /etc/profile 即可 系统变量</p>
+<p>2、如果你使用普通用户进行安装。 vi ~/.bashrc 用户变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ vi .bashrc</span><br><span class="line"><span class="meta">#</span><span class="bash">HADOOP_HOMEexport HADOOP_HOME=/home/hadoop/apps/hadoop-2.7.5</span></span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421205503165-1776868707.png" alt="img"></p>
+<p>使环境变量生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 bin]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-5-查看hadoop版本"><a href="#3-5-查看hadoop版本" class="headerlink" title="3.5　查看hadoop版本"></a>3.5　查看hadoop版本</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421205704500-162738228.png" alt="img"></p>
+<h3 id="3-6-创建文件夹"><a href="#3-6-创建文件夹" class="headerlink" title="3.6　创建文件夹"></a>3.6　创建文件夹</h3><p>文件夹的路径参考配置文件hdfs-site.xml里面的路径</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ mkdir -p /home/hadoop/data/hadoopdata/name</span><br><span class="line">[hadoop@hadoop1 ~]$ mkdir -p /home/hadoop/data/hadoopdata/data</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-7-Hadoop的初始化"><a href="#3-7-Hadoop的初始化" class="headerlink" title="3.7　Hadoop的初始化"></a>3.7　Hadoop的初始化</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop namenode -format</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421210111098-1871019705.png" alt="img"></p>
+<h3 id="3-8-启动HDFS和YARN"><a href="#3-8-启动HDFS和YARN" class="headerlink" title="3.8　启动HDFS和YARN"></a>3.8　启动HDFS和YARN</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ start-dfs.sh[hadoop@hadoop1 ~]$ start-yarn.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422113818864-1072637752.png" alt="img"></p>
+<h3 id="3-9-检查WebUI"><a href="#3-9-检查WebUI" class="headerlink" title="3.9　检查WebUI"></a>3.9　检查WebUI</h3><p>浏览器打开端口50070：<a href="http://hadoop1:50070/" target="_blank" rel="noopener">http://hadoop1:50070</a></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422113937564-1552905493.png" alt="img"></p>
+<p>其他端口说明：<br>port 8088: cluster and all applications<br>port 50070: Hadoop NameNode<br>port 50090: Secondary NameNode<br>port 50075: DataNode </p>
+<h2 id="四、Scala的安装（可选）"><a href="#四、Scala的安装（可选）" class="headerlink" title="四、Scala的安装（可选）"></a>四、Scala的安装（可选）</h2><p>使用root安装</p>
+<h3 id="4-1-下载"><a href="#4-1-下载" class="headerlink" title="4.1　下载"></a>4.1　下载</h3><p>Scala下载地址<a href="http://www.scala-lang.org/download/all.html" target="_blank" rel="noopener">http://www.scala-lang.org/download/all.html</a></p>
+<p>选择对应的版本，此处在Linux上安装，选择的版本是scala-2.11.8.tgz</p>
+<h3 id="4-2-上传解压缩"><a href="#4-2-上传解压缩" class="headerlink" title="4.2　上传解压缩"></a>4.2　上传解压缩</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 hadoop]# tar -zxvf scala-2.11.8.tgz -C /usr/local/</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-配置环境变量"><a href="#4-3-配置环境变量" class="headerlink" title="4.3　配置环境变量"></a>4.3　配置环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 hadoop]# vi /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">Scala</span></span><br><span class="line">export SCALA_HOME=/usr/local/scala-2.11.8</span><br><span class="line">export PATH=$SCALA_HOME/bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>保存并使其立即生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 scala-2.11.8]# source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-验证是否安装成功"><a href="#4-4-验证是否安装成功" class="headerlink" title="4.4　验证是否安装成功"></a>4.4　验证是否安装成功</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# scala -version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422115201465-370446833.png" alt="img"></p>
+<h2 id="五、Spark的安装"><a href="#五、Spark的安装" class="headerlink" title="五、Spark的安装"></a>五、Spark的安装</h2><h3 id="5-1-下载安装包"><a href="#5-1-下载安装包" class="headerlink" title="5.1　下载安装包"></a>5.1　下载安装包</h3><p>下载地址：</p>
+<p><a href="http://spark.apache.org/downloads.html" target="_blank" rel="noopener">http://spark.apache.org/downloads.html</a></p>
+<h3 id="5-2-上传解压缩"><a href="#5-2-上传解压缩" class="headerlink" title="5.2　上传解压缩"></a>5.2　上传解压缩</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ tar -zxvf spark-2.3.0-bin-hadoop2.7.tgz -C apps/</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-为解压包创建一个软连接"><a href="#5-3-为解压包创建一个软连接" class="headerlink" title="5.3　为解压包创建一个软连接"></a>5.3　为解压包创建一个软连接</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop1 apps]$ ls</span><br><span class="line">hadoop  hadoop-2.7.5  spark-2.3.0-bin-hadoop2.7</span><br><span class="line">[hadoop@hadoop1 apps]$ ln -s spark-2.3.0-bin-hadoop2.7/ spark</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-4-进入spark-conf修改配置文件"><a href="#5-4-进入spark-conf修改配置文件" class="headerlink" title="5.4　进入spark/conf修改配置文件"></a>5.4　进入spark/conf修改配置文件</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ cd spark/conf/</span><br></pre></td></tr></table></figure>
+
+<p> 复制spark-env.sh.template并重命名为spark-env.sh，并在文件最后添加配置内容</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ cp spark-env.sh.template spark-env.sh</span><br><span class="line">[hadoop@hadoop1 conf]$ vi spark-env.sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73</span><br><span class="line">export SCALA_HOME=/usr/share/scala-2.11.8</span><br><span class="line">export HADOOP_HOME=/home/hadoop/apps/hadoop-2.7.5</span><br><span class="line">export HADOOP_CONF_DIR=/home/hadoop/apps/hadoop-2.7.5/etc/hadoop</span><br><span class="line">export SPARK_MASTER_IP=hadoop1</span><br><span class="line">export SPARK_MASTER_PORT=7077</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-5-配置环境变量"><a href="#5-5-配置环境变量" class="headerlink" title="5.5　配置环境变量"></a>5.5　配置环境变量</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ vi ~/.bashrc </span><br><span class="line"><span class="meta">#</span><span class="bash">SPARK_HOME</span></span><br><span class="line">export SPARK_HOME=/home/hadoop/apps/spark</span><br><span class="line">export PATH=$PATH:$SPARK_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>保存使其立即生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-6-启动Spark"><a href="#5-6-启动Spark" class="headerlink" title="5.6　启动Spark"></a>5.6　启动Spark</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$  ~/apps/spark/sbin/start-all.sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422120649667-993379882.png" alt="img"></p>
+<h3 id="5-7-查看进程"><a href="#5-7-查看进程" class="headerlink" title="5.7　查看进程"></a>5.7　查看进程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422120759529-1681016835.png" alt="img"></p>
+<h3 id="5-8-查看web界面"><a href="#5-8-查看web界面" class="headerlink" title="5.8　查看web界面"></a>5.8　查看web界面</h3><p><a href="http://hadoop1:8080/" target="_blank" rel="noopener">http://hadoop1:8080/</a></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180422120839429-839164601.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-06-map与flatMap的区别.html" class="pre-post btn btn-default" title='map与flatMap的区别'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            map与flatMap的区别</span>
+    </a>
+    
+    
+    <a href="/2019-06-04-Spark学习之路 （四）Spark的广播变量和累加器.html" class="next-post btn btn-default" title='Spark学习之路 （四）Spark的广播变量和累加器'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （四）Spark的广播变量和累加器</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、JDK的安装"><span class="toc-text">一、JDK的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-上传安装包并解压"><span class="toc-text">1.1　上传安装包并解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-配置环境变量"><span class="toc-text">1.2　配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-验证Java版本"><span class="toc-text">1.3　验证Java版本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、配置免密登陆"><span class="toc-text">二、配置免密登陆</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-检测"><span class="toc-text">2.1　检测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-生成私钥和公钥秘钥对"><span class="toc-text">2.2　生成私钥和公钥秘钥对</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-将公钥添加到authorized-keys"><span class="toc-text">2.3　将公钥添加到authorized_keys</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-赋予authorized-keys文件600的权限"><span class="toc-text">2.4　赋予authorized_keys文件600的权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-修改Linux映射文件-root用户"><span class="toc-text">2.5　修改Linux映射文件(root用户)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-验证"><span class="toc-text">2.6　验证</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、安装Hadoop-2-7-5"><span class="toc-text">三、安装Hadoop-2.7.5</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-上传解压缩"><span class="toc-text">3.1　上传解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-创建安装包对应的软连接"><span class="toc-text">3.2　创建安装包对应的软连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-修改配置文件"><span class="toc-text">3.3　修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）修改hadoop-env-sh"><span class="toc-text">（1）修改hadoop-env.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）修改core-site-xml"><span class="toc-text">（2）修改core-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）修改hdfs-site-xml"><span class="toc-text">（3）修改hdfs-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）修改mapred-site-xml"><span class="toc-text">（4）修改mapred-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（5）修改yarn-site-xml"><span class="toc-text">（5）修改yarn-site.xml</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-配置环境变量"><span class="toc-text">3.4　配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-查看hadoop版本"><span class="toc-text">3.5　查看hadoop版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-创建文件夹"><span class="toc-text">3.6　创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-Hadoop的初始化"><span class="toc-text">3.7　Hadoop的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-启动HDFS和YARN"><span class="toc-text">3.8　启动HDFS和YARN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-9-检查WebUI"><span class="toc-text">3.9　检查WebUI</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、Scala的安装（可选）"><span class="toc-text">四、Scala的安装（可选）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-下载"><span class="toc-text">4.1　下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-上传解压缩"><span class="toc-text">4.2　上传解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-配置环境变量"><span class="toc-text">4.3　配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-验证是否安装成功"><span class="toc-text">4.4　验证是否安装成功</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、Spark的安装"><span class="toc-text">五、Spark的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-下载安装包"><span class="toc-text">5.1　下载安装包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-上传解压缩"><span class="toc-text">5.2　上传解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-为解压包创建一个软连接"><span class="toc-text">5.3　为解压包创建一个软连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-进入spark-conf修改配置文件"><span class="toc-text">5.4　进入spark/conf修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-5-配置环境变量"><span class="toc-text">5.5　配置环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-6-启动Spark"><span class="toc-text">5.6　启动Spark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-7-查看进程"><span class="toc-text">5.7　查看进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-8-查看web界面"><span class="toc-text">5.8　查看web界面</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （四）Spark的广播变量和累加器：** &lt;Excerpt in index | 首页摘要&gt;
+​        在spark程序中，当一个传递给Spark操...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （四）Spark的广播变量和累加器 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （四）Spark的广播变量和累加器">
+            
+            Spark学习之路 （四）Spark的广播变量和累加器
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/04</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （四）Spark的广播变量和累加器：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        在spark程序中，当一个传递给Spark操作(例如map和reduce)的函数在远程节点上面运行时，Spark操作实际上操作的是这个函数所用变量的一个独立副本。这些变量会被复制到每台机器上，并且这些变量在远程机器上的所有更新都不会传递回驱动程序。通常跨任务的读写变量是低效的，但是，Spark还是为两种常见的使用模式提供了两种有限的共享变量：广播变（broadcast variable）和累加器（accumulator）</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、广播变量broadcast-variable"><a href="#一、广播变量broadcast-variable" class="headerlink" title="一、广播变量broadcast variable"></a>一、广播变量broadcast variable</h2><p>​        广播变量允许程序员在每台机器上保留一个只读变量，而不是随副本一起发送它的副本。例如，它们可用于以有效的方式为每个节点提供大输入数据集的副本。Spark还尝试使用有效的广播算法来分发广播变量，以降低通信成本。</p>
+<p>​        Spark动作通过一组阶段执行，由分布式“shuffle”操作分隔。Spark自动广播每个阶段中任务所需的公共数据。以这种方式广播的数据以序列化形式缓存并在运行每个任务之前反序列化。这意味着显式创建广播变量仅在跨多个阶段的任务需要相同数据或以反序列化形式缓存数据很重要时才有用。</p>
+<p>​        广播变量是<code>v</code>通过调用从变量创建的<code>SparkContext.broadcast(v)</code>。广播变量是一个包装器<code>v</code>，可以通过调用该<code>value</code> 方法来访问它的值。下面的代码显示了这个：</p>
+<h3 id="1-1-为什么要将变量定义成广播变量？"><a href="#1-1-为什么要将变量定义成广播变量？" class="headerlink" title="1.1　为什么要将变量定义成广播变量？"></a>1.1　为什么要将变量定义成广播变量？</h3><p>如果我们要在分布式计算里面分发大对象，例如：字典，集合，黑白名单等，这个都会由Driver端进行分发，一般来讲，如果这个变量不是广播变量，那么每个task就会分发一份，这在<strong>task数目十分多的情况下Driver的带宽会成为系统的瓶颈，而且会大量消耗task服务器上的资源</strong>，如果将这个变量声明为广播变量，那么知识每个executor拥有一份，这个executor启动的task会共享这个变量，节省了通信的成本和服务器的资源。</p>
+<h3 id="1-2-广播变量图解"><a href="#1-2-广播变量图解" class="headerlink" title="1.2　广播变量图解"></a>1.2　广播变量图解</h3><p>错误的，不使用广播变量</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421162057226-1988253385.png" alt="img"></p>
+<p>正确的，使用广播变量的情况</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421162148572-1992224700.png" alt="img"></p>
+<h3 id="2-3-如何定义一个广播变量？"><a href="#2-3-如何定义一个广播变量？" class="headerlink" title="2.3　如何定义一个广播变量？"></a>2.3　如何定义一个广播变量？</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> a = <span class="number">3</span></span><br><span class="line"><span class="keyword">val</span> broadcast = sc.broadcast(a)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-如何还原一个广播变量？"><a href="#2-4-如何还原一个广播变量？" class="headerlink" title="2.4　如何还原一个广播变量？"></a>2.4　如何还原一个广播变量？</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> c = broadcast.value</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-定义广播变量需要的注意点？"><a href="#2-5-定义广播变量需要的注意点？" class="headerlink" title="2.5　定义广播变量需要的注意点？"></a>2.5　定义广播变量需要的注意点？</h3><p>变量一旦被定义为一个广播变量，那么这个变量只能读，不能修改</p>
+<h3 id="2-6-注意事项"><a href="#2-6-注意事项" class="headerlink" title="2.6　注意事项"></a>2.6　<strong>注意事项</strong></h3><p>1、能不能将一个RDD使用广播变量广播出去？</p>
+<p>​       不能，因为RDD是不存储数据的。<strong>可以将RDD的结果广播出去。</strong></p>
+<p>2、 广播变量只能在Driver端定义，<strong>不能在Executor端定义。</strong></p>
+<p>3、 在Driver端可以修改广播变量的值，<strong>在Executor端无法修改广播变量的值。</strong></p>
+<p>4、如果executor端用到了Driver的变量，如果<strong>不使用广播变量在Executor有多少task就有多少Driver端的变量副本。</strong></p>
+<p>5、如果Executor端用到了Driver的变量，如果<strong>使用广播变量在每个Executor中只有一份Driver端的变量副本。</strong></p>
+<h2 id="二、累加器"><a href="#二、累加器" class="headerlink" title="二、累加器"></a>二、累加器</h2><p>​    累加器是仅通过关联和交换操作“添加”的变量，因此可以并行有效地支持。它们可用于实现计数器（如MapReduce）或总和。Spark本身支持数值类型的累加器，程序员可以添加对新类型的支持。</p>
+<p>作为用户，您可以创建命名或未命名的累加器。如下图所示，命名累加器（在此实例中<code>counter</code>）将显示在Web UI中，用于修改该累加器的阶段。Spark显示“任务”表中任务修改的每个累加器的值。</p>
+<p><img src="http://spark.apache.org/docs/latest/img/spark-webui-accumulators.png" alt="Spark UI中的累加器"></p>
+<p>跟踪UI中的累加器对于理解运行阶段的进度非常有用（注意：Python中尚不支持）。</p>
+<h3 id="2-1-为什么要将一个变量定义为一个累加器？"><a href="#2-1-为什么要将一个变量定义为一个累加器？" class="headerlink" title="2.1　为什么要将一个变量定义为一个累加器？"></a>2.1　为什么要将一个变量定义为一个累加器？</h3><p>​        在spark应用程序中，我们经常会有这样的需求，如异常监控，调试，记录符合某特性的数据的数目，这种需求都需要用到计数器，如果一个变量不被声明为一个累加器，那么它将在被改变时不会再driver端进行全局汇总，即在分布式运行时每个task运行的只是原始变量的一个副本，并不能改变原始变量的值，但是当这个变量被声明为累加器后，该变量就会有分布式计数的功能。</p>
+<h3 id="2-2-图解累加器"><a href="#2-2-图解累加器" class="headerlink" title="2.2　图解累加器"></a>2.2　图解累加器</h3><p>错误的图解</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421164701390-9845184.png" alt="img"></p>
+<p>正确的图解</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180421165419534-240211041.png" alt="img"></p>
+<h3 id="2-3-如何定义一个累加器？"><a href="#2-3-如何定义一个累加器？" class="headerlink" title="2.3　如何定义一个累加器？"></a>2.3　如何定义一个累加器？</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> a = sc.accumulator(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-如何还原一个累加器？"><a href="#2-4-如何还原一个累加器？" class="headerlink" title="2.4　如何还原一个累加器？"></a>2.4　如何还原一个累加器？</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> b = a.value</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-注意事项"><a href="#2-5-注意事项" class="headerlink" title="2.5　注意事项"></a>2.5　<strong>注意事项</strong></h3><p>1、 <strong>累加器在Driver端定义赋初始值，累加器只能在Driver端读取最后的值，在Excutor端更新。</strong></p>
+<p>2、累加器不是一个调优的操作，因为如果不这样做，结果是错的</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-05-Spark学习之路 （五）Spark伪分布式安装.html" class="pre-post btn btn-default" title='Spark学习之路 （五）Spark伪分布式安装'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （五）Spark伪分布式安装</span>
+    </a>
+    
+    
+    <a href="/2019-06-03-Spark学习之路 （三）Spark之RDD.html" class="next-post btn btn-default" title='Spark学习之路 （三）Spark之RDD'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （三）Spark之RDD</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、广播变量broadcast-variable"><span class="toc-text">一、广播变量broadcast variable</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-为什么要将变量定义成广播变量？"><span class="toc-text">1.1　为什么要将变量定义成广播变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-广播变量图解"><span class="toc-text">1.2　广播变量图解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-如何定义一个广播变量？"><span class="toc-text">2.3　如何定义一个广播变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-如何还原一个广播变量？"><span class="toc-text">2.4　如何还原一个广播变量？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-定义广播变量需要的注意点？"><span class="toc-text">2.5　定义广播变量需要的注意点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-注意事项"><span class="toc-text">2.6　注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、累加器"><span class="toc-text">二、累加器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-为什么要将一个变量定义为一个累加器？"><span class="toc-text">2.1　为什么要将一个变量定义为一个累加器？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-图解累加器"><span class="toc-text">2.2　图解累加器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-如何定义一个累加器？"><span class="toc-text">2.3　如何定义一个累加器？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-如何还原一个累加器？"><span class="toc-text">2.4　如何还原一个累加器？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-注意事项"><span class="toc-text">2.5　注意事项</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

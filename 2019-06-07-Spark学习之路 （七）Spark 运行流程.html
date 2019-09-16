@@ -1,0 +1,554 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （七）Spark 运行流程：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （七）Spark 运行流程
+
+&...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （七）Spark 运行流程 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （七）Spark 运行流程">
+            
+            Spark学习之路 （七）Spark 运行流程
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/07</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （七）Spark 运行流程：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （七）Spark 运行流程</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、Spark中的基本概念"><a href="#一、Spark中的基本概念" class="headerlink" title="一、Spark中的基本概念"></a>一、Spark中的基本概念</h2><p>（1）Application：表示你的应用程序</p>
+<p>（2）Driver：表示main()函数，创建SparkContext。由SparkContext负责与ClusterManager通信，进行资源的申请，任务的分配和监控等。程序执行完毕后关闭SparkContext</p>
+<p>（3）Executor：某个Application运行在Worker节点上的一个进程，该进程负责运行某些task，并且负责将数据存在内存或者磁盘上。在Spark on Yarn模式下，其进程名称为 CoarseGrainedExecutor Backend，一个CoarseGrainedExecutor Backend进程有且仅有一个executor对象，它负责将Task包装成taskRunner，并从线程池中抽取出一个空闲线程运行Task，这样，每个CoarseGrainedExecutorBackend能并行运行Task的数据就取决于分配给它的CPU的个数。</p>
+<p>（4）Worker：集群中可以运行Application代码的节点。在Standalone模式中指的是通过slave文件配置的worker节点，在Spark on Yarn模式中指的就是NodeManager节点。</p>
+<p>（5）Task：在Executor进程中执行任务的工作单元，多个Task组成一个Stage</p>
+<p>（6）Job：包含多个Task组成的并行计算，是由Action行为触发的</p>
+<p>（7）Stage：每个Job会被拆分很多组Task，作为一个TaskSet，其名称为Stage</p>
+<p>（8）DAGScheduler：根据Job构建基于Stage的DAG，并提交Stage给TaskScheduler，其划分Stage的依据是RDD之间的依赖关系</p>
+<p>（9）TaskScheduler：将TaskSet提交给Worker（集群）运行，每个Executor运行什么Task就是在此处分配的。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425154512801-941033013.png" alt="img"></p>
+<h2 id="二、Spark的运行流程"><a href="#二、Spark的运行流程" class="headerlink" title="二、Spark的运行流程"></a>二、Spark的运行流程</h2><h3 id="2-1-Spark的基本运行流程"><a href="#2-1-Spark的基本运行流程" class="headerlink" title="2.1　Spark的基本运行流程"></a>2.1　Spark的基本运行流程</h3><h4 id="1、说明"><a href="#1、说明" class="headerlink" title="1、说明"></a>1、说明</h4><blockquote>
+<p>(1)构建Spark Application的运行环境（启动SparkContext），SparkContext向资源管理器（可以是Standalone、Mesos或YARN）注册并申请运行Executor资源；</p>
+<p>(2)资源管理器分配Executor资源并启动StandaloneExecutorBackend，Executor运行情况将随着心跳发送到资源管理器上；</p>
+<p>(3)SparkContext构建成DAG图，将DAG图分解成Stage，并把Taskset发送给Task Scheduler。Executor向SparkContext申请Task</p>
+<p>(4)Task Scheduler将Task发放给Executor运行同时SparkContext将应用程序代码发放给Executor。</p>
+<p>(5)Task在Executor上运行，运行完毕释放所有资源。</p>
+</blockquote>
+<h4 id="2、图解"><a href="#2、图解" class="headerlink" title="2、图解"></a>2、图解</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425172026316-1086206534.png" alt="img"></p>
+<h4 id="3、Spark运行架构特点"><a href="#3、Spark运行架构特点" class="headerlink" title="3、Spark运行架构特点"></a>3、Spark运行架构特点</h4><blockquote>
+<p>（1）每个Application获取专属的executor进程，该进程在Application期间一直驻留，并以多线程方式运行tasks。这种Application隔离机制有其优势的，无论是从调度角度看（每个Driver调度它自己的任务），还是从运行角度看（来自不同Application的Task运行在不同的JVM中）。当然，这也意味着Spark Application不能跨应用程序共享数据，除非将数据写入到外部存储系统。</p>
+<p>（2）Spark与资源管理器无关，只要能够获取executor进程，并能保持相互通信就可以了。</p>
+<p>（3）提交SparkContext的Client应该靠近Worker节点（运行Executor的节点)，最好是在同一个Rack里，因为Spark Application运行过程中SparkContext和Executor之间有大量的信息交换；如果想在远程集群中运行，最好使用RPC将SparkContext提交给集群，不要远离Worker运行SparkContext。</p>
+<p>（4）Task采用了数据本地性和推测执行的优化机制。</p>
+</blockquote>
+<h4 id="4、DAGScheduler"><a href="#4、DAGScheduler" class="headerlink" title="4、DAGScheduler"></a>4、DAGScheduler</h4><p>Job=多个stage，Stage=多个同种task, Task分为ShuffleMapTask和ResultTask，Dependency分为ShuffleDependency和NarrowDependency</p>
+<p>面向stage的切分，切分依据为宽依赖</p>
+<p>维护waiting jobs和active jobs，维护waiting stages、active stages和failed stages，以及与jobs的映射关系</p>
+<p><strong>主要职能：</strong></p>
+<blockquote>
+<p>1、接收提交Job的主入口，<code>submitJob(rdd, ...)</code>或<code>runJob(rdd, ...)</code>。在<code>SparkContext</code>里会调用这两个方法。 </p>
+<ul>
+<li><ul>
+<li>生成一个Stage并提交，接着判断Stage是否有父Stage未完成，若有，提交并等待父Stage，以此类推。结果是：DAGScheduler里增加了一些waiting stage和一个running stage。</li>
+<li>running stage提交后，分析stage里Task的类型，生成一个Task描述，即TaskSet。</li>
+<li>调用<code>TaskScheduler.submitTask(taskSet, ...)</code>方法，把Task描述提交给TaskScheduler。TaskScheduler依据资源量和触发分配条件，会为这个TaskSet分配资源并触发执行。</li>
+<li><code>DAGScheduler</code>提交job后，异步返回<code>JobWaiter</code>对象，能够返回job运行状态，能够cancel job，执行成功后会处理并返回结果</li>
+</ul>
+</li>
+</ul>
+<p>2、处理<code>TaskCompletionEvent</code> </p>
+<ul>
+<li><ul>
+<li>如果task执行成功，对应的stage里减去这个task，做一些计数工作： <ul>
+<li>如果task是ResultTask，计数器<code>Accumulator</code>加一，在job里为该task置true，job finish总数加一。加完后如果finish数目与partition数目相等，说明这个stage完成了，标记stage完成，从running stages里减去这个stage，做一些stage移除的清理工作</li>
+<li>如果task是ShuffleMapTask，计数器<code>Accumulator</code>加一，在stage里加上一个output location，里面是一个<code>MapStatus</code>类。<code>MapStatus</code>是<code>ShuffleMapTask</code>执行完成的返回，包含location信息和block size(可以选择压缩或未压缩)。同时检查该stage完成，向<code>MapOutputTracker</code>注册本stage里的shuffleId和location信息。然后检查stage的output location里是否存在空，若存在空，说明一些task失败了，整个stage重新提交；否则，继续从waiting stages里提交下一个需要做的stage</li>
+</ul>
+</li>
+<li>如果task是重提交，对应的stage里增加这个task</li>
+<li>如果task是fetch失败，马上标记对应的stage完成，从running stages里减去。如果不允许retry，abort整个stage；否则，重新提交整个stage。另外，把这个fetch相关的location和map任务信息，从stage里剔除，从<code>MapOutputTracker</code>注销掉。最后，如果这次fetch的blockManagerId对象不为空，做一次<code>ExecutorLost</code>处理，下次shuffle会换在另一个executor上去执行。</li>
+<li>其他task状态会由<code>TaskScheduler</code>处理，如Exception, TaskResultLost, commitDenied等。</li>
+</ul>
+</li>
+</ul>
+<p>3、其他与job相关的操作还包括：cancel job， cancel stage, resubmit failed stage等</p>
+</blockquote>
+<p>其他职能：</p>
+<p> cacheLocations 和 preferLocation</p>
+<h4 id="5、TaskScheduler"><a href="#5、TaskScheduler" class="headerlink" title="5、TaskScheduler"></a>5、TaskScheduler</h4><p>维护task和executor对应关系，executor和物理资源对应关系，在排队的task和正在跑的task。</p>
+<p>内部维护一个任务队列，根据FIFO或Fair策略，调度任务。</p>
+<p><code>TaskScheduler</code>本身是个接口，spark里只实现了一个<code>TaskSchedulerImpl</code>，理论上任务调度可以定制。</p>
+<p>主要功能：</p>
+<blockquote>
+<p><code>1、submitTasks(taskSet)</code>，接收<code>DAGScheduler</code>提交来的tasks </p>
+<ul>
+<li><ul>
+<li>为tasks创建一个<code>TaskSetManager</code>，添加到任务队列里。<code>TaskSetManager</code>跟踪每个task的执行状况，维护了task的许多具体信息。</li>
+<li>触发一次资源的索要。 <ul>
+<li>首先，<code>TaskScheduler</code>对照手头的可用资源和Task队列，进行executor分配(考虑优先级、本地化等策略)，符合条件的executor会被分配给<code>TaskSetManager</code>。</li>
+<li>然后，得到的Task描述交给<code>SchedulerBackend</code>，调用<code>launchTask(tasks)</code>，触发executor上task的执行。task描述被序列化后发给executor，executor提取task信息，调用task的<code>run()</code>方法执行计算。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>2、cancelTasks(stageId)</code>，取消一个stage的tasks </p>
+<ul>
+<li><ul>
+<li>调用<code>SchedulerBackend</code>的<code>killTask(taskId, executorId, ...)</code>方法。taskId和executorId在<code>TaskScheduler</code>里一直维护着。</li>
+</ul>
+</li>
+</ul>
+<p>3、resourceOffer(offers: Seq[Workers])，这是非常重要的一个方法，调用者是SchedulerBacnend，用途是底层资源SchedulerBackend把空余的workers资源交给TaskScheduler，让其根据调度策略为排队的任务分配合理的cpu和内存资源，然后把任务描述列表传回给SchedulerBackend</p>
+<ul>
+<li><ul>
+<li>从worker offers里，搜集executor和host的对应关系、active executors、机架信息等等</li>
+<li>worker offers资源列表进行随机洗牌，任务队列里的任务列表依据调度策略进行一次排序</li>
+<li>遍历每个taskSet，按照进程本地化、worker本地化、机器本地化、机架本地化的优先级顺序，为每个taskSet提供可用的cpu核数，看是否满足 <ul>
+<li>默认一个task需要一个cpu，设置参数为<code>&quot;spark.task.cpus=1&quot;</code></li>
+<li>为taskSet分配资源，校验是否满足的逻辑，最终在<code>TaskSetManager</code>的<code>resourceOffer(execId, host, maxLocality)</code>方法里</li>
+<li>满足的话，会生成最终的任务描述，并且调用<code>DAGScheduler</code>的<code>taskStarted(task, info)</code>方法，通知<code>DAGScheduler</code>，这时候每次会触发<code>DAGScheduler</code>做一次<code>submitMissingStage</code>的尝试，即stage的tasks都分配到了资源的话，马上会被提交执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><code>4、statusUpdate(taskId, taskState, data)</code>,另一个非常重要的方法，调用者是<code>SchedulerBacnend</code>，用途是<code>SchedulerBacnend</code>会将task执行的状态汇报给<code>TaskScheduler</code>做一些决定 </p>
+<ul>
+<li><ul>
+<li>若<code>TaskLost</code>，找到该task对应的executor，从active executor里移除，避免这个executor被分配到其他task继续失败下去。</li>
+<li>task finish包括四种状态：finished, killed, failed, lost。只有finished是成功执行完成了。其他三种是失败。</li>
+<li>task成功执行完，调用<code>TaskResultGetter.enqueueSuccessfulTask(taskSet, tid, data)</code>，否则调用<code>TaskResultGetter.enqueueFailedTask(taskSet, tid, state, data)</code>。<code>TaskResultGetter</code>内部维护了一个线程池，负责异步fetch task执行结果并反序列化。默认开四个线程做这件事，可配参数<code>&quot;spark.resultGetter.threads&quot;=4</code>。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p> <strong>TaskResultGetter取task result的逻辑</strong></p>
+<blockquote>
+<p>1、对于success task，如果taskResult里的数据是直接结果数据，直接把data反序列出来得到结果；如果不是，会调用<code>blockManager.getRemoteBytes(blockId)</code>从远程获取。如果远程取回的数据是空的，那么会调用<code>TaskScheduler.handleFailedTask</code>，告诉它这个任务是完成了的但是数据是丢失的。否则，取到数据之后会通知<code>BlockManagerMaster</code>移除这个block信息，调用<code>TaskScheduler.handleSuccessfulTask</code>，告诉它这个任务是执行成功的，并且把result data传回去。</p>
+<p>2、对于failed task，从data里解析出fail的理由，调用<code>TaskScheduler.handleFailedTask</code>，告诉它这个任务失败了，理由是什么。</p>
+</blockquote>
+<h4 id="6、SchedulerBackend"><a href="#6、SchedulerBackend" class="headerlink" title="6、SchedulerBackend"></a>6、SchedulerBackend</h4><p>在<code>TaskScheduler</code>下层，用于对接不同的资源管理系统，<code>SchedulerBackend</code>是个接口，需要实现的主要方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def start(): Unit</span><br><span class="line">def stop(): Unit</span><br><span class="line">def reviveOffers(): Unit // 重要方法：SchedulerBackend把自己手头上的可用资源交给TaskScheduler，TaskScheduler根据调度策略分配给排队的任务吗，返回一批可执行的任务描述，SchedulerBackend负责launchTask，即最终把task塞到了executor模型上，executor里的线程池会执行task的run()</span><br><span class="line">def killTask(taskId: Long, executorId: String, interruptThread: Boolean): Unit =</span><br><span class="line">    throw new UnsupportedOperationException</span><br></pre></td></tr></table></figure>
+
+<p>粗粒度：进程常驻的模式，典型代表是standalone模式，mesos粗粒度模式，yarn</p>
+<p>细粒度：mesos细粒度模式</p>
+<p>这里讨论粗粒度模式，更好理解：<code>CoarseGrainedSchedulerBackend</code>。</p>
+<p>维护executor相关信息(包括executor的地址、通信端口、host、总核数，剩余核数)，手头上executor有多少被注册使用了，有多少剩余，总共还有多少核是空的等等。</p>
+<p>主要职能</p>
+<blockquote>
+<p>1、Driver端主要通过actor监听和处理下面这些事件： </p>
+<ul>
+<li><ul>
+<li><code>RegisterExecutor(executorId, hostPort, cores, logUrls)</code>。这是executor添加的来源，通常worker拉起、重启会触发executor的注册。<code>CoarseGrainedSchedulerBackend</code>把这些executor维护起来，更新内部的资源信息，比如总核数增加。最后调用一次<code>makeOffer()</code>，即把手头资源丢给<code>TaskScheduler</code>去分配一次，返回任务描述回来，把任务launch起来。这个<code>makeOffer()</code>的调用会出现在<em>任何与资源变化相关的事件</em>中，下面会看到。</li>
+<li><code>StatusUpdate(executorId, taskId, state, data)</code>。task的状态回调。首先，调用<code>TaskScheduler.statusUpdate</code>上报上去。然后，判断这个task是否执行结束了，结束了的话把executor上的freeCore加回去，调用一次<code>makeOffer()</code>。</li>
+<li><code>ReviveOffers</code>。这个事件就是别人直接向<code>SchedulerBackend</code>请求资源，直接调用<code>makeOffer()</code>。</li>
+<li><code>KillTask(taskId, executorId, interruptThread)</code>。这个killTask的事件，会被发送给executor的actor，executor会处理<code>KillTask</code>这个事件。</li>
+<li><code>StopExecutors</code>。通知每一个executor，处理<code>StopExecutor</code>事件。</li>
+<li><code>RemoveExecutor(executorId, reason)</code>。从维护信息中，那这堆executor涉及的资源数减掉，然后调用<code>TaskScheduler.executorLost()</code>方法，通知上层我这边有一批资源不能用了，你处理下吧。<code>TaskScheduler</code>会继续把<code>executorLost</code>的事件上报给<code>DAGScheduler</code>，原因是<code>DAGScheduler</code>关心shuffle任务的output location。<code>DAGScheduler</code>会告诉<code>BlockManager</code>这个executor不可用了，移走它，然后把所有的stage的shuffleOutput信息都遍历一遍，移走这个executor，并且把更新后的shuffleOutput信息注册到<code>MapOutputTracker</code>上，最后清理下本地的<code>CachedLocations</code>Map。</li>
+</ul>
+</li>
+</ul>
+<p><code>2、reviveOffers()</code>方法的实现。直接调用了<code>makeOffers()</code>方法，得到一批可执行的任务描述，调用<code>launchTasks</code>。</p>
+<p><code>3、launchTasks(tasks: Seq[Seq[TaskDescription]])</code>方法。 </p>
+<ul>
+<li><ul>
+<li>遍历每个task描述，序列化成二进制，然后发送给每个对应的executor这个任务信息 <ul>
+<li>如果这个二进制信息太大，超过了9.2M(默认的akkaFrameSize 10M 减去 默认 为akka留空的200K)，会出错，abort整个taskSet，并打印提醒增大akka frame size</li>
+<li>如果二进制数据大小可接受，发送给executor的actor，处理<code>LaunchTask(serializedTask)</code>事件。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="7、Executor"><a href="#7、Executor" class="headerlink" title="7、Executor"></a>7、Executor</h4><p>Executor是spark里的进程模型，可以套用到不同的资源管理系统上，与<code>SchedulerBackend</code>配合使用。</p>
+<p>内部有个线程池，有个running tasks map，有个actor，接收上面提到的由<code>SchedulerBackend</code>发来的事件。</p>
+<p><strong>事件处理</strong></p>
+<ol>
+<li><code>launchTask</code>。根据task描述，生成一个<code>TaskRunner</code>线程，丢尽running tasks map里，用线程池执行这个<code>TaskRunner</code></li>
+<li><code>killTask</code>。从running tasks map里拿出线程对象，调它的kill方法。</li>
+</ol>
+<h2 id="三、Spark在不同集群中的运行架构"><a href="#三、Spark在不同集群中的运行架构" class="headerlink" title="三、Spark在不同集群中的运行架构"></a>三、Spark在不同集群中的运行架构</h2><p>Spark注重建立良好的生态系统，它不仅支持多种外部文件存储系统，提供了多种多样的集群运行模式。部署在单台机器上时，既可以用本地（Local）模式运行，也可以使用伪分布式模式来运行；当以分布式集群部署的时候，可以根据自己集群的实际情况选择Standalone模式（Spark自带的模式）、YARN-Client模式或者YARN-Cluster模式。Spark的各种运行模式虽然在启动方式、运行位置、调度策略上各有不同，但它们的目的基本都是一致的，就是在合适的位置安全可靠的根据用户的配置和Job的需要运行和管理Task。</p>
+<h3 id="3-1-Spark-on-Standalone运行过程"><a href="#3-1-Spark-on-Standalone运行过程" class="headerlink" title="3.1　Spark on Standalone运行过程"></a>3.1　Spark on Standalone运行过程</h3><p>Standalone模式是Spark实现的资源调度框架，其主要的节点有Client节点、Master节点和Worker节点。其中Driver既可以运行在Master节点上中，也可以运行在本地Client端。当用spark-shell交互式工具提交Spark的Job时，Driver在Master节点上运行；当使用spark-submit工具提交Job或者在Eclips、IDEA等开发平台上使用”new SparkConf().setMaster(“spark://master:7077”)”方式运行Spark任务时，Driver是运行在本地Client端上的。</p>
+<p>运行过程文字说明</p>
+<blockquote>
+<p>1、我们提交一个任务，任务就叫Application<br>2、初始化程序的入口SparkContext，<br>　　2.1 初始化DAG Scheduler<br>　　2.2 初始化Task Scheduler<br>3、Task Scheduler向master去进行注册并申请资源（CPU Core和Memory）<br>4、Master根据SparkContext的资源申请要求和Worker心跳周期内报告的信息决定在哪个Worker上分配资源，然后在该Worker上获取资源，然后启动StandaloneExecutorBackend；顺便初<br>      始化好了一个线程池<br>5、StandaloneExecutorBackend向Driver(SparkContext)注册,这样Driver就知道哪些Executor为他进行服务了。<br>　  到这个时候其实我们的初始化过程基本完成了，我们开始执行transformation的代码，但是代码并不会真正的运行，直到我们遇到一个action操作。生产一个job任务，进行stage的划分<br>6、SparkContext将Applicaiton代码发送给StandaloneExecutorBackend；并且SparkContext解析Applicaiton代码，构建DAG图，并提交给DAG Scheduler分解成Stage（当碰到Action操作        时，就会催生Job；每个Job中含有1个或多个Stage，Stage一般在获取外部数据和shuffle之前产生）。<br>7、将Stage（或者称为TaskSet）提交给Task Scheduler。Task Scheduler负责将Task分配到相应的Worker，最后提交给StandaloneExecutorBackend执行；<br>8、对task进行序列化，并根据task的分配算法，分配task<br>9、对接收过来的task进行反序列化，把task封装成一个线程<br>10、开始执行Task，并向SparkContext报告，直至Task完成。<br>11、资源注销</p>
+</blockquote>
+<p>运行过程图形说明</p>
+<img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425170820868-121220770.png" alt="img" style="zoom:200%;">
+
+
+
+<h3 id="3-2-Spark-on-YARN运行过程"><a href="#3-2-Spark-on-YARN运行过程" class="headerlink" title="3.2　Spark on YARN运行过程"></a>3.2　Spark on YARN运行过程</h3><p>YARN是一种统一资源管理机制，在其上面可以运行多套计算框架。目前的大数据技术世界，大多数公司除了使用Spark来进行数据计算，由于历史原因或者单方面业务处理的性能考虑而使用着其他的计算框架，比如MapReduce、Storm等计算框架。Spark基于此种情况开发了Spark on YARN的运行模式，由于借助了YARN良好的弹性资源管理机制，不仅部署Application更加方便，而且用户在YARN集群中运行的服务和Application的资源也完全隔离，更具实践应用价值的是YARN可以通过队列的方式，管理同时运行在集群中的多个服务。</p>
+<p>Spark on YARN模式根据Driver在集群中的位置分为两种模式：一种是YARN-Client模式，另一种是YARN-Cluster（或称为YARN-Standalone模式）。</p>
+<h4 id="3-2-1-YARN框架流程"><a href="#3-2-1-YARN框架流程" class="headerlink" title="3.2.1　YARN框架流程"></a>3.2.1　YARN框架流程</h4><p>任何框架与YARN的结合，都必须遵循YARN的开发模式。在分析Spark on YARN的实现细节之前，有必要先分析一下YARN框架的一些基本原理。</p>
+<p>参考：<a href="http://www.cnblogs.com/qingyunzong/p/8615096.html" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8615096.html</a></p>
+<h4 id="3-2-2-YARN-Client"><a href="#3-2-2-YARN-Client" class="headerlink" title="3.2.2　YARN-Client"></a>3.2.2　YARN-Client</h4><p>Yarn-Client模式中，Driver在客户端本地运行，这种模式可以使得Spark Application和客户端进行交互，因为Driver在客户端，所以可以通过webUI访问Driver的状态，默认是<a href="http://hadoop1:4040访问，而YARN通过http://" target="_blank" rel="noopener">http://hadoop1:4040访问，而YARN通过http://</a> hadoop1:8088访问。</p>
+<p>YARN-client的工作流程分为以下几个步骤：</p>
+<p>文字说明</p>
+<blockquote>
+<p>1.Spark Yarn Client向YARN的ResourceManager申请启动Application Master。同时在SparkContent初始化中将创建DAGScheduler和TASKScheduler等，由于我们选择的是Yarn-Client模式，程序会选择YarnClientClusterScheduler和YarnClientSchedulerBackend；</p>
+<p>2.ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，与YARN-Cluster区别的是在该ApplicationMaster不运行SparkContext，只与SparkContext进行联系进行资源的分派；</p>
+<p>3.Client中的SparkContext初始化完毕后，与ApplicationMaster建立通讯，向ResourceManager注册，根据任务信息向ResourceManager申请资源（Container）；</p>
+<p>4.一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向Client中的SparkContext注册并申请Task；</p>
+<p>5.Client中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向Driver汇报运行的状态和进度，以让Client随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务；</p>
+<p>6.应用程序运行完成后，Client的SparkContext向ResourceManager申请注销并关闭自己。</p>
+</blockquote>
+<p>图片说明</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425184438832-531815073.png" alt="img"></p>
+<h4 id="3-2-3-YARN-Cluster"><a href="#3-2-3-YARN-Cluster" class="headerlink" title="3.2.3　YARN-Cluster"></a>3.2.3　YARN-Cluster</h4><p>在YARN-Cluster模式中，当用户向YARN中提交一个应用程序后，YARN将分两个阶段运行该应用程序：第一个阶段是把Spark的Driver作为一个ApplicationMaster在YARN集群中先启动；第二个阶段是由ApplicationMaster创建应用程序，然后为它向ResourceManager申请资源，并启动Executor来运行Task，同时监控它的整个运行过程，直到运行完成。</p>
+<p>YARN-cluster的工作流程分为以下几个步骤：</p>
+<p>文字说明</p>
+<blockquote>
+<ol>
+<li><p>Spark Yarn Client向YARN中提交应用程序，包括ApplicationMaster程序、启动ApplicationMaster的命令、需要在Executor中运行的程序等；</p>
+</li>
+<li><p>ResourceManager收到请求后，在集群中选择一个NodeManager，为该应用程序分配第一个Container，要求它在这个Container中启动应用程序的ApplicationMaster，其中ApplicationMaster进行SparkContext等的初始化；</p>
+</li>
+<li><p>ApplicationMaster向ResourceManager注册，这样用户可以直接通过ResourceManage查看应用程序的运行状态，然后它将采用轮询的方式通过RPC协议为各个任务申请资源，并监控它们的运行状态直到运行结束；</p>
+</li>
+<li><p>一旦ApplicationMaster申请到资源（也就是Container）后，便与对应的NodeManager通信，要求它在获得的Container中启动启动CoarseGrainedExecutorBackend，CoarseGrainedExecutorBackend启动后会向ApplicationMaster中的SparkContext注册并申请Task。这一点和Standalone模式一样，只不过SparkContext在Spark Application中初始化时，使用CoarseGrainedSchedulerBackend配合YarnClusterScheduler进行任务的调度，其中YarnClusterScheduler只是对TaskSchedulerImpl的一个简单包装，增加了对Executor的等待逻辑等；</p>
+</li>
+<li><p>ApplicationMaster中的SparkContext分配Task给CoarseGrainedExecutorBackend执行，CoarseGrainedExecutorBackend运行Task并向ApplicationMaster汇报运行的状态和进度，以让ApplicationMaster随时掌握各个任务的运行状态，从而可以在任务失败时重新启动任务；</p>
+</li>
+<li><p>应用程序运行完成后，ApplicationMaster向ResourceManager申请注销并关闭自己。</p>
+</li>
+</ol>
+</blockquote>
+<p> 图片说明</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425184600831-1537558526.png" alt="img"></p>
+<h4 id="3-2-4-YARN-Client-与-YARN-Cluster-区别"><a href="#3-2-4-YARN-Client-与-YARN-Cluster-区别" class="headerlink" title="3.2.4　YARN-Client 与 YARN-Cluster 区别"></a>3.2.4　YARN-Client 与 YARN-Cluster 区别</h4><p>理解YARN-Client和YARN-Cluster深层次的区别之前先清楚一个概念：Application Master。在YARN中，每个Application实例都有一个ApplicationMaster进程，它是Application启动的第一个容器。它负责和ResourceManager打交道并请求资源，获取资源之后告诉NodeManager为其启动Container。从深层次的含义讲YARN-Cluster和YARN-Client模式的区别其实就是ApplicationMaster进程的区别。</p>
+<blockquote>
+<p>1、YARN-Cluster模式下，Driver运行在AM(Application Master)中，它负责向YARN申请资源，并监督作业的运行状况。当用户提交了作业之后，就可以关掉Client，作业会继续在YARN上运行，因而YARN-Cluster模式不适合运行交互类型的作业；</p>
+<p>2、YARN-Client模式下，Application Master仅仅向YARN请求Executor，Client会和请求的Container通信来调度他们工作，也就是说Client不能离开。</p>
+</blockquote>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425184834257-26846302.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180425184850521-1989517165.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-08-Spark学习之路 （八）SparkCore的调优之开发调优.html" class="pre-post btn btn-default" title='Spark学习之路 （八）SparkCore的调优之开发调优'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （八）SparkCore的调优之开发调优</span>
+    </a>
+    
+    
+    <a href="/2019-06-06-map与flatMap的区别.html" class="next-post btn btn-default" title='map与flatMap的区别'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            map与flatMap的区别</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Spark中的基本概念"><span class="toc-text">一、Spark中的基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Spark的运行流程"><span class="toc-text">二、Spark的运行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Spark的基本运行流程"><span class="toc-text">2.1　Spark的基本运行流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、说明"><span class="toc-text">1、说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、图解"><span class="toc-text">2、图解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、Spark运行架构特点"><span class="toc-text">3、Spark运行架构特点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、DAGScheduler"><span class="toc-text">4、DAGScheduler</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、TaskScheduler"><span class="toc-text">5、TaskScheduler</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、SchedulerBackend"><span class="toc-text">6、SchedulerBackend</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7、Executor"><span class="toc-text">7、Executor</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Spark在不同集群中的运行架构"><span class="toc-text">三、Spark在不同集群中的运行架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Spark-on-Standalone运行过程"><span class="toc-text">3.1　Spark on Standalone运行过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Spark-on-YARN运行过程"><span class="toc-text">3.2　Spark on YARN运行过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-YARN框架流程"><span class="toc-text">3.2.1　YARN框架流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-YARN-Client"><span class="toc-text">3.2.2　YARN-Client</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-3-YARN-Cluster"><span class="toc-text">3.2.3　YARN-Cluster</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-4-YARN-Client-与-YARN-Cluster-区别"><span class="toc-text">3.2.4　YARN-Client 与 YARN-Cluster 区别</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
