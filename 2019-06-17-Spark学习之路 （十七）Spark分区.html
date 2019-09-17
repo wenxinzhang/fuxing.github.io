@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （十七）Spark分区：** &lt;Excerpt in index | 首页摘要&gt;
+　　分区是RDD内部并行计算的一个计算单元，RDD的数据集在逻辑上被划分为...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （十七）Spark分区 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （十七）Spark分区">
+            
+            Spark学习之路 （十七）Spark分区
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/17</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （十七）Spark分区：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>　　分区是RDD内部并行计算的一个计算单元，RDD的数据集在逻辑上被划分为多个分片，每一个分片称为分区，分区的格式决定了并行计算的粒度，而每个分区的数值计算都是在一个任务中进行的，因此任务的个数，也是由RDD(准确来说是作业最后一个RDD)的分区数决定。</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、为什么要进行分区"><a href="#一、为什么要进行分区" class="headerlink" title="一、为什么要进行分区"></a>一、为什么要进行分区</h2><p>　　数据分区，在分布式集群里，网络通信的代价很大，减少网络传输可以极大提升性能。mapreduce框架的性能开支主要在io和网络传输，io因为要大量读写文件，它是不可避免的，但是网络传输是可以避免的，把大文件压缩变小文件，   从而减少网络传输，但是增加了cpu的计算负载。</p>
+<p>　　<strong>Spark</strong>里面io也是不可避免的，但是网络传输spark里面进行了优化：</p>
+<p>　　Spark把rdd进行分区（分片），放在集群上并行计算。同一个rdd分片100个，10个节点，平均一个节点10个分区，当进行sum型的计算的时候，先进行每个分区的sum，然后把sum值shuffle传输到主程序进行全局sum，所以进行sum型计算对网络传输非常小。但对于进行join型的计算的时候，需要把数据本身进行shuffle，网络开销很大。</p>
+<p>spark是如何优化这个问题的呢？</p>
+<p>　　Spark把key－value rdd通过key的hashcode进行分区，而且保证相同的key存储在同一个节点上，这样对改rdd进行key聚合时，就不需要shuffle过程，我们进行mapreduce计算的时候为什么要进行shuffle？，就是说mapreduce里面网络传输主要在shuffle阶段，<strong>shuffle的根本原因是相同的key存在不同的节点上，按key进行聚合的时候不得不进行shuffle</strong>。shuffle是非常影响网络的，它要把所有的数据混在一起走网络，然后它才能把相同的key走到一起。<strong>要进行shuffle是存储决定的。</strong></p>
+<p>　　Spark从这个教训中得到启发，spark会把key进行分区，也就是key的hashcode进行分区，相同的key，hashcode肯定是一样的，所以它进行分区的时候100t的数据分成10分，每部分10个t，它能确保相同的key肯定在一个分区里面，而且它能保证存储的时候相同的key能够存在同一个节点上。比如一个rdd分成了100份，集群有10个节点，所以每个节点存10份，每一分称为每个分区，spark能保证相同的key存在同一个节点上，实际上相同的key存在同一个分区。</p>
+<p>　　key的分布不均决定了有的分区大有的分区小。没法分区保证完全相等，但它会保证在一个接近的范围。所以mapreduce里面做的某些工作里边，spark就不需要shuffle了，spark解决网络传输这块的根本原理就是这个。</p>
+<p>　　进行join的时候是两个表，不可能把两个表都分区好，通常情况下是把用的频繁的大表事先进行分区，小表进行关联它的时候小表进行shuffle过程。</p>
+<p>　　大表不需要shuffle。　　</p>
+<p>　　需要在工作节点间进行数据混洗的转换极大地受益于分区。这样的转换是  cogroup，groupWith，join，leftOuterJoin，rightOuterJoin，groupByKey，reduceByKey，combineByKey 和lookup。</p>
+<p>　　<strong>分区是可配置的，只要RDD是基于键值对的即可</strong>。</p>
+<h2 id="二、Spark分区原则及方法"><a href="#二、Spark分区原则及方法" class="headerlink" title="二、Spark分区原则及方法"></a>二、Spark分区原则及方法</h2><p>RDD分区的一个<strong>分区原则：尽可能是得分区的个数等于集群核心数目</strong></p>
+<p>无论是本地模式、Standalone模式、YARN模式或Mesos模式，我们都可以<strong>通过spark.default.parallelism来配置其默认分区个数</strong>，若没有设置该值，则根据不同的集群环境确定该值</p>
+<h3 id="2-1-本地模式"><a href="#2-1-本地模式" class="headerlink" title="2.1　本地模式"></a>2.1　本地模式</h3><h4 id="（1）默认方式"><a href="#（1）默认方式" class="headerlink" title="（1）默认方式"></a>（1）默认方式</h4><p>以下这种默认方式就一个分区</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184117132-933712151.png" alt="img"></p>
+<p>结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184211834-340940238.png" alt="img"></p>
+<h4 id="（2）手动设置"><a href="#（2）手动设置" class="headerlink" title="（2）手动设置"></a>（2）手动设置</h4><p>设置了几个分区就是几个分区</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184315304-1438737967.png" alt="img"></p>
+<p>结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184417483-992690743.png" alt="img"></p>
+<h4 id="（3）跟local-n-有关"><a href="#（3）跟local-n-有关" class="headerlink" title="（3）跟local[n] 有关"></a>（3）跟local[n] 有关</h4><p>n等于几默认就是几个分区</p>
+<p>如果n=* 那么分区个数就等于cpu core的个数</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184602132-1762283216.png" alt="img"></p>
+<p>结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184628115-1042310352.png" alt="img"></p>
+<p>本机电脑查看cpu core，我的电脑–》右键管理–》设备管理器–》处理器</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503184724600-1103843046.png" alt="img"></p>
+<h4 id="（4）参数控制"><a href="#（4）参数控制" class="headerlink" title="（4）参数控制"></a>（4）参数控制</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503185007050-446009891.png" alt="img"></p>
+<p>结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503185028293-1238150539.png" alt="img"></p>
+<h3 id="2-2-YARN模式"><a href="#2-2-YARN模式" class="headerlink" title="2.2　YARN模式"></a>2.2　YARN模式</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503190552013-885991110.png" alt="img"></p>
+<p> 进入defaultParallelism方法</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503190651046-910979790.png" alt="img"></p>
+<p>继续进入defaultParallelism方法</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503190749812-1860089737.png" alt="img"></p>
+<p>这个一个trait，其实现类是（Ctrl+h）</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503190853986-1549098382.png" alt="img"></p>
+<p>进入TaskSchedulerImpl类找到defaultParallelism方法</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503190937719-848606303.png" alt="img"></p>
+<p>继续进入defaultParallelism方法，又是一个trait，看其实现类</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503191109902-1222100636.png" alt="img"></p>
+<p>Ctrl+h看SchedulerBackend类的实现类</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503191213525-716329324.png" alt="img"></p>
+<p>进入CoarseGrainedSchedulerBackend找到defaultParallelism</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503191320589-992961865.png" alt="img"></p>
+<p><strong>totalCoreCount.get()是所有executor使用的core总数，和2比较去较大值</strong></p>
+<p><strong>如果正常的情况下，那你设置了多少就是多少</strong></p>
+<h2 id="四、分区器"><a href="#四、分区器" class="headerlink" title="四、分区器"></a>四、分区器</h2><p>（1）如果是从HDFS里面读取出来的数据，不需要分区器。因为HDFS本来就分好区了。</p>
+<p>　　  分区数我们是可以控制的，但是没必要有分区器。</p>
+<p>（2）非key-value RDD分区，没必要设置分区器</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">al testRDD = sc.textFile(<span class="string">"C:\\Users\\Administrator\\IdeaProjects\\myspark\\src\\main\\hello.txt"</span>)</span><br><span class="line">  .flatMap(line =&gt; line.split(<span class="string">","</span>))</span><br><span class="line">  .map(word =&gt; (word, <span class="number">1</span>)).partitionBy(<span class="keyword">new</span> <span class="type">HashPartitioner</span>(<span class="number">2</span>))</span><br><span class="line">　　没必要设置，但是非要设置也行。</span><br></pre></td></tr></table></figure>
+
+<p>（3）Key-value形式的时候，我们就有必要了。</p>
+<p><strong>HashPartitioner</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> resultRDD = testRDD.reduceByKey(<span class="keyword">new</span> <span class="type">HashPartitioner</span>(<span class="number">2</span>),(x:<span class="type">Int</span>,y:<span class="type">Int</span>) =&gt; x+ y)</span><br><span class="line"><span class="comment">//如果不设置默认也是HashPartitoiner，分区数跟spark.default.parallelism一样</span></span><br><span class="line">println(resultRDD.partitioner)</span><br><span class="line">println(<span class="string">"resultRDD"</span>+resultRDD.getNumPartitions)</span><br></pre></td></tr></table></figure>
+
+<p><strong>RangePartitioner</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> resultRDD = testRDD.reduceByKey((x:<span class="type">Int</span>,y:<span class="type">Int</span>) =&gt; x+ y)</span><br><span class="line"><span class="keyword">val</span> newresultRDD=resultRDD.partitionBy(<span class="keyword">new</span> <span class="type">RangePartitioner</span>[<span class="type">String</span>,<span class="type">Int</span>](<span class="number">3</span>,resultRDD))</span><br><span class="line">println(newresultRDD.partitioner)</span><br><span class="line">println(<span class="string">"newresultRDD"</span>+newresultRDD.getNumPartitions)</span><br><span class="line">注：按照范围进行分区的，如果是字符串，那么就按字典顺序的范围划分。如果是数字，就按数据自的范围划分。</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>自定义分区</strong></p>
+<p><strong>需要实现2个方法</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPartitoiner</span>(<span class="params">val numParts:<span class="type">Int</span></span>) <span class="keyword">extends</span>  <span class="title">Partitioner</span></span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">numPartitions</span></span>: <span class="type">Int</span> = numParts</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">getPartition</span></span>(key: <span class="type">Any</span>): <span class="type">Int</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> domain = <span class="keyword">new</span> <span class="type">URL</span>(key.toString).getHost</span><br><span class="line">    <span class="keyword">val</span> code = (domain.hashCode % numParts)</span><br><span class="line">    <span class="keyword">if</span> (code &lt; <span class="number">0</span>) &#123;</span><br><span class="line">      code + numParts</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      code</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">DomainNamePartitioner</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"word count"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> urlRDD = sc.makeRDD(<span class="type">Seq</span>((<span class="string">"http://baidu.com/test"</span>, <span class="number">2</span>),</span><br><span class="line">      (<span class="string">"http://baidu.com/index"</span>, <span class="number">2</span>), (<span class="string">"http://ali.com"</span>, <span class="number">3</span>), (<span class="string">"http://baidu.com/tmmmm"</span>, <span class="number">4</span>),</span><br><span class="line">      (<span class="string">"http://baidu.com/test"</span>, <span class="number">4</span>)))</span><br><span class="line">    <span class="comment">//Array[Array[(String, Int)]]</span></span><br><span class="line">    <span class="comment">// = Array(Array(),</span></span><br><span class="line">    <span class="comment">// Array((http://baidu.com/index,2), (http://baidu.com/tmmmm,4),</span></span><br><span class="line">    <span class="comment">// (http://baidu.com/test,4), (http://baidu.com/test,2), (http://ali.com,3)))</span></span><br><span class="line">    <span class="keyword">val</span> hashPartitionedRDD = urlRDD.partitionBy(<span class="keyword">new</span> <span class="type">HashPartitioner</span>(<span class="number">2</span>))</span><br><span class="line">    hashPartitionedRDD.glom().collect()</span><br><span class="line"></span><br><span class="line">    <span class="comment">//使用spark-shell --jar的方式将这个partitioner所在的jar包引进去，然后测试下面的代码</span></span><br><span class="line">    <span class="comment">// spark-shell --master spark://master:7077 --jars spark-rdd-1.0-SNAPSHOT.jar</span></span><br><span class="line">    <span class="keyword">val</span> partitionedRDD = urlRDD.partitionBy(<span class="keyword">new</span> <span class="type">MyPartitoiner</span>(<span class="number">2</span>))</span><br><span class="line">    <span class="keyword">val</span> array = partitionedRDD.glom().collect()</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-18-Spark学习之路 （十八）SparkSQL简单使用.html" class="pre-post btn btn-default" title='Spark学习之路 （十八）SparkSQL简单使用'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十八）SparkSQL简单使用</span>
+    </a>
+    
+    
+    <a href="/2019-06-16-Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本.html" class="next-post btn btn-default" title='Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、为什么要进行分区"><span class="toc-text">一、为什么要进行分区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Spark分区原则及方法"><span class="toc-text">二、Spark分区原则及方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-本地模式"><span class="toc-text">2.1　本地模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）默认方式"><span class="toc-text">（1）默认方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）手动设置"><span class="toc-text">（2）手动设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）跟local-n-有关"><span class="toc-text">（3）跟local[n] 有关</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）参数控制"><span class="toc-text">（4）参数控制</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-YARN模式"><span class="toc-text">2.2　YARN模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、分区器"><span class="toc-text">四、分区器</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

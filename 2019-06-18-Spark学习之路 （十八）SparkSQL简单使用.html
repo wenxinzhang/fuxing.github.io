@@ -1,0 +1,409 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （十八）SparkSQL简单使用：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （十八）SparkSQL简...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （十八）SparkSQL简单使用 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （十八）SparkSQL简单使用">
+            
+            Spark学习之路 （十八）SparkSQL简单使用
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/18</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （十八）SparkSQL简单使用：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （十八）SparkSQL简单使用</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、SparkSQL的进化之路"><a href="#一、SparkSQL的进化之路" class="headerlink" title="一、SparkSQL的进化之路"></a>一、SparkSQL的进化之路</h2><p>1.0以前：    Shark</p>
+<p>1.1.x：         SparkSQL(只是测试性的)  SQL</p>
+<p>1.3.x:            SparkSQL(正式版本)+Dataframe</p>
+<p>1.5.x:            SparkSQL 钨丝计划</p>
+<p>1.6.x：         SparkSQL+DataFrame+DataSet(测试版本)</p>
+<p>2.x   :            SparkSQL+DataFrame+DataSet(正式版本)</p>
+<p>​                      SparkSQL:还有其他的优化</p>
+<p>​                      StructuredStreaming(DataSet)</p>
+<h2 id="二、认识SparkSQL"><a href="#二、认识SparkSQL" class="headerlink" title="二、认识SparkSQL"></a>二、认识SparkSQL</h2><h3 id="2-1-什么是SparkSQL"><a href="#2-1-什么是SparkSQL" class="headerlink" title="2.1　什么是SparkSQL?"></a>2.1　什么是SparkSQL?</h3><p>spark SQL是spark的一个模块，主要用于进行结构化数据的处理。它提供的最核心的编程抽象就是DataFrame。</p>
+<h3 id="2-2-SparkSQL的作用"><a href="#2-2-SparkSQL的作用" class="headerlink" title="2.2　SparkSQL的作用"></a>2.2　SparkSQL的作用</h3><p>提供一个编程抽象（DataFrame） 并且作为分布式 SQL 查询引擎</p>
+<p>DataFrame：它可以根据很多源进行构建，包括：<strong>结构化的数据文件，hive中的表，外部的关系型数据库，以及RDD</strong></p>
+<h3 id="2-3-运行原理"><a href="#2-3-运行原理" class="headerlink" title="2.3　运行原理"></a>2.3　运行原理</h3><p>将 Spark SQL 转化为 RDD， 然后提交到集群执行</p>
+<h3 id="2-4-特点"><a href="#2-4-特点" class="headerlink" title="2.4　特点"></a>2.4　特点</h3><p>（1）容易整合</p>
+<p>（2）统一的数据访问方式</p>
+<p>（3）兼容 Hive</p>
+<p>（4）标准的数据连接</p>
+<h3 id="2-5-SparkSession"><a href="#2-5-SparkSession" class="headerlink" title="2.5　SparkSession"></a>2.5　SparkSession</h3><p>SparkSession是Spark 2.0引如的新概念。SparkSession为用户提供了统一的切入点，来让用户学习spark的各项功能。<br>  在spark的早期版本中，SparkContext是spark的主要切入点，由于RDD是主要的API，我们通过sparkcontext来创建和操作RDD。对于每个其他的API，我们需要使用不同的context。例如，对于Streming，我们需要使用StreamingContext；对于sql，使用sqlContext；对于Hive，使用hiveContext。但是随着DataSet和DataFrame的API逐渐成为标准的API，就需要为他们建立接入点。所以在spark2.0中，引入SparkSession作为DataSet和DataFrame API的切入点，SparkSession封装了SparkConf、SparkContext和SQLContext。为了向后兼容，SQLContext和HiveContext也被保存下来。<br>　　<br>　　SparkSession实质上是SQLContext和HiveContext的组合（未来可能还会加上StreamingContext），所以在SQLContext和HiveContext上可用的API在SparkSession上同样是可以使用的。SparkSession内部封装了sparkContext，所以计算实际上是由sparkContext完成的。</p>
+<p>特点：</p>
+<p>　　 <strong>—-</strong> <strong>为用户提供一个统一的切入点使用Spark 各项功能</strong></p>
+<p>​        <strong>—-</strong> <strong>允许用户通过它调用 DataFrame 和 Dataset 相关 API 来编写程序</strong></p>
+<p>​        <strong>—-</strong> <strong>减少了用户需要了解的一些概念，可以很容易的与 Spark 进行交互</strong></p>
+<p>​        <strong>—-</strong> <strong>与 Spark 交互之时不需要显示的创建 SparkConf, SparkContext 以及 SQlContext，这些对象已经封闭在 SparkSession 中</strong></p>
+<h3 id="2-7-DataFrames"><a href="#2-7-DataFrames" class="headerlink" title="2.7　DataFrames"></a><strong>2.7　DataFrames</strong></h3><p>在Spark中，DataFrame是一种以RDD为基础的分布式数据集，类似于传统数据库中的二维表格。DataFrame与RDD的主要区别在于，前者带有schema元信息，即DataFrame所表示的二维表数据集的每一列都带有名称和类型。这使得Spark SQL得以洞察更多的结构信息，从而对藏于DataFrame背后的数据源以及作用于DataFrame之上的变换进行了针对性的优化，最终达到大幅提升运行时效率的目标。反观RDD，由于无从得知所存数据元素的具体内部结构，Spark Core只能在stage层面进行简单、通用的流水线优化。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503195056657-1280315007.png" alt="img"></p>
+<h2 id="三、RDD转换成为DataFrame"><a href="#三、RDD转换成为DataFrame" class="headerlink" title="三、RDD转换成为DataFrame"></a>三、RDD转换成为DataFrame</h2><p>使用spark1.x版本的方式</p>
+<p>测试数据目录：/home/hadoop/apps/spark/examples/src/main/resources（spark的安装目录里面）</p>
+<p>people.txt</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503195656260-525846269.png" alt="img"></p>
+<h3 id="3-1-方式一：通过-case-class-创建-DataFrames（反射）"><a href="#3-1-方式一：通过-case-class-创建-DataFrames（反射）" class="headerlink" title="3.1　方式一：通过 case class 创建 DataFrames（反射）"></a>3.1　方式一：<strong>通过 case class 创建 DataFrames（反射）</strong></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//定义case class，相当于表结构</span><br><span class="line">case class People(var name:String,var age:Int)</span><br><span class="line">object TestDataFrame1 &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setAppName("RDDToDataFrame").setMaster("local")</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val context = new SQLContext(sc)</span><br><span class="line">    // 将本地的数据读入 RDD， 并将 RDD 与 case class 关联</span><br><span class="line">    val peopleRDD = sc.textFile("E:\\666\\people.txt")</span><br><span class="line">      .map(line =&gt; People(line.split(",")(0), line.split(",")(1).trim.toInt))</span><br><span class="line">    import context.implicits._</span><br><span class="line">    // 将RDD 转换成 DataFrames</span><br><span class="line">    val df = peopleRDD.toDF</span><br><span class="line">    //将DataFrames创建成一个临时的视图</span><br><span class="line">    df.createOrReplaceTempView("people")</span><br><span class="line">    //使用SQL语句进行查询</span><br><span class="line">    context.sql("select * from people").show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503202629907-1000361533.png" alt="img"></p>
+<h3 id="3-2-方式二：通过-structType-创建-DataFrames（编程接口）"><a href="#3-2-方式二：通过-structType-创建-DataFrames（编程接口）" class="headerlink" title="3.2　方式二：通过 structType 创建 DataFrames（编程接口）"></a>3.2　方式二：<strong>通过 structType 创建 DataFrames（编程接口）</strong></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">object TestDataFrame2 &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setAppName("TestDataFrame2").setMaster("local")</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val sqlContext = new SQLContext(sc)</span><br><span class="line">    val fileRDD = sc.textFile("E:\\666\\people.txt")</span><br><span class="line">    // 将 RDD 数据映射成 Row，需要 import org.apache.spark.sql.Row</span><br><span class="line">    val rowRDD: RDD[Row] = fileRDD.map(line =&gt; &#123;</span><br><span class="line">      val fields = line.split(",")</span><br><span class="line">      Row(fields(0), fields(1).trim.toInt)</span><br><span class="line">    &#125;)</span><br><span class="line">    // 创建 StructType 来定义结构</span><br><span class="line">    val structType: StructType = StructType(</span><br><span class="line">      //字段名，字段类型，是否可以为空</span><br><span class="line">      StructField("name", StringType, true) ::</span><br><span class="line">        StructField("age", IntegerType, true) :: Nil</span><br><span class="line">    )</span><br><span class="line">    /**</span><br><span class="line">      * rows: java.util.List[Row],</span><br><span class="line">      * schema: StructType</span><br><span class="line">      * */</span><br><span class="line">    val df: DataFrame = sqlContext.createDataFrame(rowRDD,structType)</span><br><span class="line">    df.createOrReplaceTempView("people")</span><br><span class="line">    sqlContext.sql("select * from people").show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503202905865-1517500300.png" alt="img"></p>
+<h3 id="3-3-方式三：通过-json-文件创建-DataFrames"><a href="#3-3-方式三：通过-json-文件创建-DataFrames" class="headerlink" title="3.3　方式三：通过 json 文件创建 DataFrames"></a>3.3　方式三：<strong>通过 json 文件创建 DataFrames</strong></h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">object TestDataFrame3 &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setAppName("TestDataFrame2").setMaster("local")</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val sqlContext = new SQLContext(sc)</span><br><span class="line">    val df: DataFrame = sqlContext.read.json("E:\\666\\people.json")</span><br><span class="line">    df.createOrReplaceTempView("people")</span><br><span class="line">    sqlContext.sql("select * from people").show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503203759442-1628348320.png" alt="img"></p>
+<h2 id="四、DataFrame的read和save和savemode"><a href="#四、DataFrame的read和save和savemode" class="headerlink" title="四、DataFrame的read和save和savemode"></a>四、DataFrame的read和save和savemode</h2><h3 id="4-1-数据的读取"><a href="#4-1-数据的读取" class="headerlink" title="4.1　数据的读取"></a>4.1　数据的读取</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">object TestRead &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setAppName("TestDataFrame2").setMaster("local")</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val sqlContext = new SQLContext(sc)</span><br><span class="line">    //方式一</span><br><span class="line">    val df1 = sqlContext.read.json("E:\\666\\people.json")</span><br><span class="line">    val df2 = sqlContext.read.parquet("E:\\666\\users.parquet")</span><br><span class="line">    //方式二</span><br><span class="line">    val df3 = sqlContext.read.format("json").load("E:\\666\\people.json")</span><br><span class="line">    val df4 = sqlContext.read.format("parquet").load("E:\\666\\users.parquet")</span><br><span class="line">    //方式三，默认是parquet格式</span><br><span class="line">    val df5 = sqlContext.load("E:\\666\\users.parquet")</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-数据的保存"><a href="#4-2-数据的保存" class="headerlink" title="4.2　数据的保存"></a>4.2　数据的保存</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">object TestSave &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setAppName("TestDataFrame2").setMaster("local")</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val sqlContext = new SQLContext(sc)</span><br><span class="line">    val df1 = sqlContext.read.json("E:\\666\\people.json")</span><br><span class="line">    //方式一</span><br><span class="line">    df1.write.json("E:\\111")</span><br><span class="line">    df1.write.parquet("E:\\222")</span><br><span class="line">    //方式二</span><br><span class="line">    df1.write.format("json").save("E:\\333")</span><br><span class="line">    df1.write.format("parquet").save("E:\\444")</span><br><span class="line">    //方式三</span><br><span class="line">    df1.write.save("E:\\555")</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-数据的保存模式"><a href="#4-3-数据的保存模式" class="headerlink" title="4.3　数据的保存模式"></a>4.3　数据的保存模式</h3><p>使用mode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df1.write.format(&quot;parquet&quot;).mode(SaveMode.Ignore).save(&quot;E:\\444&quot;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503211638036-705055493.png" alt="img"></p>
+<h2 id="五、数据源"><a href="#五、数据源" class="headerlink" title="五、数据源"></a>五、数据源</h2><h3 id="5-1-数据源只json"><a href="#5-1-数据源只json" class="headerlink" title="5.1　数据源只json"></a>5.1　数据源只json</h3><p>参考4.1</p>
+<h3 id="5-2-数据源之parquet"><a href="#5-2-数据源之parquet" class="headerlink" title="5.2　数据源之parquet"></a>5.2　数据源之parquet</h3><p>参考4.1</p>
+<h3 id="5-3-数据源之Mysql"><a href="#5-3-数据源之Mysql" class="headerlink" title="5.3　数据源之Mysql"></a>5.3　数据源之Mysql</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestMysql</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setAppName(<span class="string">"TestMysql"</span>).setMaster(<span class="string">"local"</span>)</span><br><span class="line">    <span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line">    <span class="keyword">val</span> sqlContext = <span class="keyword">new</span> <span class="type">SQLContext</span>(sc)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> url = <span class="string">"jdbc:mysql://192.168.123.102:3306/hivedb"</span></span><br><span class="line">    <span class="keyword">val</span> table = <span class="string">"dbs"</span></span><br><span class="line">    <span class="keyword">val</span> properties = <span class="keyword">new</span> <span class="type">Properties</span>()</span><br><span class="line">    properties.setProperty(<span class="string">"user"</span>,<span class="string">"root"</span>)</span><br><span class="line">    properties.setProperty(<span class="string">"password"</span>,<span class="string">"root"</span>)</span><br><span class="line">    <span class="comment">//需要传入Mysql的URL、表明、properties（连接数据库的用户名密码）</span></span><br><span class="line">    <span class="keyword">val</span> df = sqlContext.read.jdbc(url,table,properties)</span><br><span class="line">    df.createOrReplaceTempView(<span class="string">"dbs"</span>)</span><br><span class="line">    sqlContext.sql(<span class="string">"select * from dbs"</span>).show()</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180503215248558-1665335084.png" alt="img"></p>
+<h3 id="5-4-数据源之Hive"><a href="#5-4-数据源之Hive" class="headerlink" title="5.4　数据源之Hive"></a>5.4　数据源之Hive</h3><h4 id="（1）准备工作"><a href="#（1）准备工作" class="headerlink" title="（1）准备工作"></a>（1）准备工作</h4><p>在pom.xml文件中添加依赖</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- https:<span class="comment">//mvnrepository.com/artifact/org.apache.spark/spark-hive --&gt;</span></span><br><span class="line">        &lt;dependency&gt;</span><br><span class="line">            &lt;groupId&gt;org.apache.spark&lt;/groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spark-hive_2<span class="number">.11</span>&lt;/artifactId&gt;</span><br><span class="line">            &lt;version&gt;<span class="number">2.3</span><span class="number">.0</span>&lt;/version&gt;</span><br><span class="line">        &lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+
+<p>开发环境则把resource文件夹下添加hive-site.xml文件，集群环境把hive的配置文件要发到$SPARK_HOME/conf目录下</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180504184547333-1552631388.png" alt="img"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;javax.jdo.option.ConnectionURL&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;jdbc:mysql://localhost:3306/hivedb?createDatabaseIfNotExist=true&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;JDBC connect string for a JDBC metastore&lt;/description&gt;</span><br><span class="line">                &lt;!-- 如果 mysql 和 hive 在同一个服务器节点，那么请更改 hadoop02 为 localhost --&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;javax.jdo.option.ConnectionDriverName&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;com.mysql.jdbc.Driver&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;Driver class name for a JDBC metastore&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;javax.jdo.option.ConnectionUserName&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;root&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;username to use against metastore database&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;javax.jdo.option.ConnectionPassword&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;root&lt;/value&gt;</span><br><span class="line">        &lt;description&gt;password to use against metastore database&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;property&gt;</span><br><span class="line">                &lt;name&gt;hive.metastore.warehouse.dir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;/hive/warehouse&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;hive default warehouse, if nessecory, change it&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;  </span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）测试代码"><a href="#（2）测试代码" class="headerlink" title="（2）测试代码"></a>（2）测试代码</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">object TestHive &#123;</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    val conf = new SparkConf().setMaster("local").setAppName(this.getClass.getSimpleName)</span><br><span class="line">    val sc = new SparkContext(conf)</span><br><span class="line">    val sqlContext = new HiveContext(sc)</span><br><span class="line">    sqlContext.sql("select * from myhive.student").show()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180504192745282-1160176093.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-18-DataSet和DataFrame区别和转换.html" class="pre-post btn btn-default" title='RDD、DataFrame和DataSet的区别是什么'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            RDD、DataFrame和DataSet的区别是什么</span>
+    </a>
+    
+    
+    <a href="/2019-06-17-Spark学习之路 （十七）Spark分区.html" class="next-post btn btn-default" title='Spark学习之路 （十七）Spark分区'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十七）Spark分区</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、SparkSQL的进化之路"><span class="toc-text">一、SparkSQL的进化之路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、认识SparkSQL"><span class="toc-text">二、认识SparkSQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-什么是SparkSQL"><span class="toc-text">2.1　什么是SparkSQL?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-SparkSQL的作用"><span class="toc-text">2.2　SparkSQL的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-运行原理"><span class="toc-text">2.3　运行原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-特点"><span class="toc-text">2.4　特点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-SparkSession"><span class="toc-text">2.5　SparkSession</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-DataFrames"><span class="toc-text">2.7　DataFrames</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、RDD转换成为DataFrame"><span class="toc-text">三、RDD转换成为DataFrame</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-方式一：通过-case-class-创建-DataFrames（反射）"><span class="toc-text">3.1　方式一：通过 case class 创建 DataFrames（反射）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-方式二：通过-structType-创建-DataFrames（编程接口）"><span class="toc-text">3.2　方式二：通过 structType 创建 DataFrames（编程接口）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-方式三：通过-json-文件创建-DataFrames"><span class="toc-text">3.3　方式三：通过 json 文件创建 DataFrames</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、DataFrame的read和save和savemode"><span class="toc-text">四、DataFrame的read和save和savemode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-数据的读取"><span class="toc-text">4.1　数据的读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-数据的保存"><span class="toc-text">4.2　数据的保存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-数据的保存模式"><span class="toc-text">4.3　数据的保存模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、数据源"><span class="toc-text">五、数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-数据源只json"><span class="toc-text">5.1　数据源只json</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-数据源之parquet"><span class="toc-text">5.2　数据源之parquet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-数据源之Mysql"><span class="toc-text">5.3　数据源之Mysql</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-数据源之Hive"><span class="toc-text">5.4　数据源之Hive</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）准备工作"><span class="toc-text">（1）准备工作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）测试代码"><span class="toc-text">（2）测试代码</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

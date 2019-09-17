@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本：** &lt;Excerpt in index | 首页摘要&gt;
+​        Sp...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本">
+            
+            Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/16</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （十六）SparkCore的源码解读（二）spark-submit提交脚本</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><p>上一篇主要是介绍了spark启动的一些脚本，这篇主要分析一下Spark源码中提交任务脚本的处理逻辑，从spark-submit一步步深入进去看看任务提交的整体流程,首先看一下整体的流程概要图：<br><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180502085945492-811482545.png" alt="img" style="zoom:200%;"></p>
+<h2 id="二、源码解读"><a href="#二、源码解读" class="headerlink" title="二、源码解读"></a>二、源码解读</h2><p>2.1　spark-submit</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> -z是检查后面变量是否为空（空则真） shell可以在双引号之内引用变量，单引号不可</span></span><br><span class="line"><span class="meta">#</span><span class="bash">这一步作用是检查SPARK_HOME变量是否为空，为空则执行<span class="keyword">then</span>后面程序</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="built_in">source</span>命令： <span class="built_in">source</span> filename作用在当前bash环境下读取并执行filename中的命令</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="variable">$0</span>代表shell脚本文件本身的文件名，这里即使spark-submit</span></span><br><span class="line"><span class="meta">#</span><span class="bash">dirname用于取得脚本文件所在目录 dirname <span class="variable">$0</span>取得当前脚本文件所在目录</span></span><br><span class="line"><span class="meta">#</span><span class="bash">$(命令)表示返回该命令的结果</span></span><br><span class="line"><span class="meta">#</span><span class="bash">故整个<span class="keyword">if</span>语句的含义是：如果SPARK_HOME变量没有设置值，则执行当前目录下的find-spark-home脚本文件，设置SPARK_HOME值</span></span><br><span class="line">if [ -z "$&#123;SPARK_HOME&#125;" ]; then</span><br><span class="line">  source "$(dirname "$0")"/find-spark-home</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">disable</span> randomized <span class="built_in">hash</span> <span class="keyword">for</span> string <span class="keyword">in</span> Python 3.3+</span></span><br><span class="line">export PYTHONHASHSEED=0</span><br><span class="line"><span class="meta">#</span><span class="bash">执行spark-class脚本，传递参数org.apache.spark.deploy.SparkSubmit 和<span class="string">"<span class="variable">$@</span>"</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash">这里<span class="variable">$@</span>表示之前spark-submit接收到的全部参数</span></span><br><span class="line">exec "$&#123;SPARK_HOME&#125;"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"</span><br></pre></td></tr></table></figure>
+
+<p>所以spark-submit脚本的整体逻辑就是：<br>首先 检查SPARK_HOME是否设置；if 已经设置 执行spark-class文件 否则加载执行find-spark-home文件 </p>
+<h3 id="2-2-find-spark-home"><a href="#2-2-find-spark-home" class="headerlink" title="2.2　find-spark-home"></a>2.2　find-spark-home</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">定义一个变量用于后续判断是否存在定义SPARK_HOME的python脚本文件</span></span><br><span class="line">FIND_SPARK_HOME_PYTHON_SCRIPT="$(cd "$(dirname "$0")"; pwd)/find_spark_home.py"</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Short cirtuit <span class="keyword">if</span> the user already has this <span class="built_in">set</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#如果SPARK_HOME为不为空值，成功退出程序</span></span></span><br><span class="line">if [ ! -z "$&#123;SPARK_HOME&#125;" ]; then</span><br><span class="line">   exit 0</span><br><span class="line"><span class="meta">#</span><span class="bash"> -f用于判断这个文件是否存在并且是否为常规文件，是的话为真，这里不存在为假，执行下面语句，给SPARK_HOME变量赋值</span></span><br><span class="line">elif [ ! -f "$FIND_SPARK_HOME_PYTHON_SCRIPT" ]; then</span><br><span class="line"><span class="meta">  #</span><span class="bash"> If we are not <span class="keyword">in</span> the same directory as find_spark_home.py we are not pip installed so we don<span class="string">'t</span></span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> need to search the different Python directories <span class="keyword">for</span> a Spark installation.</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> Note only that, <span class="keyword">if</span> the user has pip installed PySpark but is directly calling pyspark-shell or</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> spark-submit <span class="keyword">in</span> another directory we want to use that version of PySpark rather than the</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> pip installed version of PySpark.</span></span><br><span class="line">  export SPARK_HOME="$(cd "$(dirname "$0")"/..; pwd)"</span><br><span class="line">else</span><br><span class="line"><span class="meta">  #</span><span class="bash"> We are pip installed, use the Python script to resolve a reasonable SPARK_HOME</span></span><br><span class="line"><span class="meta">  #</span><span class="bash"> Default to standard python interpreter unless told otherwise</span></span><br><span class="line">  if [[ -z "$PYSPARK_DRIVER_PYTHON" ]]; then</span><br><span class="line">     PYSPARK_DRIVER_PYTHON="$&#123;PYSPARK_PYTHON:-"python"&#125;"</span><br><span class="line">  fi</span><br><span class="line">  export SPARK_HOME=$($PYSPARK_DRIVER_PYTHON "$FIND_SPARK_HOME_PYTHON_SCRIPT")</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+
+
+<p>可以看到，如果事先用户没有设定SPARK_HOME的值，这里程序也会自动设置并且将其注册为环境变量，供后面程序使用</p>
+<p>当SPARK_HOME的值设定完成之后，就会执行Spark-class文件，这也是我们分析的重要部分，源码如下：</p>
+<h3 id="2-3-spark-class"><a href="#2-3-spark-class" class="headerlink" title="2.3　spark-class"></a>2.3　spark-class</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/usr/bin/env bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash">依旧是检查设置SPARK_HOME的值</span></span><br><span class="line">if [ -z "$&#123;SPARK_HOME&#125;" ]; then</span><br><span class="line">  source "$(dirname "$0")"/find-spark-home</span><br><span class="line">fi</span><br><span class="line"><span class="meta">#</span><span class="bash">执行load-spark-env.sh脚本文件，主要目的在于加载设定一些变量值</span></span><br><span class="line"><span class="meta">#</span><span class="bash">设定spark-env.sh中的变量值到环境变量中，供后续使用</span></span><br><span class="line"><span class="meta">#</span><span class="bash">设定scala版本变量值</span></span><br><span class="line">. "$&#123;SPARK_HOME&#125;"/bin/load-spark-env.sh</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Find the java binary</span></span><br><span class="line"><span class="meta">#</span><span class="bash">检查设定java环境值</span></span><br><span class="line"><span class="meta">#</span><span class="bash">-n代表检测变量长度是否为0，不为0时候为真</span></span><br><span class="line"><span class="meta">#</span><span class="bash">如果已经安装Java没有设置JAVA_HOME,<span class="built_in">command</span> -v java返回的值为<span class="variable">$&#123;JAVA_HOME&#125;</span>/bin/java</span></span><br><span class="line">if [ -n "$&#123;JAVA_HOME&#125;" ]; then</span><br><span class="line">  RUNNER="$&#123;JAVA_HOME&#125;/bin/java"</span><br><span class="line">else</span><br><span class="line">  if [ "$(command -v java)" ]; then</span><br><span class="line">    RUNNER="java"</span><br><span class="line">  else</span><br><span class="line">    echo "JAVA_HOME is not set" &gt;&amp;2</span><br><span class="line">    exit 1</span><br><span class="line">  fi</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Find Spark jars.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">-d检测文件是否为目录，若为目录则为真</span></span><br><span class="line"><span class="meta">#</span><span class="bash">设置一些关联Class文件</span></span><br><span class="line">if [ -d "$&#123;SPARK_HOME&#125;/jars" ]; then</span><br><span class="line">  SPARK_JARS_DIR="$&#123;SPARK_HOME&#125;/jars"</span><br><span class="line">else</span><br><span class="line">  SPARK_JARS_DIR="$&#123;SPARK_HOME&#125;/assembly/target/scala-$SPARK_SCALA_VERSION/jars"</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ ! -d "$SPARK_JARS_DIR" ] &amp;&amp; [ -z "$SPARK_TESTING$SPARK_SQL_TESTING" ]; then</span><br><span class="line">  echo "Failed to find Spark jars directory ($SPARK_JARS_DIR)." 1&gt;&amp;2</span><br><span class="line">  echo "You need to build Spark with the target \"package\" before running this program." 1&gt;&amp;2</span><br><span class="line">  exit 1</span><br><span class="line">else</span><br><span class="line">  LAUNCH_CLASSPATH="$SPARK_JARS_DIR/*"</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Add the launcher build dir to the classpath <span class="keyword">if</span> requested.</span></span><br><span class="line">if [ -n "$SPARK_PREPEND_CLASSES" ]; then</span><br><span class="line">  LAUNCH_CLASSPATH="$&#123;SPARK_HOME&#125;/launcher/target/scala-$SPARK_SCALA_VERSION/classes:$LAUNCH_CLASSPATH"</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> For tests</span></span><br><span class="line">if [[ -n "$SPARK_TESTING" ]]; then</span><br><span class="line">  unset YARN_CONF_DIR</span><br><span class="line">  unset HADOOP_CONF_DIR</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> The launcher library will <span class="built_in">print</span> arguments separated by a NULL character, to allow arguments with</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> characters that would be otherwise interpreted by the shell. Read that <span class="keyword">in</span> a <span class="keyword">while</span> loop, populating</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> an array that will be used to <span class="built_in">exec</span> the final <span class="built_in">command</span>.</span></span><br><span class="line"><span class="meta">#</span><span class="bash"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> The <span class="built_in">exit</span> code of the launcher is appended to the output, so the parent shell removes it from the</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">command</span> array and checks the value to see <span class="keyword">if</span> the launcher succeeded.</span></span><br><span class="line"><span class="meta">#</span><span class="bash">执行类文件org.apache.spark.launcher.Main，返回解析后的参数</span></span><br><span class="line">build_command() &#123;</span><br><span class="line">  "$RUNNER" -Xmx128m -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"</span><br><span class="line">  printf "%d\0" $?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Turn off posix mode since it does not allow process substitution</span></span><br><span class="line"><span class="meta">#</span><span class="bash">将build_command方法解析后的参数赋给CMD</span></span><br><span class="line">set +o posix</span><br><span class="line">CMD=()</span><br><span class="line">while IFS= read -d '' -r ARG; do</span><br><span class="line">  CMD+=("$ARG")</span><br><span class="line">done &lt; &lt;(build_command "$@")</span><br><span class="line"></span><br><span class="line">COUNT=$&#123;#CMD[@]&#125;</span><br><span class="line">LAST=$((COUNT - 1))</span><br><span class="line">LAUNCHER_EXIT_CODE=$&#123;CMD[$LAST]&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Certain JVM failures result <span class="keyword">in</span> errors being printed to stdout (instead of stderr), <span class="built_in">which</span> causes</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> the code that parses the output of the launcher to get confused. In those cases, check <span class="keyword">if</span> the</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">exit</span> code is an <span class="built_in">integer</span>, and <span class="keyword">if</span> it<span class="string">'s not, handle it as a special error case.</span></span></span><br><span class="line">if ! [[ $LAUNCHER_EXIT_CODE =~ ^[0-9]+$ ]]; then</span><br><span class="line">  echo "$&#123;CMD[@]&#125;" | head -n-1 1&gt;&amp;2</span><br><span class="line">  exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ $LAUNCHER_EXIT_CODE != 0 ]; then</span><br><span class="line">  exit $LAUNCHER_EXIT_CODE</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">CMD=("$&#123;CMD[@]:0:$LAST&#125;")</span><br><span class="line"><span class="meta">#</span><span class="bash">执行CMD中的某个参数类org.apache.spark.deploy.SparkSubmit</span></span><br><span class="line">exec "$&#123;CMD[@]&#125;"</span><br></pre></td></tr></table></figure>
+
+
+
+<p>spark-class文件的执行逻辑稍显复杂，总体上应该是这样的：</p>
+<p>检查SPARK_HOME的值—-》执行load-spark-env.sh文件，设定一些需要用到的环境变量，如scala环境值，这其中也加载了spark-env.sh文件——-》检查设定java的执行路径变量值——-》寻找spark jars,设定一些引用相关类的位置变量——》执行类文件org.apache.spark.launcher.Main，返回解析后的参数给CMD——-》判断解析参数是否正确（代表了用户设置的参数是否正确）——–》正确的话执行org.apache.spark.deploy.SparkSubmit这个类</p>
+<h3 id="2-4-SparkSubmit"><a href="#2-4-SparkSubmit" class="headerlink" title="2.4　SparkSubmit"></a>2.4　SparkSubmit</h3><p>2.1最后提交语句，D:\src\spark-2.3.0\core\src\main\scala\org\apache\spark\deploy\SparkSubmit.scala</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec "$&#123;SPARK_HOME&#125;"/bin/spark-class org.apache.spark.deploy.SparkSubmit "$@"</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">// Initialize logging if it hasn't been done yet. Keep track of whether logging needs to</span></span><br><span class="line">    <span class="comment">// be reset before the application starts.</span></span><br><span class="line">    <span class="keyword">val</span> uninitLog = initializeLogIfNecessary(<span class="literal">true</span>, silent = <span class="literal">true</span>)</span><br><span class="line">    <span class="comment">//拿到submit脚本传入的参数</span></span><br><span class="line">    <span class="keyword">val</span> appArgs = <span class="keyword">new</span> <span class="type">SparkSubmitArguments</span>(args)</span><br><span class="line">    <span class="keyword">if</span> (appArgs.verbose) &#123;</span><br><span class="line">      <span class="comment">// scalastyle:off println</span></span><br><span class="line">      printStream.println(appArgs)</span><br><span class="line">      <span class="comment">// scalastyle:on println</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//根据传入的参数匹配对应的执行方法</span></span><br><span class="line">    appArgs.action <span class="keyword">match</span> &#123;</span><br><span class="line">        <span class="comment">//根据传入的参数提交命令</span></span><br><span class="line">      <span class="keyword">case</span> <span class="type">SparkSubmitAction</span>.<span class="type">SUBMIT</span> =&gt; submit(appArgs, uninitLog)</span><br><span class="line">        <span class="comment">//只有standalone和mesos集群模式才触发</span></span><br><span class="line">      <span class="keyword">case</span> <span class="type">SparkSubmitAction</span>.<span class="type">KILL</span> =&gt; kill(appArgs)</span><br><span class="line">      <span class="comment">//只有standalone和mesos集群模式才触发</span></span><br><span class="line">      <span class="keyword">case</span> <span class="type">SparkSubmitAction</span>.<span class="type">REQUEST_STATUS</span> =&gt; requestStatus(appArgs)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-4-1-submit十分关键，主要分为两步骤"><a href="#2-4-1-submit十分关键，主要分为两步骤" class="headerlink" title="2.4.1　submit十分关键，主要分为两步骤"></a>2.4.1　submit十分关键，主要分为两步骤</h4><p>（1）调用prepareSubmitEnvironment</p>
+<p>（2）调用doRunMain</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180502185922203-694329056.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-17-Spark学习之路 （十七）Spark分区.html" class="pre-post btn btn-default" title='Spark学习之路 （十七）Spark分区'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十七）Spark分区</span>
+    </a>
+    
+    
+    <a href="/2019-06-15-Spark学习之路 （十五）SparkCore的源码解读（一）启动脚本.html" class="next-post btn btn-default" title='Spark学习之路 （十五）SparkCore的源码解读（一）启动脚本'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十五）SparkCore的源码解读（一）启动脚本</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、概述"><span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、源码解读"><span class="toc-text">二、源码解读</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-find-spark-home"><span class="toc-text">2.2　find-spark-home</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-spark-class"><span class="toc-text">2.3　spark-class</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-SparkSubmit"><span class="toc-text">2.4　SparkSubmit</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-submit十分关键，主要分为两步骤"><span class="toc-text">2.4.1　submit十分关键，主要分为两步骤</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

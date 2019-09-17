@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Spark">
+
+
+<meta name="description" content="** RDD、DataFrame和DataSet的区别是什么：** &lt;Excerpt in index | 首页摘要&gt;
+​        RDD、DataFrame和DataSet是...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    RDD、DataFrame和DataSet的区别是什么 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="RDD、DataFrame和DataSet的区别是什么">
+            
+            RDD、DataFrame和DataSet的区别是什么
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/06/18</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** RDD、DataFrame和DataSet的区别是什么：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        RDD、DataFrame和DataSet是容易产生混淆的概念，必须对其相互之间对比，才可以知道其中异同：DataFrame多了数据的结构信息，即schema。RDD是分布式的 Java对象的集合。DataFrame是分布式的Row对象的集合。</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>RDD、DataFrame和DataSet是容易产生混淆的概念，必须对其相互之间对比，才可以知道其中异同。</p>
+<h2 id="RDD和DataFrame"><a href="#RDD和DataFrame" class="headerlink" title="RDD和DataFrame"></a>RDD和DataFrame</h2><p><img src="https://upload-images.jianshu.io/upload_images/2160494-08d7d2c7495fd300.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/607/format/webp" alt="img"></p>
+<p>RDD-DataFrame</p>
+<p>上图直观地体现了DataFrame和RDD的区别。左侧的RDD[Person]虽然以Person为类型参数，但Spark框架本身不了解 Person类的内部结构。而右侧的DataFrame却提供了详细的结构信息，使得Spark SQL可以清楚地知道该数据集中包含哪些列，每列的名称和类型各是什么。DataFrame多了数据的结构信息，即schema。RDD是分布式的 Java对象的集合。DataFrame是分布式的Row对象的集合。DataFrame除了提供了比RDD更丰富的算子以外，更重要的特点是提升执行效率、减少数据读取以及执行计划的优化，比如filter下推、裁剪等。</p>
+<h3 id="提升执行效率"><a href="#提升执行效率" class="headerlink" title="提升执行效率"></a>提升执行效率</h3><p>RDD API是函数式的，强调不变性，在大部分场景下倾向于创建新对象而不是修改老对象。这一特点虽然带来了干净整洁的API，却也使得Spark应用程序在运行期倾向于创建大量临时对象，对GC造成压力。在现有RDD API的基础之上，我们固然可以利用mapPartitions方法来重载RDD单个分片内的数据创建方式，用复用可变对象的方式来减小对象分配和GC的开销，但这牺牲了代码的可读性，而且要求开发者对Spark运行时机制有一定的了解，门槛较高。另一方面，Spark SQL在框架内部已经在各种可能的情况下尽量重用对象，这样做虽然在内部会打破了不变性，但在将数据返回给用户时，还会重新转为不可变数据。利用 DataFrame API进行开发，可以免费地享受到这些优化效果。</p>
+<h3 id="减少数据读取"><a href="#减少数据读取" class="headerlink" title="减少数据读取"></a>减少数据读取</h3><p>分析大数据，最快的方法就是 ——忽略它。这里的“忽略”并不是熟视无睹，而是根据查询条件进行恰当的剪枝。</p>
+<p>上文讨论分区表时提到的分区剪 枝便是其中一种——当查询的过滤条件中涉及到分区列时，我们可以根据查询条件剪掉肯定不包含目标数据的分区目录，从而减少IO。</p>
+<p>对于一些“智能”数据格 式，Spark SQL还可以根据数据文件中附带的统计信息来进行剪枝。简单来说，在这类数据格式中，数据是分段保存的，每段数据都带有最大值、最小值、null值数量等 一些基本的统计信息。当统计信息表名某一数据段肯定不包括符合查询条件的目标数据时，该数据段就可以直接跳过(例如某整数列a某段的最大值为100，而查询条件要求a &gt; 200)。</p>
+<p>此外，Spark SQL也可以充分利用RCFile、ORC、Parquet等列式存储格式的优势，仅扫描查询真正涉及的列，忽略其余列的数据。</p>
+<h3 id="执行优化"><a href="#执行优化" class="headerlink" title="执行优化"></a>执行优化</h3><p><img src="https://upload-images.jianshu.io/upload_images/2160494-c2423230fcc3841d.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/571/format/webp" alt="img"></p>
+<p>人口数据分析示例</p>
+<p>为了说明查询优化，我们来看上图展示的人口数据分析的示例。图中构造了两个DataFrame，将它们join之后又做了一次filter操作。如果原封不动地执行这个执行计划，最终的执行效率是不高的。因为join是一个代价较大的操作，也可能会产生一个较大的数据集。如果我们能将filter 下推到 join下方，先对DataFrame进行过滤，再join过滤后的较小的结果集，便可以有效缩短执行时间。而Spark SQL的查询优化器正是这样做的。简而言之，逻辑查询计划优化就是一个利用基于关系代数的等价变换，将高成本的操作替换为低成本操作的过程。</p>
+<p>得到的优化执行计划在转换成物 理执行计划的过程中，还可以根据具体的数据源的特性将过滤条件下推至数据源内。最右侧的物理执行计划中Filter之所以消失不见，就是因为溶入了用于执行最终的读取操作的表扫描节点内。</p>
+<p>对于普通开发者而言，查询优化 器的意义在于，即便是经验并不丰富的程序员写出的次优的查询，也可以被尽量转换为高效的形式予以执行。</p>
+<h2 id="RDD和DataSet"><a href="#RDD和DataSet" class="headerlink" title="RDD和DataSet"></a>RDD和DataSet</h2><p>DataSet以Catalyst逻辑执行计划表示，并且数据以编码的二进制形式被存储，不需要反序列化就可以执行sorting、shuffle等操作。</p>
+<p>DataSet创立需要一个显式的Encoder，把对象序列化为二进制，可以把对象的scheme映射为SparkSQl类型，然而RDD依赖于运行时反射机制。</p>
+<p>通过上面两点，DataSet的性能比RDD的要好很多。</p>
+<h2 id="DataFrame和DataSet"><a href="#DataFrame和DataSet" class="headerlink" title="DataFrame和DataSet"></a>DataFrame和DataSet</h2><p>DataSet跟DataFrame还是有挺大区别的，DataFrame开发都是写sql，但是DataSet是使用类似RDD的API。主要区别是Dataset每一个record存储的是一个强类型值而不是一个Row。</p>
+<h3 id="1-相同点："><a href="#1-相同点：" class="headerlink" title="(1)相同点："></a>(1)相同点：</h3><p>都是分布式数据集</p>
+<p>DataFrame底层是RDD，但是DataSet不是，不过他们最后都是转换成RDD运行</p>
+<p>DataSet和DataFrame的相同点都是有数据特征、数据类型的分布式数据集(schema)</p>
+<h3 id="2-不同点："><a href="#2-不同点：" class="headerlink" title="(2)不同点："></a>(2)不同点：</h3><p><strong>(a)schema信息：</strong></p>
+<p>RDD中的数据是没有数据类型的</p>
+<p>DataFrame中的数据是<strong>弱数据类型</strong>，不会做数据类型检查</p>
+<p>虽然有schema规定了数据类型，但是编译时是不会报错的，运行时才会报错</p>
+<p>DataSet中的数据类型是<strong>强数据类型</strong></p>
+<p><strong>(b)序列化机制：</strong></p>
+<p>RDD和DataFrame默认的序列化机制是java的序列化，可以修改为Kyro的机制</p>
+<p>DataSet使用自定义的数据编码器进行序列化和反序列化</p>
+<h2 id="创建方式："><a href="#创建方式：" class="headerlink" title="创建方式："></a>创建方式：</h2><h3 id="1-要使用toDS之前"><a href="#1-要使用toDS之前" class="headerlink" title="(1)要使用toDS之前"></a>(1)要使用toDS之前</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sqlContext.implicits._</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-将内存中的数据转换成DataSet"><a href="#2-将内存中的数据转换成DataSet" class="headerlink" title="(2)将内存中的数据转换成DataSet"></a>(2)将内存中的数据转换成DataSet</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Encoders for most common types are automatically provided by importing</span></span><br><span class="line"></span><br><span class="line">sqlContext.implicits._</span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> ds = <span class="type">Seq</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>).toDS()</span><br><span class="line">ds.map(_ + <span class="number">1</span>).collect() <span class="comment">// Returns: Array(2, 3, 4)</span></span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<p>collect()：返回一个Array，包含所有行信息</p>
+<p>Returns an array that contains all rows in this Dataset.</p>
+<h3 id="3-可以直接把case-class对象转化成DataSet"><a href="#3-可以直接把case-class对象转化成DataSet" class="headerlink" title="(3)可以直接把case class对象转化成DataSet"></a>(3)可以直接把case class对象转化成DataSet</h3><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Encoders are also created for case classes.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="params">name: <span class="type">String</span>, age: <span class="type">Long</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">val</span> <span class="title">ds</span> </span>= <span class="type">Seq</span>(<span class="type">Person</span>(<span class="string">"Andy"</span>, <span class="number">32</span>)).toDS()</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case-class"><a href="#4-将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case-class" class="headerlink" title="(4)将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case class"></a>(4)将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case class</h3><p>并且要求DataFrame的数据类型必须和case class一致(顺序也必须一致)</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> _0729DF</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.spark</span><br><span class="line"><span class="keyword">import</span> org.apache.spark.sql.&#123;<span class="type">Dataset</span>, <span class="type">SparkSession</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//import org.apache.spark</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Dataset</span> <span class="keyword">extends</span> <span class="title">App</span></span>&#123;</span><br><span class="line"><span class="comment">// import spark.implicits._</span></span><br><span class="line"><span class="comment">// val ds = Seq(1, 2, 3).toDS()</span></span><br><span class="line"><span class="comment">// ds.map(_ + 1).collect() // Returns: Array(2, 3, 4)</span></span><br><span class="line"><span class="comment">// // Encoders are also created for case classes.</span></span><br><span class="line"><span class="comment">// case class Person(name: String, age: Long)</span></span><br><span class="line"><span class="comment">// val ds = Seq(Person("Andy", 32)).toDS()</span></span><br><span class="line"><span class="comment">// ds.show</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> session = <span class="type">SparkSession</span>.builder()</span><br><span class="line">.appName(<span class="string">"app"</span>)</span><br><span class="line">.master(<span class="string">"local"</span>)</span><br><span class="line">.getOrCreate()</span><br><span class="line"><span class="keyword">val</span> sqlContext = session.sqlContext</span><br><span class="line"><span class="keyword">val</span> wcDs = sqlContext.read.textFile(<span class="string">"datas/halibote.txt"</span>)</span><br><span class="line"><span class="comment">// 导入隐式转换</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> session.implicits._</span><br><span class="line"><span class="keyword">val</span> wordData=wcDs.flatMap(_.split(<span class="string">" "</span>))</span><br><span class="line">wordData.createTempView(<span class="string">"t_word"</span>)</span><br><span class="line">wordData.show()</span><br><span class="line">    </span><br><span class="line"><span class="comment">//wordData.printSchema()</span></span><br><span class="line"><span class="comment">// Encoders for most common types are automatically provided by importing sqlContext.implicits._</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">val</span> ds=<span class="type">Seq</span>(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>).toDS()</span><br><span class="line">ds.map(_ + <span class="number">1</span>).collect() <span class="comment">// Returns: Array(2, 3, 4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// // Encoders are also created for case classes.</span></span><br><span class="line"><span class="comment">// case class Person(name: String, age: Long)</span></span><br><span class="line"><span class="comment">// val ds = Seq(Person("Andy", 32)).toDS()</span></span><br><span class="line"><span class="comment">// DataFrames can be converted to a Dataset by providing a class. Mapping will be done by name.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="params">age:<span class="type">Long</span>,name:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">val</span> <span class="title">path</span> </span>= <span class="string">"datas/people.json"</span></span><br><span class="line"><span class="keyword">val</span> people: <span class="type">Dataset</span>[<span class="type">Person</span>] = sqlContext.read.json(path).as[<span class="type">Person</span>]</span><br><span class="line">people.show()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用wordcount举例：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DataFrame</span></span><br><span class="line"><span class="comment">// Load a text file and interpret each line as a java.lang.String</span></span><br><span class="line"><span class="keyword">val</span> ds = sqlContext.read.text(<span class="string">"/home/spark/1.6/lines"</span>).as[<span class="type">String</span>]</span><br><span class="line"><span class="keyword">val</span> result = ds</span><br><span class="line">  .flatMap(_.split(<span class="string">" "</span>))              <span class="comment">// Split on whitespace</span></span><br><span class="line">  .filter(_ != <span class="string">""</span>)                    <span class="comment">// Filter empty words</span></span><br><span class="line">  .toDF()                              <span class="comment">// Convert to DataFrame to perform aggregation / sorting</span></span><br><span class="line">  .groupBy($<span class="string">"value"</span>)                  <span class="comment">// Count number of occurences of each word</span></span><br><span class="line">  .agg(count(<span class="string">"*"</span>) as <span class="string">"numOccurances"</span>)</span><br><span class="line">  .orderBy($<span class="string">"numOccurances"</span> desc)      <span class="comment">// Show most common words first</span></span><br></pre></td></tr></table></figure>
+
+<p>后面版本DataFrame会继承DataSet，DataFrame是面向Spark SQL的接口。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// DataSet,完全使用scala编程，不要切换到DataFrame</span></span><br><span class="line"><span class="keyword">val</span> wordCount = </span><br><span class="line">ds.flatMap(.split(<span class="string">" "</span>))</span><br><span class="line">  .filter( != <span class="string">""</span>)</span><br><span class="line">  .groupBy(_.toLowerCase())  <span class="comment">// Instead of grouping on a column expression (i.e. $"value") we pass a lambda function</span></span><br><span class="line">  .count()</span><br></pre></td></tr></table></figure>
+
+<p>DataFrame和DataSet可以相互转化， df.as[ElementType] 这样可以把DataFrame转化为DataSet， ds.toDF() 这样可以把DataSet转化为DataFrame。</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-06-19-Spark学习之路 （十九）SparkSQL的自定义函数UDF.html" class="pre-post btn btn-default" title='Spark学习之路 （十九）SparkSQL的自定义函数UDF'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十九）SparkSQL的自定义函数UDF</span>
+    </a>
+    
+    
+    <a href="/2019-06-18-Spark学习之路 （十八）SparkSQL简单使用.html" class="next-post btn btn-default" title='Spark学习之路 （十八）SparkSQL简单使用'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Spark学习之路 （十八）SparkSQL简单使用</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD和DataFrame"><span class="toc-text">RDD和DataFrame</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#提升执行效率"><span class="toc-text">提升执行效率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#减少数据读取"><span class="toc-text">减少数据读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#执行优化"><span class="toc-text">执行优化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RDD和DataSet"><span class="toc-text">RDD和DataSet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DataFrame和DataSet"><span class="toc-text">DataFrame和DataSet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-相同点："><span class="toc-text">(1)相同点：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-不同点："><span class="toc-text">(2)不同点：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建方式："><span class="toc-text">创建方式：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-要使用toDS之前"><span class="toc-text">(1)要使用toDS之前</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-将内存中的数据转换成DataSet"><span class="toc-text">(2)将内存中的数据转换成DataSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-可以直接把case-class对象转化成DataSet"><span class="toc-text">(3)可以直接把case class对象转化成DataSet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case-class"><span class="toc-text">(4)将DataFrame转换成DataSet，不过要求是DataFrame的数据类型必须是case class</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
