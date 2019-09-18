@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Scala">
+
+
+<meta name="description" content="** Scala学习之路 （十）Scala的Actor：** &lt;Excerpt in index | 首页摘要&gt;
+​        Scala学习之路 （十）Scala的Actor
+...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Scala学习之路 （十）Scala的Actor |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Scala学习之路 （十）Scala的Actor">
+            
+            Scala学习之路 （十）Scala的Actor
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/10</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Scala学习之路 （十）Scala的Actor：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Scala学习之路 （十）Scala的Actor</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、Scala中的并发编程"><a href="#一、Scala中的并发编程" class="headerlink" title="一、Scala中的并发编程"></a>一、Scala中的并发编程</h2><h3 id="1、Java中的并发编程"><a href="#1、Java中的并发编程" class="headerlink" title="1、Java中的并发编程"></a>1、Java中的并发编程</h3><p>①Java中的并发编程基本上满足了事件之间相互独立，但是事件能够同时发生的场景的需要。 </p>
+<p>②Java中的并发编程是基于共享数据和加锁的一种机制，即会有一个共享的数据，然后有若干个线程去访问这个共享的数据(主要是对这个共享的数据进行修改)，同时Java利用加锁的机制(即synchronized)来确保同一时间只有一个线程对我们的共享数据进行访问,进而保证共享数据的一致性。 </p>
+<p>③Java中的并发编程存在资源争夺和死锁等多种问题，因此程序越大问题越麻烦。 </p>
+<h3 id="2、Scala中的并发编程"><a href="#2、Scala中的并发编程" class="headerlink" title="2、Scala中的并发编程"></a>2、Scala中的并发编程</h3><p>①Scala中的并发编程思想与Java中的并发编程思想完全不一样，Scala中的Actor是一种不共享数据，依赖于消息传递的一种并发编程模式， 避免了死锁、资源争夺等情况。在具体实现的过程中，Scala中的Actor会不断的循环自己的邮箱，并通过receive偏函数进行消息的模式匹配并进行相应的处理。 </p>
+<p>②如果Actor A和 Actor B要相互沟通的话，首先A要给B传递一个消息，B会有一个收件箱，然后B会不断的循环自己的收件箱， 若看见A发过来的消息，B就会解析A的消息并执行，处理完之后就有可能将处理的结果通过邮件的方式发送给A。</p>
+<h2 id="二、Scala中的Actor"><a href="#二、Scala中的Actor" class="headerlink" title="二、Scala中的Actor"></a>二、Scala中的Actor</h2><h3 id="1、什么是Actor"><a href="#1、什么是Actor" class="headerlink" title="1、什么是Actor"></a>1、什么是Actor</h3><p>一个actor是一个容器，它包含 <strong>状态， 行为，信箱，子Actor 和 监管策略</strong>，所有这些包含在一个<strong>ActorReference（Actor引用）</strong>里。一个actor需要与外界隔离才能从actor模型中获益，所以<strong>actor是以actor引用的形式展现给外界的</strong>。</p>
+<h3 id="2、ActorSystem的层次结构"><a href="#2、ActorSystem的层次结构" class="headerlink" title="2、ActorSystem的层次结构"></a>2、ActorSystem的层次结构</h3><p>如果一个Actor中的业务逻辑非常复杂，为了降低代码的复杂度，可以将其拆分成多个子任务（在一个actor的内部可以创建一个或多个actor，actor的创建者也是该actor的监控者） </p>
+<p>一个ActorSystem应该被正确规划，例如哪一个Actor负责监控，监控什么等等：</p>
+<ul>
+<li><ul>
+<li>负责分发的actor管理接受任务的actor</li>
+<li>拥有重要数据的actor，找出所有可能丢失数据的子actor，并且处理他们的错误。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、ActorPath"><a href="#3、ActorPath" class="headerlink" title="3、ActorPath"></a>3、ActorPath</h3><p>ActorPath是通过字符串描述Actor的层级关系，并唯一标识一个Actor的方法。</p>
+<p>ActorPath包含协议，位置 和 Actor层级关系</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//本地path</span><br><span class="line">&quot;akka://my-sys/user/service-a/worker1&quot;   </span><br><span class="line"></span><br><span class="line">//远程path　　akka.tcp://（ActorSystem的名称）@（远程地址的IP）：（远程地址的端口）/user/（Actor的名称）</span><br><span class="line">&quot;akka.tcp://my-sys@host.example.com:5678/user/service-b&quot; </span><br><span class="line"></span><br><span class="line">//akka集群</span><br><span class="line">&quot;cluster://my-cluster/service-c&quot;</span><br></pre></td></tr></table></figure>
+
+<p> 远程地址不清楚是多少的话，可以在远程的服务启动的时候查看</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419201539137-507126956.png" alt="img"></p>
+<h3 id="4、获取Actor-Reference"><a href="#4、获取Actor-Reference" class="headerlink" title="4、获取Actor Reference"></a>4、获取Actor Reference</h3><p>获取Actor引用的方式有两种：创建 和 查找。 </p>
+<p>要创建Actor，可以调用ActorSystem.actorOf(..)，它创建的actor在guardian actor之下，接着可以调用ActorContext的actorOf(…) 在刚才创建的Actor内生成一个actor树。这些方法会返回新创建的actor的引用，每一个actor都可以通过访问ActorContext来获得自己（self），子Actor（children，child）和父actor（parent）。</p>
+<p>要查找Actor Reference，可以调用ActorSystem或ActorContext的actorSelection(“path”)，在查找ActorRef时，可以使用相对路径或绝对路径，如果是相对路径，可以用 .. 来表示parent actor。</p>
+<h4 id="actorOf-actorSelection-actorFor的区别"><a href="#actorOf-actorSelection-actorFor的区别" class="headerlink" title="actorOf / actorSelection / actorFor的区别"></a>actorOf / actorSelection / actorFor的区别</h4><blockquote>
+<ul>
+<li>actorOf 创建一个新的actor，创建的actor为调用该方法所属的context的直接子actor。</li>
+<li>actorSelection 查找现有actor，并不会创建新的actor。</li>
+<li>actorFor 查找现有actor，不创建新的actor，已过时。</li>
+</ul>
+</blockquote>
+<h3 id="5、Actor和ActorSystem"><a href="#5、Actor和ActorSystem" class="headerlink" title="5、Actor和ActorSystem"></a>5、Actor和ActorSystem</h3><p>Actor：<br>就是用来做消息传递的<br>用来接收和发送消息的，一个actor就相当于是一个老师或者是学生。<br>如果我们想要多个老师，或者学生，就需要创建多个actor实例。<br>ActorSystem:<br>用来创建和管理actor，并且还需要监控Actor。ActorSystem是单例的（object）<br>在同一个进程里面，只需要一个ActorSystem就可以了</p>
+<h2 id="三、Actor的示例"><a href="#三、Actor的示例" class="headerlink" title="三、Actor的示例"></a>三、Actor的示例</h2><h3 id="1、示例说明"><a href="#1、示例说明" class="headerlink" title="1、示例说明"></a>1、示例说明</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419202008412-1842122010.png" alt="img"></p>
+<h3 id="2、代码实现"><a href="#2、代码实现" class="headerlink" title="2、代码实现"></a>2、代码实现</h3><p>MyResourceManager.scala（服务端）</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rpc</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> akka.actor._</span><br><span class="line"><span class="keyword">import</span> com.typesafe.config.&#123;<span class="type">Config</span>, <span class="type">ConfigFactory</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.collection.mutable</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyResourceManager</span>(<span class="params">var resourceManagerHostName:<span class="type">String</span>, var resourceManagerPort:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Actor</span> </span>&#123;</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 定义一个Map,接受MyNodeManager的注册信息，key是主机名，</span></span><br><span class="line"><span class="comment">    * value是NodeManagerInfo对象，里面存储主机名、CPU和内存信息</span></span><br><span class="line"><span class="comment">    * */</span></span><br><span class="line">  <span class="keyword">var</span> registerMap = <span class="keyword">new</span> mutable.<span class="type">HashMap</span>[<span class="type">String</span>,<span class="type">NodeManagerInfo</span>]()</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 定义一个Set,接受MyNodeManager的注册信息，key是主机名，</span></span><br><span class="line"><span class="comment">    * value是NodeManagerInfo对象，里面存储主机名、CPU和内存信息</span></span><br><span class="line"><span class="comment">    * 实际上和上面的Map里面存档内容一样，容易变历，可以不用写，主要是模仿后面Spark里面的内容</span></span><br><span class="line"><span class="comment">    * 方便到时理解Spark源码</span></span><br><span class="line"><span class="comment">    * */</span></span><br><span class="line">  <span class="keyword">var</span> registerSet = <span class="keyword">new</span> mutable.<span class="type">HashSet</span>[<span class="type">NodeManagerInfo</span>]()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">preStart</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">import</span> scala.concurrent.duration._</span><br><span class="line">    <span class="keyword">import</span> context.dispatcher</span><br><span class="line">    context.system.scheduler.schedule(<span class="number">0</span> millis, <span class="number">5000</span> millis, self,<span class="type">CheckTimeOut</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//对MyNodeManager传过来的信息进行匹配</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">receive</span></span>: <span class="type">Receive</span> = &#123;</span><br><span class="line">    <span class="comment">//匹配到NodeManager的注册信息进行对应处理</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">NodeManagerRegisterMsg</span>(nodeManagerID,cpu,memory) =&gt; &#123;</span><br><span class="line">      <span class="comment">//将注册信息实例化为一个NodeManagerInfo对象</span></span><br><span class="line">      <span class="keyword">val</span> registerMsg = <span class="keyword">new</span> <span class="type">NodeManagerInfo</span>(nodeManagerID,cpu,memory)</span><br><span class="line">      <span class="comment">//将注册信息存储到registerMap和registerSet里面，key是主机名，value是NodeManagerInfo对象</span></span><br><span class="line">      registerMap.put(nodeManagerID,registerMsg)</span><br><span class="line">      registerSet += registerMsg</span><br><span class="line">      <span class="comment">//注册成功之后，反馈个MyNodeManager一个成功的信息</span></span><br><span class="line">      sender() ! <span class="keyword">new</span> <span class="type">RegisterFeedbackMsg</span>(<span class="string">"注册成功!"</span> + resourceManagerHostName+<span class="string">":"</span>+resourceManagerPort)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//匹配到心跳信息做相应处理</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">HeartBeat</span>(nodeManagerID) =&gt; &#123;</span><br><span class="line">      <span class="comment">//获取当前时间</span></span><br><span class="line">      <span class="keyword">val</span> time:<span class="type">Long</span> = <span class="type">System</span>.currentTimeMillis()</span><br><span class="line">      <span class="comment">//根据nodeManagerID获取NodeManagerInfo对象</span></span><br><span class="line">      <span class="keyword">val</span> info = registerMap(nodeManagerID)</span><br><span class="line">      info.lastHeartBeatTime = time</span><br><span class="line">      <span class="comment">//更新registerMap和registerSet里面nodeManagerID对应的NodeManagerInfo对象信息(最后一次心跳时间)</span></span><br><span class="line">      registerMap(nodeManagerID) = info</span><br><span class="line">      registerSet += info</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//检测超时，对超时的数据从集合中删除</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">CheckTimeOut</span> =&gt; &#123;</span><br><span class="line">      <span class="keyword">var</span> time = <span class="type">System</span>.currentTimeMillis()</span><br><span class="line">      registerSet</span><br><span class="line">        .filter( nm =&gt; time - nm.lastHeartBeatTime &gt; <span class="number">10000</span>)</span><br><span class="line">        .foreach(deadnm =&gt; &#123;</span><br><span class="line">          registerSet -= deadnm</span><br><span class="line">          registerMap.remove(deadnm.nodeManagerID)</span><br><span class="line">        &#125;)</span><br><span class="line">      println(<span class="string">"当前注册成功的节点数："</span> + registerMap.size)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MyResourceManager</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 传参：</span></span><br><span class="line"><span class="comment">      *   ResourceManager的主机地址、端口号</span></span><br><span class="line"><span class="comment">      * */</span></span><br><span class="line">    <span class="keyword">val</span> <span class="type">RM_HOSTNAME</span> = args(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RM_PORT</span> = args(<span class="number">1</span>).toInt</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> str:<span class="type">String</span> =</span><br><span class="line">      <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">        |akka.actor.provider = "</span>akka.remote.<span class="type">RemoteActorRefProvider</span><span class="string">"</span></span><br><span class="line"><span class="string">        |akka.remote.netty.tcp.hostname =localhost</span></span><br><span class="line"><span class="string">        |akka.remote.netty.tcp.port=19888</span></span><br><span class="line"><span class="string">      "</span><span class="string">""</span>.stripMargin</span><br><span class="line">    <span class="keyword">val</span> conf: <span class="type">Config</span> = <span class="type">ConfigFactory</span>.parseString(str)</span><br><span class="line">    <span class="keyword">val</span> actorSystem = <span class="type">ActorSystem</span>(<span class="type">Conf</span>.<span class="type">RMAS</span>,conf)</span><br><span class="line">    actorSystem.actorOf(<span class="type">Props</span>(<span class="keyword">new</span> <span class="type">MyResourceManager</span>(<span class="type">RM_HOSTNAME</span>,<span class="type">RM_PORT</span>)),<span class="type">Conf</span>.<span class="type">RMA</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>MyNodeManager.scala（客户端）</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rpc</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.<span class="type">UUID</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> akka.actor._</span><br><span class="line"><span class="keyword">import</span> com.typesafe.config.&#123;<span class="type">Config</span>, <span class="type">ConfigFactory</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNodeManager</span>(<span class="params">resourceManagerHostName:<span class="type">String</span>,resourceManagerPort:<span class="type">Int</span>,cpu:<span class="type">Int</span>,memory:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Actor</span></span>&#123;</span><br><span class="line">  <span class="comment">//MyNodeManager的UUID</span></span><br><span class="line">  <span class="keyword">var</span> nodeManagerID:<span class="type">String</span> = _</span><br><span class="line">  <span class="keyword">var</span> rmref:<span class="type">ActorSelection</span> = _</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">preStart</span></span>(): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//获取MyResourceManager的Actor的引用</span></span><br><span class="line">    rmref = context.actorSelection(<span class="string">s"akka.tcp://<span class="subst">$&#123;Conf.RMAS&#125;</span>@<span class="subst">$&#123;resourceManagerHostName&#125;</span>:<span class="subst">$&#123;resourceManagerPort&#125;</span>/user/<span class="subst">$&#123;Conf.RMA&#125;</span>"</span>)</span><br><span class="line">    <span class="comment">//生成随机的UUID</span></span><br><span class="line">    nodeManagerID = <span class="type">UUID</span>.randomUUID().toString</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 向MyResourceManager发送注册信息</span></span><br><span class="line"><span class="comment">      * */</span></span><br><span class="line">    rmref ! <span class="type">NodeManagerRegisterMsg</span>(nodeManagerID,cpu,memory)</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//进行信息匹配</span></span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">receive</span></span>: <span class="type">Receive</span> = &#123;</span><br><span class="line">    <span class="comment">//匹配到注册成功之后MyResourceManager反馈回的信息，进行相应处理</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">RegisterFeedbackMsg</span>(feedbackMsg) =&gt; &#123;</span><br><span class="line">      <span class="comment">/**</span></span><br><span class="line"><span class="comment">        * initialDelay: FiniteDuration, 多久以后开始执行</span></span><br><span class="line"><span class="comment">        * interval:     FiniteDuration, 每隔多长时间执行一次</span></span><br><span class="line"><span class="comment">        * receiver:     ActorRef, 给谁发送这个消息</span></span><br><span class="line"><span class="comment">        * message:      Any  发送的消息是啥</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">      <span class="comment">//定时任务需要导入的工具包</span></span><br><span class="line">      <span class="keyword">import</span> scala.concurrent.duration._</span><br><span class="line">      <span class="keyword">import</span> context.dispatcher</span><br><span class="line">      <span class="comment">//定时向自己发送信息</span></span><br><span class="line">      context.system.scheduler.schedule(<span class="number">0</span> millis, <span class="number">3000</span> millis, self, <span class="type">SendMessage</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//匹配到SendMessage信息之后做相应处理</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">SendMessage</span> =&gt; &#123;</span><br><span class="line">      <span class="comment">//向MyResourceManager发送心跳信息</span></span><br><span class="line">      rmref ! <span class="type">HeartBeat</span>(nodeManagerID)</span><br><span class="line">      println(<span class="type">Thread</span>.currentThread().getId + <span class="string">":"</span> + <span class="type">System</span>.currentTimeMillis())</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MyNodeManager</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 传参：</span></span><br><span class="line"><span class="comment">      *   NodeManager的主机地址、端口号、CPU、内存</span></span><br><span class="line"><span class="comment">      *   ResourceManager的主机地址、端口号</span></span><br><span class="line"><span class="comment">      * */</span></span><br><span class="line">    <span class="keyword">val</span> <span class="type">NM_HOSTNAME</span> = args(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">NM_PORT</span> = args(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">NM_CPU</span>:<span class="type">Int</span> = args(<span class="number">2</span>).toInt</span><br><span class="line">    <span class="keyword">val</span> <span class="type">NM_MEMORY</span>:<span class="type">Int</span> = args(<span class="number">3</span>).toInt</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> <span class="type">RM_HOSTNAME</span> = args(<span class="number">4</span>)</span><br><span class="line">    <span class="keyword">val</span> <span class="type">RM_PORT</span> = args(<span class="number">5</span>).toInt</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> str:<span class="type">String</span> =</span><br><span class="line">      <span class="string">s""</span><span class="string">"</span></span><br><span class="line"><span class="string">        |akka.actor.provider = "</span>akka.remote.<span class="type">RemoteActorRefProvider</span><span class="string">"</span></span><br><span class="line"><span class="string">        |akka.remote.netty.tcp.hostname = $&#123;NM_HOSTNAME&#125;</span></span><br><span class="line"><span class="string">        |akka.remote.netty.tcp.port = $&#123;NM_PORT&#125;</span></span><br><span class="line"><span class="string">      "</span><span class="string">""</span>.stripMargin</span><br><span class="line">    <span class="keyword">val</span> conf: <span class="type">Config</span> = <span class="type">ConfigFactory</span>.parseString(str)</span><br><span class="line">    <span class="keyword">val</span> actorSystem = <span class="type">ActorSystem</span>(<span class="type">Conf</span>.<span class="type">NMAS</span>,conf)</span><br><span class="line">    actorSystem.actorOf(<span class="type">Props</span>(<span class="keyword">new</span> <span class="type">MyNodeManager</span>(<span class="type">RM_HOSTNAME</span>,<span class="type">RM_PORT</span>,<span class="type">NM_CPU</span>,<span class="type">NM_MEMORY</span>)),<span class="type">Conf</span>.<span class="type">NMA</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Conf.scala（配置文件）</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rpc</span><br><span class="line"></span><br><span class="line"><span class="comment">//避免硬编码</span></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Conf</span> </span>&#123;</span><br><span class="line">  <span class="comment">//ResourceManagerActorSystem</span></span><br><span class="line">  <span class="keyword">val</span> <span class="type">RMAS</span> = <span class="string">"MyRMActorSystem"</span></span><br><span class="line">  <span class="comment">//ResourceManagerActor</span></span><br><span class="line">  <span class="keyword">val</span> <span class="type">RMA</span> = <span class="string">"MyRMActor"</span></span><br><span class="line">  <span class="comment">//NodeManagerActorSystem</span></span><br><span class="line">  <span class="keyword">val</span> <span class="type">NMAS</span> = <span class="string">"MyNMActorSystem"</span></span><br><span class="line">  <span class="comment">//NodeManagerActor</span></span><br><span class="line">  <span class="keyword">val</span> <span class="type">NMA</span> = <span class="string">"MyNMactor"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Message.scala</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.rpc</span><br><span class="line"><span class="comment">//NodeManager注册信息</span></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">class</span> <span class="title">NodeManagerRegisterMsg</span>(<span class="params">val nodeManagerID:<span class="type">String</span>, var cpu:<span class="type">Int</span>, var memory:<span class="type">Int</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//ResourceManager接收到注册信息成功之后的返回信息</span></span></span><br><span class="line"><span class="class"><span class="title">case</span> <span class="title">class</span> <span class="title">RegisterFeedbackMsg</span>(<span class="params">val feedbackMsg: <span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//NodeManager的心跳信息</span></span></span><br><span class="line"><span class="class"><span class="title">case</span> <span class="title">class</span> <span class="title">HeartBeat</span>(<span class="params">val nodeManagerID:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//NodeManager注册信息</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">NodeManagerInfo</span>(<span class="params">val nodeManagerID:<span class="type">String</span>, var cpu:<span class="type">Int</span>, var memory:<span class="type">Int</span></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//定义一个属性，存储上一次的心跳时间</span></span><br><span class="line">  <span class="keyword">var</span> lastHeartBeatTime:<span class="type">Long</span> = _</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">case</span> <span class="class"><span class="keyword">object</span> <span class="title">SendMessage</span></span></span><br><span class="line"><span class="class"><span class="title">case</span> <span class="title">object</span> <span class="title">CheckTimeOut</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3、运行"><a href="#3、运行" class="headerlink" title="3、运行"></a>3、运行</h3><h4 id="（1）运行MyResourceManager"><a href="#（1）运行MyResourceManager" class="headerlink" title="（1）运行MyResourceManager"></a>（1）运行MyResourceManager</h4><p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419202501325-1299088212.png" alt="img"></p>
+<p>发现报错数组越界，原因是在启动时需要传入<strong>2个参数</strong></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419202655884-1641690964.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203056909-706519667.png" alt="img"></p>
+<p>重新启动，启动成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203128231-1041039527.png" alt="img"></p>
+<h4 id="2、运行MyNodeManager"><a href="#2、运行MyNodeManager" class="headerlink" title="2、运行MyNodeManager"></a>2、运行MyNodeManager</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203254725-2061083589.png" alt="img"></p>
+<p>报相同的错误，不过此处需要传入6个参数</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203345875-1492099787.png" alt="img"></p>
+<p>重新启动，启动成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203424400-1724482315.png" alt="img"></p>
+<h4 id="3、观察MyResourceManager"><a href="#3、观察MyResourceManager" class="headerlink" title="3、观察MyResourceManager"></a>3、观察MyResourceManager</h4><p>发现有一个节点连接成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419203522147-1867579592.png" alt="img"></p>
+<h4 id="4、再启动一个MyNodeManager观察情况"><a href="#4、再启动一个MyNodeManager观察情况" class="headerlink" title="4、再启动一个MyNodeManager观察情况"></a>4、再启动一个MyNodeManager观察情况</h4><p>先修改MyNodeManager配置里面的端口</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419204356269-1589754138.png" alt="img"></p>
+<p>再启动</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419204438691-19651477.png" alt="img"></p>
+<p>启动成功之后观察MyResourceManager，此时有2个节点连接成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419204557625-765575853.png" alt="img"></p>
+<h4 id="5、关闭一个节点，观察情况"><a href="#5、关闭一个节点，观察情况" class="headerlink" title="5、关闭一个节点，观察情况"></a>5、关闭一个节点，观察情况</h4><p>集合中连接超时的成功删除</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180419204715553-280254975.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-04-22-Sqoop学习之路.html" class="pre-post btn btn-default" title='Sqoop学习之路'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Sqoop学习之路</span>
+    </a>
+    
+    
+    <a href="/2019-05-09-Scala学习之路 （九）Scala的上界和下届.html" class="next-post btn btn-default" title='Scala学习之路 （九）Scala的上界和下届'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Scala学习之路 （九）Scala的上界和下届</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Scala中的并发编程"><span class="toc-text">一、Scala中的并发编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、Java中的并发编程"><span class="toc-text">1、Java中的并发编程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Scala中的并发编程"><span class="toc-text">2、Scala中的并发编程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Scala中的Actor"><span class="toc-text">二、Scala中的Actor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是Actor"><span class="toc-text">1、什么是Actor</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、ActorSystem的层次结构"><span class="toc-text">2、ActorSystem的层次结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、ActorPath"><span class="toc-text">3、ActorPath</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、获取Actor-Reference"><span class="toc-text">4、获取Actor Reference</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#actorOf-actorSelection-actorFor的区别"><span class="toc-text">actorOf / actorSelection / actorFor的区别</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、Actor和ActorSystem"><span class="toc-text">5、Actor和ActorSystem</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Actor的示例"><span class="toc-text">三、Actor的示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、示例说明"><span class="toc-text">1、示例说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、代码实现"><span class="toc-text">2、代码实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、运行"><span class="toc-text">3、运行</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）运行MyResourceManager"><span class="toc-text">（1）运行MyResourceManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、运行MyNodeManager"><span class="toc-text">2、运行MyNodeManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、观察MyResourceManager"><span class="toc-text">3、观察MyResourceManager</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、再启动一个MyNodeManager观察情况"><span class="toc-text">4、再启动一个MyNodeManager观察情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、关闭一个节点，观察情况"><span class="toc-text">5、关闭一个节点，观察情况</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hive">
+
+
+<meta name="description" content="** Hive学习之路 （二十）Hive 执行过程实例分析：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （二十）Hive 执行过程实...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hive学习之路 （二十）Hive 执行过程实例分析 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hive学习之路 （二十）Hive 执行过程实例分析">
+            
+            Hive学习之路 （二十）Hive 执行过程实例分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/04/20</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hive学习之路 （二十）Hive 执行过程实例分析：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （二十）Hive 执行过程实例分析</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、Hive-执行过程概述"><a href="#一、Hive-执行过程概述" class="headerlink" title="一、Hive 执行过程概述"></a>一、Hive 执行过程概述</h2><h3 id="1、概述"><a href="#1、概述" class="headerlink" title="1、概述"></a>1、概述</h3><p>（1） Hive 将 HQL 转换成一组操作符（Operator），比如 GroupByOperator, JoinOperator 等</p>
+<p>（2）操作符 Operator 是 Hive 的最小处理单元</p>
+<p>（3）每个操作符代表一个 HDFS 操作或者 MapReduce 作业</p>
+<p>（4）Hive 通过 ExecMapper 和 ExecReducer 执行 MapReduce 程序，执行模式有本地模式和分 布式两种模式</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415144838165-35453427.png" alt="img"></p>
+<h3 id="2、Hive-操作符列表"><a href="#2、Hive-操作符列表" class="headerlink" title="2、Hive 操作符列表"></a>2、Hive 操作符列表</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415144858715-1662976456.png" alt="img"></p>
+<h3 id="3、Hive-编译器的工作职责"><a href="#3、Hive-编译器的工作职责" class="headerlink" title="3、Hive 编译器的工作职责"></a>3、Hive 编译器的工作职责</h3><p>（1）Parser：将 HQL 语句转换成抽象语法树（AST：Abstract Syntax Tree）</p>
+<p>（2）Semantic Analyzer：将抽象语法树转换成查询块</p>
+<p>（3）Logic Plan Generator：将查询块转换成逻辑查询计划</p>
+<p>（4）Logic Optimizer：重写逻辑查询计划，优化逻辑执行计划</p>
+<p>（5）Physical Plan Gernerator：将逻辑计划转化成物理计划（MapReduce Jobs）</p>
+<p>（6）Physical Optimizer：选择最佳的 Join 策略，优化物理执行计划</p>
+<h3 id="4、优化器类型"><a href="#4、优化器类型" class="headerlink" title="4、优化器类型"></a>4、优化器类型</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145116276-990825971.png" alt="img"></p>
+<p>上表中带①符号的，优化目的都是尽量将任务合并到一个 Job 中，以减少 Job 数量，带②的 优化目的是尽量减少 shuffle 数据量</p>
+<h2 id="二、join"><a href="#二、join" class="headerlink" title="二、join"></a>二、join</h2><h3 id="1、对于-join-操作"><a href="#1、对于-join-操作" class="headerlink" title="1、对于 join 操作"></a>1、对于 join 操作</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pv.pageid, u.age <span class="keyword">FROM</span> page_view pv <span class="keyword">JOIN</span> <span class="keyword">user</span> u <span class="keyword">ON</span> pv.userid = u.userid;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、实现过程"><a href="#2、实现过程" class="headerlink" title="2、实现过程"></a>2、实现过程</h3><blockquote>
+<p> <strong>Map</strong>：</p>
+<p>　　1、以 JOIN ON 条件中的列作为 Key，如果有多个列，则 Key 是这些列的组合</p>
+<p>　　2、以 JOIN 之后所关心的列作为 Value，当有多个列时，Value 是这些列的组合。在 Value 中还会包含表的 Tag 信息，用于标明此 Value 对应于哪个表</p>
+<p>　　3、按照 Key 进行排序</p>
+<p><strong>Shuffle</strong>：</p>
+<p>　　1、根据 Key 的值进行 Hash，并将 Key/Value 对按照 Hash 值推至不同对 Reduce 中</p>
+<p><strong>Reduce</strong>：</p>
+<p>　　1、 Reducer 根据 Key 值进行 Join 操作，并且通过 Tag 来识别不同的表中的数据</p>
+</blockquote>
+<h3 id="3、具体实现过程"><a href="#3、具体实现过程" class="headerlink" title="3、具体实现过程"></a>3、具体实现过程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145350148-1004247692.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145404099-741231817.png" alt="img"></p>
+<h2 id="三、Group-By"><a href="#三、Group-By" class="headerlink" title="三、Group By"></a>三、Group By</h2><h3 id="1、对于-group-by操作"><a href="#1、对于-group-by操作" class="headerlink" title="1、对于 group by操作"></a>1、对于 group by操作</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> pageid, age, <span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">FROM</span> pv_users <span class="keyword">GROUP</span> <span class="keyword">BY</span> pageid, age;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、实现过程-1"><a href="#2、实现过程-1" class="headerlink" title="2、实现过程"></a>2、实现过程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145530734-1261579451.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145542017-1372728782.png" alt="img"></p>
+<h2 id="四、Distinct"><a href="#四、Distinct" class="headerlink" title="四、Distinct"></a>四、Distinct</h2><h3 id="1、对于-distinct的操作"><a href="#1、对于-distinct的操作" class="headerlink" title="1、对于 distinct的操作"></a>1、对于 distinct的操作</h3><p>按照 age 分组，然后统计每个分组里面的不重复的 pageid 有多少个</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> age, <span class="keyword">count</span>(<span class="keyword">distinct</span> pageid) <span class="keyword">FROM</span> pv_users <span class="keyword">GROUP</span> <span class="keyword">BY</span> age;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、实现过程-2"><a href="#2、实现过程-2" class="headerlink" title="2、实现过程"></a>2、实现过程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180415145718259-315447256.png" alt="img"></p>
+<h3 id="3、详细过程解释"><a href="#3、详细过程解释" class="headerlink" title="3、详细过程解释"></a>3、详细过程解释</h3><p>该 SQL 语句会按照 age 和 pageid 预先分组，进行 distinct 操作。然后会再按 照 age 进行分组，再进行一次 distinct 操作</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-04-21-Hive学习之路 （二十一）Hive 优化策略.html" class="pre-post btn btn-default" title='Hive学习之路 （二十一）Hive 优化策略'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （二十一）Hive 优化策略</span>
+    </a>
+    
+    
+    <a href="/2019-04-19-Hive学习之路 （十九）Hive的数据倾斜.html" class="next-post btn btn-default" title='Hive学习之路 （十九）Hive的数据倾斜'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （十九）Hive的数据倾斜</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、Hive-执行过程概述"><span class="toc-text">一、Hive 执行过程概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、概述"><span class="toc-text">1、概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Hive-操作符列表"><span class="toc-text">2、Hive 操作符列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、Hive-编译器的工作职责"><span class="toc-text">3、Hive 编译器的工作职责</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、优化器类型"><span class="toc-text">4、优化器类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、join"><span class="toc-text">二、join</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、对于-join-操作"><span class="toc-text">1、对于 join 操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、实现过程"><span class="toc-text">2、实现过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、具体实现过程"><span class="toc-text">3、具体实现过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Group-By"><span class="toc-text">三、Group By</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、对于-group-by操作"><span class="toc-text">1、对于 group by操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、实现过程-1"><span class="toc-text">2、实现过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、Distinct"><span class="toc-text">四、Distinct</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、对于-distinct的操作"><span class="toc-text">1、对于 distinct的操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、实现过程-2"><span class="toc-text">2、实现过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、详细过程解释"><span class="toc-text">3、详细过程解释</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

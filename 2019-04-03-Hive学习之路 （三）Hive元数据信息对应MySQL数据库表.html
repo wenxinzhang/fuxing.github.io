@@ -1,0 +1,924 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hive">
+
+
+<meta name="description" content="** Hive学习之路 （三）Hive元数据信息对应MySQL数据库表：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （三）Hive元...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hive学习之路 （三）Hive元数据信息对应MySQL数据库表 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hive学习之路 （三）Hive元数据信息对应MySQL数据库表">
+            
+            Hive学习之路 （三）Hive元数据信息对应MySQL数据库表
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/04/03</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hive学习之路 （三）Hive元数据信息对应MySQL数据库表：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （三）Hive元数据信息对应MySQL数据库表</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Hive 的元数据信息通常存储在关系型数据库中，常用MySQL数据库作为元数据库管理。上一篇hive的安装也是将元数据信息存放在MySQL数据库中。</p>
+<p>Hive的元数据信息在MySQL数据中有57张表</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403183125168-938574711.png" alt="img"></p>
+<h2 id="一、存储Hive版本的元数据表（VERSION）"><a href="#一、存储Hive版本的元数据表（VERSION）" class="headerlink" title="一、存储Hive版本的元数据表（VERSION）"></a>一、存储Hive版本的元数据表（VERSION）</h2><p> VERSION   – 查询版本信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403183216187-173310376.png" alt="img"></p>
+<p>该表比较简单，但很重要。</p>
+<table>
+<thead>
+<tr>
+<th><strong>VER_ID</strong></th>
+<th><strong>SCHEMA_VERSION</strong></th>
+<th><strong>VERSION_COMMENT</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID主键</td>
+<td>Hive版本</td>
+<td>版本说明</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.13.0</td>
+<td>Set by MetaStore</td>
+</tr>
+</tbody></table>
+<p>如果该表出现问题，根本进入不了Hive-Cli。</p>
+<p>比如该表不存在，当启动Hive-Cli时候，就会报错”Table ‘hive.version’ doesn’t exist”。</p>
+<h2 id="二、Hive数据库相关的元数据表（DBS、DATABASE-PARAMS）"><a href="#二、Hive数据库相关的元数据表（DBS、DATABASE-PARAMS）" class="headerlink" title="二、Hive数据库相关的元数据表（DBS、DATABASE_PARAMS）"></a>二、Hive数据库相关的元数据表（DBS、DATABASE_PARAMS）</h2><h3 id="1、DBS"><a href="#1、DBS" class="headerlink" title="1、DBS"></a>1、DBS</h3><p>DBS　　　　 – 存储Hive中所有数据库的基本信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403183504628-542757406.png" alt="img"></p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DB_ID</strong></td>
+<td>数据库ID</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>DESC</strong></td>
+<td>数据库描述</td>
+<td>测试库</td>
+</tr>
+<tr>
+<td><strong>DB_LOCATION_URI</strong></td>
+<td>数据库HDFS路径</td>
+<td>hdfs://namenode/user/hive/warehouse/lxw1234.db</td>
+</tr>
+<tr>
+<td><strong>NAME</strong></td>
+<td>数据库名</td>
+<td>lxw1234</td>
+</tr>
+<tr>
+<td><strong>OWNER_NAME</strong></td>
+<td>数据库所有者用户名</td>
+<td>lxw1234</td>
+</tr>
+<tr>
+<td><strong>OWNER_TYPE</strong></td>
+<td>所有者角色</td>
+<td>USER</td>
+</tr>
+</tbody></table>
+<h3 id="2、DATABASE-PARAMS"><a href="#2、DATABASE-PARAMS" class="headerlink" title="2、DATABASE_PARAMS"></a>2、DATABASE_PARAMS</h3><p>DATABASE_PARAMS　　–该表存储数据库的相关参数，在CREATE DATABASE时候用</p>
+<p>WITH DBPROPERTIES (property_name=property_value, …)指定的参数。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403184800892-1555435977.png" alt="img"></p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>DB_ID</strong></td>
+<td>数据库ID</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PARAM_KEY</strong></td>
+<td>参数名</td>
+<td>createdby</td>
+</tr>
+<tr>
+<td><strong>PARAM_VALUE</strong></td>
+<td>参数值</td>
+<td>lxw1234</td>
+</tr>
+</tbody></table>
+<p><strong>注意：</strong></p>
+<p><strong>DBS和DATABASE_PARAMS这两张表通过DB_ID字段关联。</strong></p>
+<h2 id="三、Hive表和视图相关的元数据表"><a href="#三、Hive表和视图相关的元数据表" class="headerlink" title="三、Hive表和视图相关的元数据表"></a>三、Hive表和视图相关的元数据表</h2><p><strong>主要有TBLS、TABLE_PARAMS、TBL_PRIVS，这三张表通过TBL_ID关联。</strong></p>
+<h3 id="1、TBLS"><a href="#1、TBLS" class="headerlink" title="1、TBLS"></a>1、TBLS</h3><p> 该表中存储Hive表、视图、索引表的基本信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TBL_ID</strong></td>
+<td>表ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>CREATE_TIME</strong></td>
+<td>创建时间</td>
+<td>1436317071</td>
+</tr>
+<tr>
+<td><strong>DB_ID</strong></td>
+<td>数据库ID</td>
+<td>2，对应DBS中的DB_ID</td>
+</tr>
+<tr>
+<td><strong>LAST_ACCESS_TIME</strong></td>
+<td>上次访问时间</td>
+<td>1436317071</td>
+</tr>
+<tr>
+<td><strong>OWNER</strong></td>
+<td>所有者</td>
+<td>liuxiaowen</td>
+</tr>
+<tr>
+<td><strong>RETENTION</strong></td>
+<td>保留字段</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>SD_ID</strong></td>
+<td>序列化配置信息</td>
+<td>86，对应SDS表中的SD_ID</td>
+</tr>
+<tr>
+<td><strong>TBL_NAME</strong></td>
+<td>表名</td>
+<td>lxw1234</td>
+</tr>
+<tr>
+<td><strong>TBL_TYPE</strong></td>
+<td>表类型</td>
+<td>MANAGED_TABLE、EXTERNAL_TABLE、INDEX_TABLE、VIRTUAL_VIEW</td>
+</tr>
+<tr>
+<td><strong>VIEW_EXPANDED_TEXT</strong></td>
+<td>视图的详细HQL语句</td>
+<td>select <code>lxw1234</code>.<code>pt</code>, <code>lxw1234</code>.<code>pcid</code> from <code>liuxiaowen</code>.<code>lxw1234</code></td>
+</tr>
+<tr>
+<td><strong>VIEW_ORIGINAL_TEXT</strong></td>
+<td>视图的原始HQL语句</td>
+<td>select * from lxw1234</td>
+</tr>
+</tbody></table>
+<h3 id="2、TABLE-PARAMS"><a href="#2、TABLE-PARAMS" class="headerlink" title="2、TABLE_PARAMS"></a>2、<strong>TABLE_PARAMS</strong></h3><p>该表存储表/视图的属性信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TBL_ID</strong></td>
+<td>表ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>PARAM_KEY</strong></td>
+<td>属性名</td>
+<td>totalSize、numRows、EXTERNAL</td>
+</tr>
+<tr>
+<td><strong>PARAM_VALUE</strong></td>
+<td>属性值</td>
+<td>970107336、21231028、TRUE</td>
+</tr>
+</tbody></table>
+<h3 id="3、TBL-PRIVS"><a href="#3、TBL-PRIVS" class="headerlink" title="3、TBL_PRIVS"></a>3、<strong>TBL_PRIVS</strong></h3><p> 该表存储表/视图的授权信息</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TBL_GRANT_ID</strong></td>
+<td>授权ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>CREATE_TIME</strong></td>
+<td>授权时间</td>
+<td>1436320455</td>
+</tr>
+<tr>
+<td><strong>GRANT_OPTION</strong></td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>GRANTOR</strong></td>
+<td>授权执行用户</td>
+<td>liuxiaowen</td>
+</tr>
+<tr>
+<td><strong>GRANTOR_TYPE</strong></td>
+<td>授权者类型</td>
+<td>USER</td>
+</tr>
+<tr>
+<td><strong>PRINCIPAL_NAME</strong></td>
+<td>被授权用户</td>
+<td>username</td>
+</tr>
+<tr>
+<td><strong>PRINCIPAL_TYPE</strong></td>
+<td>被授权用户类型</td>
+<td>USER</td>
+</tr>
+<tr>
+<td><strong>TBL_PRIV</strong></td>
+<td>权限</td>
+<td>Select、Alter</td>
+</tr>
+<tr>
+<td><strong>TBL_ID</strong></td>
+<td>表ID</td>
+<td>22，对应TBLS表中的TBL_ID</td>
+</tr>
+</tbody></table>
+<h2 id="四、Hive文件存储信息相关的元数据表"><a href="#四、Hive文件存储信息相关的元数据表" class="headerlink" title="四、Hive文件存储信息相关的元数据表"></a>四、Hive文件存储信息相关的元数据表</h2><p>　　主要涉及SDS、SD_PARAMS、SERDES、SERDE_PARAMS</p>
+<p>　　由于HDFS支持的文件格式很多，而建Hive表时候也可以指定各种文件格式，Hive在将HQL解析成MapReduce时候，需要知道去哪里，使用哪种格式去读写HDFS文件，而这些信息就保存在这几张表中。</p>
+<h3 id="1、SDS"><a href="#1、SDS" class="headerlink" title="1、SDS"></a>1、SDS</h3><p>　　该表保存文件存储的基本信息，如INPUT_FORMAT、OUTPUT_FORMAT、是否压缩等。</p>
+<p>　　<strong>TBLS表中的SD_ID与该表关联，可以获取Hive表的存储信息。</strong></p>
+<table>
+<thead>
+<tr>
+<th>元数据表字段</th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SD_ID</strong></td>
+<td>存储信息ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>CD_ID</strong></td>
+<td>字段信息ID</td>
+<td>21，对应CDS表</td>
+</tr>
+<tr>
+<td><strong>INPUT_FORMAT</strong></td>
+<td>文件输入格式</td>
+<td>org.apache.hadoop.mapred.TextInputFormat</td>
+</tr>
+<tr>
+<td><strong>IS_COMPRESSED</strong></td>
+<td>是否压缩</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>IS_STOREDASSUBDIRECTORIES</strong></td>
+<td>是否以子目录存储</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>LOCATION</strong></td>
+<td>HDFS路径</td>
+<td>hdfs://namenode/hivedata/warehouse/ut.db/t_lxw</td>
+</tr>
+<tr>
+<td><strong>NUM_BUCKETS</strong></td>
+<td>分桶数量</td>
+<td>5</td>
+</tr>
+<tr>
+<td><strong>OUTPUT_FORMAT</strong></td>
+<td>文件输出格式</td>
+<td>org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat</td>
+</tr>
+<tr>
+<td><strong>SERDE_ID</strong></td>
+<td>序列化类ID</td>
+<td>3，对应SERDES表</td>
+</tr>
+</tbody></table>
+<h3 id="2、SD-PARAMS"><a href="#2、SD-PARAMS" class="headerlink" title="2、SD_PARAMS"></a>2、SD_PARAMS</h3><p>　　该表存储Hive存储的属性信息，在创建表时候使用</p>
+<p>　　STORED BY ‘storage.handler.class.name’ [WITH SERDEPROPERTIES (…)指定。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th>说明</th>
+<th>示例数据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SD_ID</strong></td>
+<td>存储配置ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>PARAM_KEY</strong></td>
+<td>存储属性名</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PARAM_VALUE</strong></td>
+<td>存储属性值</td>
+<td></td>
+</tr>
+</tbody></table>
+<h3 id="3、SERDES"><a href="#3、SERDES" class="headerlink" title="3、SERDES"></a>3、SERDES</h3><p> 该表存储序列化使用的类信息</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SERDE_ID</strong></td>
+<td>序列化类配置ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>NAME</strong></td>
+<td>序列化类别名</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>SLIB</strong></td>
+<td>序列化类</td>
+<td>org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe</td>
+</tr>
+</tbody></table>
+<h3 id="4、SERDE-PARAMS"><a href="#4、SERDE-PARAMS" class="headerlink" title="4、SERDE_PARAMS"></a>4、SERDE_PARAMS</h3><p> 该表存储序列化的一些属性、格式信息,比如：行、列分隔符</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>SERDE_ID</strong></td>
+<td>序列化类配置ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>PARAM_KEY</strong></td>
+<td>属性名</td>
+<td>field.delim</td>
+</tr>
+<tr>
+<td><strong>PARAM_VALUE</strong></td>
+<td>属性值</td>
+<td>,</td>
+</tr>
+</tbody></table>
+<h2 id="五、Hive表字段相关的元数据表"><a href="#五、Hive表字段相关的元数据表" class="headerlink" title="五、Hive表字段相关的元数据表"></a>五、Hive表字段相关的元数据表</h2><p>主要涉及COLUMNS_V2</p>
+<h3 id="1、COLUMNS-V2"><a href="#1、COLUMNS-V2" class="headerlink" title="1、COLUMNS_V2"></a>1、COLUMNS_V2</h3><p>该表存储表对应的字段信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CD_ID</strong></td>
+<td>字段信息ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>COMMENT</strong></td>
+<td>字段注释</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>COLUMN_NAME</strong></td>
+<td>字段名</td>
+<td>pt</td>
+</tr>
+<tr>
+<td><strong>TYPE_NAME</strong></td>
+<td>字段类型</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>INTEGER_IDX</strong></td>
+<td>字段顺序</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<h2 id="六、Hive表分区相关的元数据表"><a href="#六、Hive表分区相关的元数据表" class="headerlink" title="六、Hive表分区相关的元数据表"></a>六、Hive表分区相关的元数据表</h2><p>主要涉及PARTITIONS、PARTITION_KEYS、PARTITION_KEY_VALS、PARTITION_PARAMS</p>
+<h3 id="1、PARTITIONS"><a href="#1、PARTITIONS" class="headerlink" title="1、PARTITIONS"></a>1、PARTITIONS</h3><p> 该表存储表分区的基本信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PART_ID</strong></td>
+<td>分区ID</td>
+<td>1</td>
+</tr>
+<tr>
+<td><strong>CREATE_TIME</strong></td>
+<td>分区创建时间</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>LAST_ACCESS_TIME</strong></td>
+<td>最后一次访问时间</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PART_NAME</strong></td>
+<td>分区名</td>
+<td>pt=2015-06-12</td>
+</tr>
+<tr>
+<td><strong>SD_ID</strong></td>
+<td>分区存储ID</td>
+<td>21</td>
+</tr>
+<tr>
+<td><strong>TBL_ID</strong></td>
+<td>表ID</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<h3 id="2、PARTITION-KEYS"><a href="#2、PARTITION-KEYS" class="headerlink" title="2、PARTITION_KEYS"></a>2、PARTITION_KEYS</h3><p>该表存储分区的字段信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>TBL_ID</strong></td>
+<td>表ID</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PKEY_COMMENT</strong></td>
+<td>分区字段说明</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PKEY_NAME</strong></td>
+<td>分区字段名</td>
+<td>pt</td>
+</tr>
+<tr>
+<td><strong>PKEY_TYPE</strong></td>
+<td>分区字段类型</td>
+<td>string</td>
+</tr>
+<tr>
+<td><strong>INTEGER_IDX</strong></td>
+<td>分区字段顺序</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<h3 id="3、PARTITION-KEY-VALS"><a href="#3、PARTITION-KEY-VALS" class="headerlink" title="3、PARTITION_KEY_VALS"></a>3、PARTITION_KEY_VALS</h3><p>该表存储分区字段值。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PART_ID</strong></td>
+<td>分区ID</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PART_KEY_VAL</strong></td>
+<td>分区字段值</td>
+<td>2015-06-12</td>
+</tr>
+<tr>
+<td><strong>INTEGER_IDX</strong></td>
+<td>分区字段值顺序</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<h3 id="4、PARTITION-PARAMS"><a href="#4、PARTITION-PARAMS" class="headerlink" title="4、PARTITION_PARAMS"></a>4、PARTITION_PARAMS</h3><p>该表存储分区的属性信息。</p>
+<table>
+<thead>
+<tr>
+<th><strong>元数据表字段</strong></th>
+<th><strong>说明</strong></th>
+<th><strong>示例数据</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>PART_ID</strong></td>
+<td>分区ID</td>
+<td>2</td>
+</tr>
+<tr>
+<td><strong>PARAM_KEY</strong></td>
+<td>分区属性名</td>
+<td>numFiles、numRows</td>
+</tr>
+<tr>
+<td><strong>PARAM_VALUE</strong></td>
+<td>分区属性值</td>
+<td>15、502195</td>
+</tr>
+</tbody></table>
+<h2 id="七、其他不常用的元数据表"><a href="#七、其他不常用的元数据表" class="headerlink" title="七、其他不常用的元数据表"></a>七、其他不常用的元数据表</h2><ul>
+<li><strong>DB_PRIVS</strong></li>
+</ul>
+<p>数据库权限信息表。通过GRANT语句对数据库授权后，将会在这里存储。</p>
+<ul>
+<li><strong>IDXS</strong></li>
+</ul>
+<p>索引表，存储Hive索引相关的元数据</p>
+<ul>
+<li><strong>INDEX_PARAMS</strong></li>
+</ul>
+<p>索引相关的属性信息。</p>
+<ul>
+<li><strong>TAB_COL_STATS</strong></li>
+</ul>
+<p>表字段的统计信息。使用ANALYZE语句对表字段分析后记录在这里。</p>
+<ul>
+<li><strong>TBL_COL_PRIVS</strong></li>
+</ul>
+<p>表字段的授权信息</p>
+<ul>
+<li><strong>PART_PRIVS</strong></li>
+</ul>
+<p>分区的授权信息</p>
+<ul>
+<li><strong>PART_COL_STATS</strong></li>
+</ul>
+<p>分区字段的统计信息。</p>
+<ul>
+<li><strong>PART_COL_PRIVS</strong></li>
+</ul>
+<p>分区字段的权限信息。</p>
+<ul>
+<li><strong>FUNCS</strong></li>
+</ul>
+<p>用户注册的函数信息</p>
+<ul>
+<li><strong>FUNC_RU</strong></li>
+</ul>
+<p>用户注册函数的资源信息</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-04-04-Hive学习之路 （四）Hive的连接3种连接方式.html" class="pre-post btn btn-default" title='Hive学习之路 （四）Hive的连接3种连接方式'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （四）Hive的连接3种连接方式</span>
+    </a>
+    
+    
+    <a href="/2019-04-02-Hive学习之路 （二）Hive安装.html" class="next-post btn btn-default" title='Hive学习之路 （二）Hive安装'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （二）Hive安装</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一、存储Hive版本的元数据表（VERSION）"><span class="toc-text">一、存储Hive版本的元数据表（VERSION）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Hive数据库相关的元数据表（DBS、DATABASE-PARAMS）"><span class="toc-text">二、Hive数据库相关的元数据表（DBS、DATABASE_PARAMS）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、DBS"><span class="toc-text">1、DBS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、DATABASE-PARAMS"><span class="toc-text">2、DATABASE_PARAMS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Hive表和视图相关的元数据表"><span class="toc-text">三、Hive表和视图相关的元数据表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、TBLS"><span class="toc-text">1、TBLS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、TABLE-PARAMS"><span class="toc-text">2、TABLE_PARAMS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、TBL-PRIVS"><span class="toc-text">3、TBL_PRIVS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、Hive文件存储信息相关的元数据表"><span class="toc-text">四、Hive文件存储信息相关的元数据表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、SDS"><span class="toc-text">1、SDS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、SD-PARAMS"><span class="toc-text">2、SD_PARAMS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、SERDES"><span class="toc-text">3、SERDES</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、SERDE-PARAMS"><span class="toc-text">4、SERDE_PARAMS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、Hive表字段相关的元数据表"><span class="toc-text">五、Hive表字段相关的元数据表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、COLUMNS-V2"><span class="toc-text">1、COLUMNS_V2</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、Hive表分区相关的元数据表"><span class="toc-text">六、Hive表分区相关的元数据表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、PARTITIONS"><span class="toc-text">1、PARTITIONS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、PARTITION-KEYS"><span class="toc-text">2、PARTITION_KEYS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、PARTITION-KEY-VALS"><span class="toc-text">3、PARTITION_KEY_VALS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、PARTITION-PARAMS"><span class="toc-text">4、PARTITION_PARAMS</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、其他不常用的元数据表"><span class="toc-text">七、其他不常用的元数据表</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

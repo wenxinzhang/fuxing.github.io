@@ -1,0 +1,450 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hive">
+
+
+<meta name="description" content="** Hive学习之路 （十一）Hive的5个面试题：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （十一）Hive的5个面试题
+
+&...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hive学习之路 （十一）Hive的5个面试题 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hive学习之路 （十一）Hive的5个面试题">
+            
+            Hive学习之路 （十一）Hive的5个面试题
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/04/11</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hive学习之路 （十一）Hive的5个面试题：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （十一）Hive的5个面试题</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、求单月访问次数和总访问次数"><a href="#一、求单月访问次数和总访问次数" class="headerlink" title="一、求单月访问次数和总访问次数"></a>一、求单月访问次数和总访问次数</h2><h3 id="1、数据说明"><a href="#1、数据说明" class="headerlink" title="1、数据说明"></a>1、数据说明</h3><h4 id="数据字段说明"><a href="#数据字段说明" class="headerlink" title="数据字段说明"></a>数据字段说明</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户名，月份，访问次数</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据格式"><a href="#数据格式" class="headerlink" title="数据格式"></a>数据格式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">A,2015-01,5</span><br><span class="line">A,2015-01,15</span><br><span class="line">B,2015-01,5</span><br><span class="line">A,2015-01,8</span><br><span class="line">B,2015-01,25</span><br><span class="line">A,2015-01,5</span><br><span class="line">A,2015-02,4</span><br><span class="line">A,2015-02,6</span><br><span class="line">B,2015-02,10</span><br><span class="line">B,2015-02,5</span><br><span class="line">A,2015-03,16</span><br><span class="line">A,2015-03,22</span><br><span class="line">B,2015-03,23</span><br><span class="line">B,2015-03,10</span><br><span class="line">B,2015-03,1</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、数据准备"><a href="#2、数据准备" class="headerlink" title="2、数据准备"></a>2、数据准备</h3><h4 id="（1）创建表"><a href="#（1）创建表" class="headerlink" title="（1）创建表"></a>（1）创建表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> myhive;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> t_access(</span><br><span class="line">uname <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'用户名'</span>,</span><br><span class="line">umonth <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'月份'</span>,</span><br><span class="line">ucount <span class="built_in">int</span> <span class="keyword">comment</span> <span class="string">'访问次数'</span></span><br><span class="line">) <span class="keyword">comment</span> <span class="string">'用户访问表'</span> </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">","</span> </span><br><span class="line">location <span class="string">"/hive/t_access"</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）导入数据"><a href="#（2）导入数据" class="headerlink" title="（2）导入数据"></a>（2）导入数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load data local inpath &quot;/home/hadoop/access.txt&quot; into table t_access;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）验证数据"><a href="#（3）验证数据" class="headerlink" title="（3）验证数据"></a>（3）验证数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from t_access;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408191422095-618397996.png" alt="img"></p>
+<h3 id="3、结果需求"><a href="#3、结果需求" class="headerlink" title="3、结果需求"></a>3、结果需求</h3><p>现要求出：<br>每个用户截止到每月为止的最大单月访问次数和累计到该月的总访问次数，结果数据格式如下</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408191641383-2108507539.png" alt="img"></p>
+<h3 id="4、需求分析"><a href="#4、需求分析" class="headerlink" title="4、需求分析"></a>4、需求分析</h3><p>此结果需要根据用户+月份进行分组</p>
+<h4 id="（1）先求出当月访问次数"><a href="#（1）先求出当月访问次数" class="headerlink" title="（1）先求出当月访问次数"></a>（1）先求出当月访问次数</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--求当月访问次数</span></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_access(</span><br><span class="line"><span class="keyword">name</span> <span class="keyword">string</span>,</span><br><span class="line">mon <span class="keyword">string</span>,</span><br><span class="line"><span class="keyword">num</span> <span class="built_in">int</span></span><br><span class="line">); </span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> <span class="keyword">table</span> tmp_access </span><br><span class="line"><span class="keyword">select</span> uname,umonth,<span class="keyword">sum</span>(ucount)</span><br><span class="line"> <span class="keyword">from</span> t_access t <span class="keyword">group</span> <span class="keyword">by</span> t.uname,t.umonth;<span class="keyword">select</span> * <span class="keyword">from</span> tmp_access;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408212426965-852872067.png" alt="img"></p>
+<h4 id="（2）tmp-access进行自连接视图"><a href="#（2）tmp-access进行自连接视图" class="headerlink" title="（2）tmp_access进行自连接视图"></a>（2）tmp_access进行自连接视图</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> tmp_view <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.name anme,a.mon amon,a.num anum,b.name bname,b.mon bmon,b.num bnum <span class="keyword">from</span> tmp_access a <span class="keyword">join</span> tmp_access b </span><br><span class="line"><span class="keyword">on</span> a.name=b.name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_view;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408213008759-536376094.png" alt="img"></p>
+<h4 id="（3）进行比较统计"><a href="#（3）进行比较统计" class="headerlink" title="（3）进行比较统计"></a>（3）进行比较统计</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> anme,amon,anum,<span class="keyword">max</span>(bnum) <span class="keyword">as</span> max_access,<span class="keyword">sum</span>(bnum) <span class="keyword">as</span> sum_access </span><br><span class="line"><span class="keyword">from</span> tmp_view </span><br><span class="line"><span class="keyword">where</span> amon&gt;=bmon </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> anme,amon,anum;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408213548473-1116107765.png" alt="img"></p>
+<h2 id="二、学生课程成绩"><a href="#二、学生课程成绩" class="headerlink" title="二、学生课程成绩"></a>二、学生课程成绩</h2><h3 id="1、说明"><a href="#1、说明" class="headerlink" title="1、说明"></a>1、说明</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> myhive;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`course`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>,</span><br><span class="line">  <span class="string">`sid`</span> <span class="built_in">int</span> ,</span><br><span class="line">  <span class="string">`course`</span> <span class="keyword">string</span>,</span><br><span class="line">  <span class="string">`score`</span> <span class="built_in">int</span> </span><br><span class="line">) ;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 插入数据</span><br><span class="line">// 字段解释：id, 学号， 课程， 成绩</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">1</span>, <span class="number">1</span>, <span class="string">'yuwen'</span>, <span class="number">43</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">2</span>, <span class="number">1</span>, <span class="string">'shuxue'</span>, <span class="number">55</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">3</span>, <span class="number">2</span>, <span class="string">'yuwen'</span>, <span class="number">77</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">4</span>, <span class="number">2</span>, <span class="string">'shuxue'</span>, <span class="number">88</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">5</span>, <span class="number">3</span>, <span class="string">'yuwen'</span>, <span class="number">98</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`course`</span> <span class="keyword">VALUES</span> (<span class="number">6</span>, <span class="number">3</span>, <span class="string">'shuxue'</span>, <span class="number">65</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408215422080-584424294.png" alt="img"></p>
+<h3 id="2、需求"><a href="#2、需求" class="headerlink" title="2、需求"></a>2、需求</h3><p>求：所有数学课程成绩 大于 语文课程成绩的学生的学号</p>
+<h4 id="1、使用case…when…将不同的课程名称转换成不同的列"><a href="#1、使用case…when…将不同的课程名称转换成不同的列" class="headerlink" title="1、使用case…when…将不同的课程名称转换成不同的列"></a>1、使用case…when…将不同的课程名称转换成不同的列</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> tmp_course_view <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">sid</span>, <span class="keyword">case</span> course <span class="keyword">when</span> <span class="string">"shuxue"</span> <span class="keyword">then</span> score <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>  <span class="keyword">as</span> shuxue,  </span><br><span class="line"><span class="keyword">case</span> course <span class="keyword">when</span> <span class="string">"yuwen"</span> <span class="keyword">then</span> score <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>  <span class="keyword">as</span> yuwen <span class="keyword">from</span> course;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_course_view;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408215759602-1208331286.png" alt="img"></p>
+<h4 id="2、以sid分组合并取各成绩最大值"><a href="#2、以sid分组合并取各成绩最大值" class="headerlink" title="2、以sid分组合并取各成绩最大值"></a>2、以sid分组合并取各成绩最大值</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> tmp_course_view1 <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> aa.sid, <span class="keyword">max</span>(aa.shuxue) <span class="keyword">as</span> shuxue, <span class="keyword">max</span>(aa.yuwen) <span class="keyword">as</span> yuwen <span class="keyword">from</span> tmp_course_view aa <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">sid</span>;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_course_view1;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408220127658-1596886525.png" alt="img"></p>
+<h4 id="3、比较结果"><a href="#3、比较结果" class="headerlink" title="3、比较结果"></a>3、比较结果</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_course_view1 <span class="keyword">where</span> shuxue &gt; yuwen;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180408220333411-2122468849.png" alt="img"></p>
+<h2 id="三、求每一年最大气温的那一天-温度"><a href="#三、求每一年最大气温的那一天-温度" class="headerlink" title="三、求每一年最大气温的那一天  + 温度"></a>三、求每一年最大气温的那一天  + 温度</h2><h3 id="1、说明-1"><a href="#1、说明-1" class="headerlink" title="1、说明"></a>1、说明</h3><p>数据格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2010012325</span><br></pre></td></tr></table></figure>
+
+<p>具体数据</p>
+<p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<p>数据解释</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2010012325表示在2010年01月23日的气温为25度</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、-需求"><a href="#2、-需求" class="headerlink" title="2、 需求"></a>2、 需求</h3><p>比如：2010012325表示在2010年01月23日的气温为25度。现在要求使用hive，计算每一年出现过的最大气温的日期+温度。<br>要计算出每一年的最大气温。我用<br>select substr(data,1,4),max(substr(data,9,2)) from table2 group by substr(data,1,4);<br>出来的是 年份 + 温度 这两列数据例如 2015 99</p>
+<p>但是如果我是想select 的是：具体每一年最大气温的那一天 + 温度 。例如 20150109 99<br>请问该怎么执行hive语句。。<br>group by 只需要substr(data,1,4)，<br>但是select substr(data,1,8)，又不在group by 的范围内。<br>是我陷入了思维死角。一直想不出所以然。。求大神指点一下。<br>在select 如果所需要的。不在group by的条件里。这种情况如何去分析？</p>
+<h3 id="3、解析"><a href="#3、解析" class="headerlink" title="3、解析"></a>3、解析</h3><h4 id="（1）创建一个临时表tmp-weather，将数据切分"><a href="#（1）创建一个临时表tmp-weather，将数据切分" class="headerlink" title="（1）创建一个临时表tmp_weather，将数据切分"></a>（1）创建一个临时表tmp_weather，将数据切分</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_weather <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">1</span>,<span class="number">4</span>) <span class="keyword">years</span>,<span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">5</span>,<span class="number">2</span>) <span class="keyword">months</span>,<span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">7</span>,<span class="number">2</span>) <span class="keyword">days</span>,<span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">9</span>,<span class="number">2</span>) temp <span class="keyword">from</span> weather;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_weather;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409100419037-1519099272.png" alt="img"></p>
+<h4 id="（2）创建一个临时表tmp-year-weather"><a href="#（2）创建一个临时表tmp-year-weather" class="headerlink" title="（2）创建一个临时表tmp_year_weather"></a>（2）创建一个临时表tmp_year_weather</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_year_weather <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">1</span>,<span class="number">4</span>) <span class="keyword">years</span>,<span class="keyword">max</span>(<span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">9</span>,<span class="number">2</span>)) max_temp <span class="keyword">from</span> weather <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">substr</span>(<span class="keyword">data</span>,<span class="number">1</span>,<span class="number">4</span>);</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_year_weather;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409100254081-790110773.png" alt="img"></p>
+<h4 id="（3）将2个临时表进行连接查询"><a href="#（3）将2个临时表进行连接查询" class="headerlink" title="（3）将2个临时表进行连接查询"></a>（3）将2个临时表进行连接查询</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_year_weather a <span class="keyword">join</span> tmp_weather b <span class="keyword">on</span> a.years=b.years <span class="keyword">and</span> a.max_temp=b.temp;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409100655695-981143896.png" alt="img"></p>
+<h2 id="四、求学生选课情况"><a href="#四、求学生选课情况" class="headerlink" title="四、求学生选课情况"></a>四、求学生选课情况</h2><h2 id="1、数据说明-1"><a href="#1、数据说明-1" class="headerlink" title="1、数据说明"></a>1、数据说明</h2><h4 id="（1）数据格式"><a href="#（1）数据格式" class="headerlink" title="（1）数据格式"></a>（1）数据格式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">id course </span><br><span class="line">1,a </span><br><span class="line">1,b </span><br><span class="line">1,c </span><br><span class="line">1,e </span><br><span class="line">2,a </span><br><span class="line">2,c </span><br><span class="line">2,d </span><br><span class="line">2,f </span><br><span class="line">3,a </span><br><span class="line">3,b </span><br><span class="line">3,c </span><br><span class="line">3,e</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）字段含义"><a href="#（2）字段含义" class="headerlink" title="（2）字段含义"></a>（2）字段含义</h4><p>表示有id为1,2,3的学生选修了课程a,b,c,d,e,f中其中几门。</p>
+<h2 id="2、数据准备-1"><a href="#2、数据准备-1" class="headerlink" title="2、数据准备"></a>2、数据准备</h2><h4 id="（1）建表t-course"><a href="#（1）建表t-course" class="headerlink" title="（1）建表t_course"></a>（1）建表t_course</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_course(<span class="keyword">id</span> <span class="built_in">int</span>,course <span class="keyword">string</span>)</span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">","</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409101747464-781937248.png" alt="img"></p>
+<h4 id="（2）导入数据-1"><a href="#（2）导入数据-1" class="headerlink" title="（2）导入数据"></a>（2）导入数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">"/home/hadoop/course/course.txt"</span> <span class="keyword">into</span> <span class="keyword">table</span> t_course;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409101834214-242067281.png" alt="img"></p>
+<h2 id="3、需求"><a href="#3、需求" class="headerlink" title="3、需求"></a>3、需求</h2><p>编写Hive的HQL语句来实现以下结果：表中的1表示选修，表中的0表示未选修</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id    a    b    c    d    e    f</span><br><span class="line">1     1    1    1    0    1    0</span><br><span class="line">2     1    0    1    1    0    1</span><br><span class="line">3     1    1    1    0    1    0</span><br></pre></td></tr></table></figure>
+
+<h2 id="4、解析"><a href="#4、解析" class="headerlink" title="4、解析"></a>4、解析</h2><p>第一步：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> collect_set(course) <span class="keyword">as</span> courses <span class="keyword">from</span> id_course;</span><br></pre></td></tr></table></figure>
+
+<p>第二步：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> hive.strict.checks.cartesian.product=<span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> id_courses <span class="keyword">as</span> <span class="keyword">select</span> t1.id <span class="keyword">as</span> <span class="keyword">id</span>,t1.course <span class="keyword">as</span> id_courses,t2.course courses </span><br><span class="line"><span class="keyword">from</span> </span><br><span class="line">( <span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">as</span> <span class="keyword">id</span>,collect_set(course) <span class="keyword">as</span> course <span class="keyword">from</span> id_course <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">id</span> ) t1 </span><br><span class="line"><span class="keyword">join</span> </span><br><span class="line">(<span class="keyword">select</span> collect_set(course) <span class="keyword">as</span> course <span class="keyword">from</span> id_course) t2;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>启用严格模式：hive.mapred.mode = strict // Deprecated<br>hive.strict.checks.large.query = true<br>该设置会禁用：1. 不指定分页的orderby<br>　　　　　　   2. 对分区表不指定分区进行查询<br>　　　　　　   3. 和数据量无关，只是一个查询模式</p>
+<p>hive.strict.checks.type.safety = true<br>严格类型安全，该属性不允许以下操作：1. bigint和string之间的比较<br>　　　　　　　　　　　　　　　　　　2. bigint和double之间的比较</p>
+<p>hive.strict.checks.cartesian.product = true<br>该属性不允许笛卡尔积操作</p>
+</blockquote>
+<p>第三步：得出最终结果：<br>思路：<br>拿出course字段中的每一个元素在id_courses中进行判断，看是否存在。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">0</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> a,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">1</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> b,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">2</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> c,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">3</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> d,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">4</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> e,</span><br><span class="line"><span class="keyword">case</span> <span class="keyword">when</span> array_contains(id_courses, courses[<span class="number">5</span>]) <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span> <span class="keyword">as</span> f </span><br><span class="line"><span class="keyword">from</span> id_courses;</span><br></pre></td></tr></table></figure>
+
+<h2 id="五、求月销售额和总销售额"><a href="#五、求月销售额和总销售额" class="headerlink" title="五、求月销售额和总销售额"></a>五、求月销售额和总销售额</h2><h3 id="1、数据说明-2"><a href="#1、数据说明-2" class="headerlink" title="1、数据说明"></a>1、数据说明</h3><h4 id="（1）数据格式-1"><a href="#（1）数据格式-1" class="headerlink" title="（1）数据格式"></a>（1）数据格式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a,01,150</span><br><span class="line">a,01,200</span><br><span class="line">b,01,1000</span><br><span class="line">b,01,800</span><br><span class="line">c,01,250</span><br><span class="line">c,01,220</span><br><span class="line">b,01,6000</span><br><span class="line">a,02,2000</span><br><span class="line">a,02,3000</span><br><span class="line">b,02,1000</span><br><span class="line">b,02,1500</span><br><span class="line">c,02,350</span><br><span class="line">c,02,280</span><br><span class="line">a,03,350</span><br><span class="line">a,03,250</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）字段含义-1"><a href="#（2）字段含义-1" class="headerlink" title="（2）字段含义"></a>（2）字段含义</h4><p>店铺，月份，金额</p>
+<h3 id="2、数据准备-2"><a href="#2、数据准备-2" class="headerlink" title="2、数据准备"></a>2、数据准备</h3><h4 id="（1）创建数据库表t-store"><a href="#（1）创建数据库表t-store" class="headerlink" title="（1）创建数据库表t_store"></a>（1）创建数据库表t_store</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> <span class="keyword">class</span>;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_store(</span><br><span class="line"><span class="keyword">name</span> <span class="keyword">string</span>,</span><br><span class="line"><span class="keyword">months</span> <span class="built_in">int</span>,</span><br><span class="line">money <span class="built_in">int</span></span><br><span class="line">) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">","</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）导入数据-2"><a href="#（2）导入数据-2" class="headerlink" title="（2）导入数据"></a>（2）导入数据</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">"/home/hadoop/store.txt"</span> <span class="keyword">into</span> <span class="keyword">table</span> t_store;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、需求-1"><a href="#3、需求-1" class="headerlink" title="3、需求"></a>3、需求</h3><p>编写Hive的HQL语句求出每个店铺的当月销售额和累计到当月的总销售额</p>
+<h3 id="4、解析-1"><a href="#4、解析-1" class="headerlink" title="4、解析"></a>4、解析</h3><p>（1）按照商店名称和月份进行分组统计</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_store1 <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">name</span>,<span class="keyword">months</span>,<span class="keyword">sum</span>(money) <span class="keyword">as</span> money <span class="keyword">from</span> t_store <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">name</span>,<span class="keyword">months</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_store1;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409113229256-890349636.png" alt="img"></p>
+<p>（2）对tmp_store1 表里面的数据进行自连接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tmp_store2 <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.name aname,a.months amonths,a.money amoney,b.name bname,b.months bmonths,b.money bmoney <span class="keyword">from</span> tmp_store1 a </span><br><span class="line"><span class="keyword">join</span> tmp_store1 b <span class="keyword">on</span> a.name=b.name <span class="keyword">order</span> <span class="keyword">by</span> aname,amonths;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_store2;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409113405020-775197507.png" alt="img"></p>
+<p>（3）比较统计</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> aname,amonths,amoney,<span class="keyword">sum</span>(bmoney) <span class="keyword">as</span> total <span class="keyword">from</span> tmp_store2 <span class="keyword">where</span> amonths &gt;= bmonths <span class="keyword">group</span> <span class="keyword">by</span> aname,amonths,amoney;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180409113709570-551757814.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-04-12-Hive学习之路 （十二）Hive SQL练习之影评案例.html" class="pre-post btn btn-default" title='Hive学习之路 （十二）Hive SQL练习之影评案例'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （十二）Hive SQL练习之影评案例</span>
+    </a>
+    
+    
+    <a href="/2019-04-10-Hive学习之路 （十）Hive的高级操作.html" class="next-post btn btn-default" title='Hive学习之路 （十）Hive的高级操作'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （十）Hive的高级操作</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、求单月访问次数和总访问次数"><span class="toc-text">一、求单月访问次数和总访问次数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、数据说明"><span class="toc-text">1、数据说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#数据字段说明"><span class="toc-text">数据字段说明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#数据格式"><span class="toc-text">数据格式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、数据准备"><span class="toc-text">2、数据准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）创建表"><span class="toc-text">（1）创建表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）导入数据"><span class="toc-text">（2）导入数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）验证数据"><span class="toc-text">（3）验证数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、结果需求"><span class="toc-text">3、结果需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、需求分析"><span class="toc-text">4、需求分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）先求出当月访问次数"><span class="toc-text">（1）先求出当月访问次数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）tmp-access进行自连接视图"><span class="toc-text">（2）tmp_access进行自连接视图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）进行比较统计"><span class="toc-text">（3）进行比较统计</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、学生课程成绩"><span class="toc-text">二、学生课程成绩</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、说明"><span class="toc-text">1、说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、需求"><span class="toc-text">2、需求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、使用case…when…将不同的课程名称转换成不同的列"><span class="toc-text">1、使用case…when…将不同的课程名称转换成不同的列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、以sid分组合并取各成绩最大值"><span class="toc-text">2、以sid分组合并取各成绩最大值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、比较结果"><span class="toc-text">3、比较结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、求每一年最大气温的那一天-温度"><span class="toc-text">三、求每一年最大气温的那一天  + 温度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、说明-1"><span class="toc-text">1、说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-需求"><span class="toc-text">2、 需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、解析"><span class="toc-text">3、解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）创建一个临时表tmp-weather，将数据切分"><span class="toc-text">（1）创建一个临时表tmp_weather，将数据切分</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）创建一个临时表tmp-year-weather"><span class="toc-text">（2）创建一个临时表tmp_year_weather</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）将2个临时表进行连接查询"><span class="toc-text">（3）将2个临时表进行连接查询</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、求学生选课情况"><span class="toc-text">四、求学生选课情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、数据说明-1"><span class="toc-text">1、数据说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）数据格式"><span class="toc-text">（1）数据格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）字段含义"><span class="toc-text">（2）字段含义</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、数据准备-1"><span class="toc-text">2、数据准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）建表t-course"><span class="toc-text">（1）建表t_course</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）导入数据-1"><span class="toc-text">（2）导入数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、需求"><span class="toc-text">3、需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、解析"><span class="toc-text">4、解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、求月销售额和总销售额"><span class="toc-text">五、求月销售额和总销售额</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、数据说明-2"><span class="toc-text">1、数据说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）数据格式-1"><span class="toc-text">（1）数据格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）字段含义-1"><span class="toc-text">（2）字段含义</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、数据准备-2"><span class="toc-text">2、数据准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）创建数据库表t-store"><span class="toc-text">（1）创建数据库表t_store</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）导入数据-2"><span class="toc-text">（2）导入数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、需求-1"><span class="toc-text">3、需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、解析-1"><span class="toc-text">4、解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Scala">
+
+
+<meta name="description" content="** Scala学习之路 （九）Scala的上界和下届：** &lt;Excerpt in index | 首页摘要&gt;
+​        Scala学习之路 （九）Scala的上界和下届
+...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Scala学习之路 （九）Scala的上界和下届 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Scala学习之路 （九）Scala的上界和下届">
+            
+            Scala学习之路 （九）Scala的上界和下届
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/09</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Scala学习之路 （九）Scala的上界和下届：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Scala学习之路 （九）Scala的上界和下届</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、泛型"><a href="#一、泛型" class="headerlink" title="一、泛型"></a>一、泛型</h2><h3 id="1、泛型的介绍"><a href="#1、泛型的介绍" class="headerlink" title="1、泛型的介绍"></a>1、泛型的介绍</h3><p>泛型用于指定方法或类可以接受任意类型参数，参数在实际使用时才被确定，泛型可以有效地增强程序的适用性，使用泛型可以使得类或方法具有更强的通用性。泛型的典型应用场景是集合及集合中的方法参数，可以说同java一样，scala中泛型无处不在，具体可以查看scala的api。 </p>
+<h3 id="2、泛型类、泛型方法"><a href="#2、泛型类、泛型方法" class="headerlink" title="2、泛型类、泛型方法"></a>2、泛型类、泛型方法</h3><p><strong>泛型类</strong>：指定类可以接受任意类型参数。 </p>
+<p><strong>泛型方法</strong>：指定方法可以接受任意类型参数。</p>
+<h3 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h3><h4 id="1、定义泛型类"><a href="#1、定义泛型类" class="headerlink" title="1、定义泛型类"></a>1、定义泛型类</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 下面的意思就是表示只要是Comparable就可以传递,下面是类上定义的泛型</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest1</span>[<span class="type">T</span> &lt;: <span class="type">Comparable</span>[<span class="type">T</span>]] </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">choose</span></span>(one:<span class="type">T</span>,two:<span class="type">T</span>): <span class="type">T</span> =&#123;</span><br><span class="line">    <span class="comment">//定义一个选择的方法</span></span><br><span class="line">    <span class="keyword">if</span>(one.compareTo(two) &gt; <span class="number">0</span>) one <span class="keyword">else</span> two</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Boy</span>(<span class="params">val name:<span class="type">String</span>,var age:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Comparable</span>[<span class="type">Boy</span>]</span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compareTo</span></span>(o: <span class="type">Boy</span>): <span class="type">Int</span> = &#123;</span><br><span class="line">    <span class="keyword">this</span>.age - o.age</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">GenericTestOne</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> gt = <span class="keyword">new</span> <span class="type">GenericTest1</span>[<span class="type">Boy</span>]</span><br><span class="line">    <span class="keyword">val</span> huangbo = <span class="keyword">new</span> <span class="type">Boy</span>(<span class="string">"huangbo"</span>,<span class="number">60</span>)</span><br><span class="line">    <span class="keyword">val</span> xuzheng = <span class="keyword">new</span> <span class="type">Boy</span>(<span class="string">"xuzheng"</span>,<span class="number">66</span>)</span><br><span class="line">    <span class="keyword">val</span> boy = gt.choose(huangbo,xuzheng)</span><br><span class="line">    println(boy.name)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418200418474-179801305.png" alt="img"></p>
+<h4 id="2、定义泛型方法"><a href="#2、定义泛型方法" class="headerlink" title="2、定义泛型方法"></a>2、定义泛型方法</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GenericTest2</span></span>&#123;</span><br><span class="line">  <span class="comment">//在方法上定义泛型</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">choose</span></span>[<span class="type">T</span> &lt;: <span class="type">Comparable</span>[<span class="type">T</span>]](one:<span class="type">T</span>,two:<span class="type">T</span>): <span class="type">T</span> =&#123;</span><br><span class="line">    <span class="keyword">if</span>(one.compareTo(two) &gt; <span class="number">0</span>) one <span class="keyword">else</span> two</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Boy</span>(<span class="params">val name:<span class="type">String</span>,var age:<span class="type">Int</span></span>) <span class="keyword">extends</span> <span class="title">Comparable</span>[<span class="type">Boy</span>]</span>&#123;</span><br><span class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">def</span> <span class="title">compareTo</span></span>(o: <span class="type">Boy</span>): <span class="type">Int</span> = &#123;</span><br><span class="line">    <span class="keyword">this</span>.age - o.age</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">GenericTestTwo</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> gt = <span class="keyword">new</span> <span class="type">GenericTest2</span></span><br><span class="line">    <span class="keyword">val</span> huangbo = <span class="keyword">new</span> <span class="type">Boy</span>(<span class="string">"huangbo"</span>,<span class="number">60</span>)</span><br><span class="line">    <span class="keyword">val</span> xuzheng = <span class="keyword">new</span> <span class="type">Boy</span>(<span class="string">"xuzheng"</span>,<span class="number">66</span>)</span><br><span class="line">    <span class="keyword">val</span> boy = gt.choose(huangbo,xuzheng)</span><br><span class="line">    println(boy)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418201015731-1539624697.png" alt="img"></p>
+<h2 id="二、上界和下届"><a href="#二、上界和下届" class="headerlink" title="二、上界和下届"></a>二、上界和下届</h2><h3 id="1、介绍"><a href="#1、介绍" class="headerlink" title="1、介绍"></a>1、介绍</h3><p>在指定泛型类型时，有时需要界定泛型类型的范围，而不是接收任意类型。比如，要求某个泛型类型，必须是某个类的子类，这样在程序中就可以放心的调用父类的方法，程序才能正常的使用与运行。此时，就可以使用上下边界Bounds的特性；<br>Scala的上下边界特性允许泛型类型是某个类的子类，或者是某个类的父类；</p>
+<p><strong>(1) U &gt;: T</strong></p>
+<p>这是类型下界的定义，也就是U必须是类型T的父类(或本身，自己也可以认为是自己的父类)。</p>
+<p><strong>(2) S &lt;: T</strong></p>
+<p>这是类型上界的定义，也就是S必须是类型T的子类（或本身，自己也可以认为是自己的子类)。</p>
+<h3 id="2、示例"><a href="#2、示例" class="headerlink" title="2、示例"></a>2、示例</h3><h4 id="（1）上界示例"><a href="#（1）上界示例" class="headerlink" title="（1）上界示例"></a>（1）上界示例</h4><p>参照上面的泛型方法</p>
+<h4 id="（2）下界示例"><a href="#（2）下界示例" class="headerlink" title="（2）下界示例"></a>（2）下界示例</h4><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GranderFather</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Father</span> <span class="keyword">extends</span> <span class="title">GranderFather</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Son</span> <span class="keyword">extends</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Tongxue</span></span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">object</span> <span class="title">Card</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">getIDCard</span></span>[<span class="type">T</span> &gt;: <span class="type">Son</span>](person:<span class="type">T</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">    println(<span class="string">"OK,交给你了"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    getIDCard[<span class="type">GranderFather</span>](<span class="keyword">new</span> <span class="type">Father</span>)</span><br><span class="line">    getIDCard[<span class="type">GranderFather</span>](<span class="keyword">new</span> <span class="type">GranderFather</span>)</span><br><span class="line">    getIDCard[<span class="type">GranderFather</span>](<span class="keyword">new</span> <span class="type">Son</span>)</span><br><span class="line">    <span class="comment">//getIDCard[GranderFather](new Tongxue)//报错，所以注释</span></span><br><span class="line">    </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418202223435-1916688729.png" alt="img"></p>
+<h2 id="三、协变和逆变"><a href="#三、协变和逆变" class="headerlink" title="三、协变和逆变"></a>三、协变和逆变</h2><p>对于一个带类型参数的类型，比如 <code>List[T]：</code></p>
+<p><strong>如果对A及其子类型B，满足 List[B]也符合 List[A]的子类型，那么就称为covariance(协变)；</strong></p>
+<p><strong>如果 List[A]是 List[B]的子类型，即与原来的父子关系正相反，则称为contravariance(逆变)。</strong></p>
+<p>协变</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">　____            　　_____________ </span><br><span class="line">|     |             |             |</span><br><span class="line">|  A  |             |  List[ A ]  |</span><br><span class="line">|_____|             |_____________|</span><br><span class="line">   ^                       ^ </span><br><span class="line">   |                       | </span><br><span class="line"> _____               _____________ </span><br><span class="line">|     |             |             |</span><br><span class="line">|  B  |             |  List[ B ]  |</span><br><span class="line">|_____|             |_____________|</span><br></pre></td></tr></table></figure>
+
+<p>逆变</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">　____            　　_____________ </span><br><span class="line">|     |             |             |</span><br><span class="line">|  A  |             |  List[ B ]  |</span><br><span class="line">|_____|             |_____________|</span><br><span class="line">   ^                       ^ </span><br><span class="line">   |                       | </span><br><span class="line"> _____               _____________ </span><br><span class="line">|     |             |             |</span><br><span class="line">|  B  |             |  List[ A ]  |</span><br><span class="line">|_____|             |_____________|</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在声明Scala的泛型类型时，“+”表示协变，而“-”表示逆变。</p>
+<blockquote>
+<ul>
+<li>C[+T]：如果A是B的子类，那么C[A]是C[B]的子类。</li>
+<li>C[-T]：如果A是B的子类，那么C[B]是C[A]的子类。</li>
+<li>C[T]：无论A和B是什么关系，C[A]和C[B]没有从属关系。</li>
+</ul>
+</blockquote>
+<p>根据Liskov替换原则，如果A是B的子类，那么能适用于B的所有操作，都适用于A。让我们看看这边Function1的定义，是否满足这样的条件。假设Bird是Animal的子类，那么看看下面两个函数之间是什么关系：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f1</span></span>(x: <span class="type">Bird</span>): <span class="type">Animal</span> <span class="comment">// instance of Function1[Bird, Animal]</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f2</span></span>(x: <span class="type">Animal</span>): <span class="type">Bird</span> <span class="comment">// instance of Function1[Animal, Bird]</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里f2的类型是f1的类型的子类。为什么？</p>
+<p>我们先看一下参数类型，根据Liskov替换原则，f1能够接受的参数，f2也能接受。在这里f1接受的Bird类型，f2显然可以接受，因为Bird对象可以被当做其父类Animal的对象来使用。</p>
+<p>再看返回类型，f1的返回值可以被当做Animal的实例使用，f2的返回值可以被当做Bird的实例使用，当然也可以被当做Animal的实例使用。</p>
+<p>所以我们说，函数的参数类型是逆变的，而函数的返回类型是协变的。</p>
+<p>那么我们在定义Scala类的时候，是不是可以随便指定泛型类型为协变或者逆变呢？答案是否定的。通过上面的例子可以看出，如果将Function1的参数类型定义为协变，或者返回类型定义为逆变，都会违反Liskov替换原则，因此，Scala规定，协变类型只能作为方法的返回类型，而逆变类型只能作为方法的参数类型。类比函数的行为，结合Liskov替换原则，就能发现这样的规定是非常合理的。</p>
+<p><strong>总结：参数是逆变的或者不变的，返回值是协变的或者不变的。</strong></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-05-10-Scala学习之路 （十）Scala的Actor.html" class="pre-post btn btn-default" title='Scala学习之路 （十）Scala的Actor'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Scala学习之路 （十）Scala的Actor</span>
+    </a>
+    
+    
+    <a href="/2019-05-08-Scala学习之路 （八）Scala的隐式转换和隐式参数.html" class="next-post btn btn-default" title='Scala学习之路 （八）Scala的隐式转换和隐式参数'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Scala学习之路 （八）Scala的隐式转换和隐式参数</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、泛型"><span class="toc-text">一、泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、泛型的介绍"><span class="toc-text">1、泛型的介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、泛型类、泛型方法"><span class="toc-text">2、泛型类、泛型方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、示例"><span class="toc-text">3、示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、定义泛型类"><span class="toc-text">1、定义泛型类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、定义泛型方法"><span class="toc-text">2、定义泛型方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、上界和下届"><span class="toc-text">二、上界和下届</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、介绍"><span class="toc-text">1、介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、示例"><span class="toc-text">2、示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）上界示例"><span class="toc-text">（1）上界示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）下界示例"><span class="toc-text">（2）下界示例</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、协变和逆变"><span class="toc-text">三、协变和逆变</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

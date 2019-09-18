@@ -1,0 +1,382 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Scala">
+
+
+<meta name="description" content="** Scala学习之路 （八）Scala的隐式转换和隐式参数：** &lt;Excerpt in index | 首页摘要&gt;
+​        Scala学习之路 （八）Scala的隐式...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Scala学习之路 （八）Scala的隐式转换和隐式参数 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Scala学习之路 （八）Scala的隐式转换和隐式参数">
+            
+            Scala学习之路 （八）Scala的隐式转换和隐式参数
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/08</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Scala学习之路 （八）Scala的隐式转换和隐式参数：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Scala学习之路 （八）Scala的隐式转换和隐式参数</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>Scala 2.10引入了一种叫做隐式类的新特性。隐式类指的是用<strong>implicit</strong>关键字修饰的类。在对应的作用域内，带有这个关键字的类的主构造函数可用于隐式转换。</p>
+<p>隐式转换和隐式参数是Scala中两个非常强大的功能，利用隐式转换和隐式参数，你可以提供优雅的类库，对类库的使用者隐匿掉那些枯燥乏味的细节。 </p>
+<h2 id="二、作用"><a href="#二、作用" class="headerlink" title="二、作用"></a>二、作用</h2><p>隐式的对类的方法进行增强，丰富现有类库的功能</p>
+<h2 id="三、隐式参数"><a href="#三、隐式参数" class="headerlink" title="三、隐式参数"></a>三、隐式参数</h2><p>1）关键字：implicat<br>2）隐士的东西只能在object里面才能使用<br>3）作用域</p>
+<h2 id="四、隐式转换函数"><a href="#四、隐式转换函数" class="headerlink" title="四、隐式转换函数"></a>四、隐式转换函数</h2><p>是指那种以implicit关键字声明的带有单个参数的函数。</p>
+<p>可以通过：<strong>:implicit –v</strong>这个命令显示所有做隐式转换的类。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418181811202-1672606236.png" alt="img"></p>
+<h2 id="四、隐士转换的发生的时机"><a href="#四、隐士转换的发生的时机" class="headerlink" title="四、隐士转换的发生的时机"></a>四、隐士转换的发生的时机</h2><h3 id="1、当一个对象去调用某个方法，但是这个对象并不具备这个方法"><a href="#1、当一个对象去调用某个方法，但是这个对象并不具备这个方法" class="headerlink" title="1、当一个对象去调用某个方法，但是这个对象并不具备这个方法"></a>1、当一个对象去调用某个方法，但是这个对象并不具备这个方法</h3><h4 id="（1）scala源码示例"><a href="#（1）scala源码示例" class="headerlink" title="（1）scala源码示例"></a>（1）scala源码示例</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418182007034-441832477.png" alt="img"></p>
+<p>1是Int类型，从to方法看，Int应该有to方法</p>
+<p>打开Int类的源码查看，并没有Int本身并没有to方法，发现Int继承了AnyVal类</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418182449725-2029241513.png" alt="img"></p>
+<p>查看AnyVal类，发现AnyVal类同样没有to方法，而AnyVal类继承了Any类</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418182638386-61166817.png" alt="img"></p>
+<p>Any类里面没有to方法，而在RichInt里面有to方法</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418182844620-1248295484.png" alt="img"></p>
+<p>而在上面查看scala自动导入隐式转换函数时可以看到有Predef类的intWrapper方法，传入的参数是Int，返回的结果类型是RichInt</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418183040866-1563441844.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418183336731-2130776890.png" alt="img"></p>
+<h4 id="（2）快学Scala示例值File和RichFile示例"><a href="#（2）快学Scala示例值File和RichFile示例" class="headerlink" title="（2）快学Scala示例值File和RichFile示例"></a>（2）快学Scala示例值File和RichFile示例</h4><p>不使用隐式转换时，使用装饰模式进行读取</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RichFile</span>(<span class="params">val file : <span class="type">File</span></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//定义一个read方法，返回String类型</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read</span></span>():<span class="type">String</span> = <span class="type">Source</span>.fromFile(file.getPath).mkString</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">RichFile</span></span>&#123;</span><br><span class="line">  <span class="comment">//隐式转换方法（将原有的File类型转成了file类型，在用的时候需要导入相应的包）</span></span><br><span class="line">  <span class="comment">//implicit def file2RichFile(file:File) = new RichFile(file)</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MainApp</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> file = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"D:\\student.txt"</span>)</span><br><span class="line">    <span class="comment">//装饰模式，显示的增强(本来想实现：val contents = file.read()，但是却使用RichFile的方式，所以是显示的增强)</span></span><br><span class="line">    <span class="keyword">val</span> rf = <span class="keyword">new</span> <span class="type">RichFile</span>(file)</span><br><span class="line">    <span class="keyword">val</span> str = rf.read()</span><br><span class="line">    print(str)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418184635294-1094510438.png" alt="img"></p>
+<p>使用隐式转换方式</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.<span class="type">File</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scala.io.<span class="type">Source</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RichFile</span>(<span class="params">val file : <span class="type">File</span></span>) </span>&#123;</span><br><span class="line">  <span class="comment">//定义一个read方法，返回String类型</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">read</span></span>():<span class="type">String</span> = <span class="type">Source</span>.fromFile(file.getPath).mkString</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">RichFile</span></span>&#123;</span><br><span class="line">  <span class="comment">//隐式转换方法（将原有的File类型转成了file类型，在用的时候需要导入相应的包）</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">file2RichFile</span></span>(file:<span class="type">File</span>) = <span class="keyword">new</span> <span class="type">RichFile</span>(file)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MainApp</span></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//目的是使用File的时候不知不觉的时候直接使用file.read()方法，所以这里就要做隐式转换</span></span><br><span class="line">    <span class="keyword">val</span> file = <span class="keyword">new</span> <span class="type">File</span>(<span class="string">"D:\\student.txt"</span>)</span><br><span class="line">    <span class="comment">//导入隐式转换，._将它下满的所有的方法都导入进去了。</span></span><br><span class="line">    <span class="keyword">import</span> <span class="type">RichFile</span>._</span><br><span class="line">    <span class="comment">//这里没有的read()方法的时候，它就到上面的这一行中的找带有implicit的定义方法</span></span><br><span class="line">    <span class="keyword">val</span> str = file.read()</span><br><span class="line">    <span class="comment">//打印读取的内容</span></span><br><span class="line">    println(str)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418185407742-265441113.png" alt="img"></p>
+<h4 id="（3）超人示例"><a href="#（3）超人示例" class="headerlink" title="（3）超人示例"></a>（3）超人示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Man(val name:String)</span><br><span class="line">class SuperMan &#123;</span><br><span class="line">  def fly(): Unit =&#123;</span><br><span class="line">    println(&quot;我要上天&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">object SuperMan&#123;</span><br><span class="line">  //隐式转换，将Man转换为SuperMan</span><br><span class="line">  implicit def man2SuperMan(man:Man)=new SuperMan</span><br><span class="line">  def main(args: Array[String]): Unit = &#123;</span><br><span class="line">    new Man(&quot;灰太狼&quot;).fly</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418190329173-1982617902.png" alt="img"></p>
+<h3 id="2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配"><a href="#2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配" class="headerlink" title="2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配"></a>2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配</h3><h4 id="售票厅卖票"><a href="#售票厅卖票" class="headerlink" title="售票厅卖票"></a>售票厅卖票</h4><p>老人和小孩是特殊人群，有单独的买票窗口</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//特殊人群（儿童和老人）</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SpecialPerson</span>(<span class="params">var name:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//儿童</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Children</span>(<span class="params">var name:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//老人</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Older</span>(<span class="params">var name:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//青年工作者</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Worker</span>(<span class="params">var name:<span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">//特殊人群买票窗口</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">TicketHouse</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">buyTicket</span></span>(p:<span class="type">SpecialPerson</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">    println(p.name + <span class="string">"买到票了"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">MyPredef</span></span>&#123;</span><br><span class="line">  <span class="comment">//隐式转换，将儿童转换为特殊人群</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">children2SpecialPerson</span></span>(c:<span class="type">Children</span>)=<span class="keyword">new</span> <span class="type">SpecialPerson</span>(c.name)</span><br><span class="line">  <span class="comment">//隐式转换，将老人转换为特殊人群</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">older2SpecialPerson</span></span>(o:<span class="type">Older</span>)=<span class="keyword">new</span> <span class="type">SpecialPerson</span>(o.name)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">TestBuyTicket</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="comment">//导入MyPredef类中的所有隐式转换</span></span><br><span class="line">    <span class="keyword">import</span> <span class="type">MyPredef</span>._</span><br><span class="line">    <span class="keyword">val</span> house = <span class="keyword">new</span> <span class="type">TicketHouse</span></span><br><span class="line">    <span class="comment">//测试儿童买票</span></span><br><span class="line">    <span class="keyword">val</span> children = <span class="keyword">new</span> <span class="type">Children</span>(<span class="string">"wangbaoqiang"</span>)</span><br><span class="line">    house.buyTicket(children)</span><br><span class="line">    <span class="comment">//测试老人买票</span></span><br><span class="line">    <span class="keyword">val</span> older = <span class="keyword">new</span> <span class="type">Older</span>(<span class="string">"xuzheng"</span>)</span><br><span class="line">    house.buyTicket(older)</span><br><span class="line">    <span class="comment">//测试青年工作者买票</span></span><br><span class="line">    <span class="keyword">val</span> worker = <span class="keyword">new</span> <span class="type">Worker</span>(<span class="string">"huangbo"</span>)</span><br><span class="line">    <span class="comment">//house.buyTicket(worker)//放开的话会报错</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418192109454-2078331583.png" alt="img"></p>
+<h3 id="3、视图边界"><a href="#3、视图边界" class="headerlink" title="3、视图边界"></a>3、视图边界</h3><p> 人狗之恋</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>(<span class="params">val name : <span class="type">String</span></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">sayHello</span></span>: <span class="type">Unit</span> =&#123;</span><br><span class="line">    println(<span class="string">"Hello, my name is "</span> + name)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//2个人交朋友</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">mkFridens</span></span>(p:<span class="type">Person</span>): <span class="type">Unit</span> =&#123;</span><br><span class="line">    sayHello</span><br><span class="line">    p.sayHello</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params">name : <span class="type">String</span></span>) <span class="keyword">extends</span> <span class="title">Person</span>(<span class="params">name</span>)</span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Dog</span>(<span class="params">val name : <span class="type">String</span></span>)</span></span><br><span class="line"><span class="class"><span class="title">//聚会时2个人交朋友</span></span></span><br><span class="line"><span class="class"><span class="title">class</span> <span class="title">Party</span>[<span class="type">T</span> &lt;% <span class="type">Person</span>](<span class="params">p1:<span class="type">Person</span>,p2:<span class="type">Person</span></span>)</span>&#123;</span><br><span class="line">  p1.mkFridens(p2)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">object</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">  <span class="comment">//隐式转换，将狗转换成人</span></span><br><span class="line">  <span class="keyword">implicit</span> <span class="function"><span class="keyword">def</span> <span class="title">dog2Person</span></span>(dog:<span class="type">Dog</span>):<span class="type">Person</span>=&#123;</span><br><span class="line">    <span class="keyword">new</span> <span class="type">Person</span>(dog.name)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">def</span> <span class="title">main</span></span>(args: <span class="type">Array</span>[<span class="type">String</span>]): <span class="type">Unit</span> = &#123;</span><br><span class="line">    <span class="keyword">val</span> huangxiaoming = <span class="keyword">new</span> <span class="type">Person</span>(<span class="string">"huangxiaoming"</span>)</span><br><span class="line">    <span class="keyword">val</span> angelababy = <span class="keyword">new</span> <span class="type">Student</span>(<span class="string">"angelababy"</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="type">Party</span>[<span class="type">Person</span>](huangxiaoming,angelababy)</span><br><span class="line"></span><br><span class="line">    println(<span class="string">"------------------------------------------------"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> erlangshen = <span class="keyword">new</span> <span class="type">Person</span>(<span class="string">"erlangshen"</span>)</span><br><span class="line">    <span class="keyword">val</span> xiaotianquan = <span class="keyword">new</span> <span class="type">Dog</span>(<span class="string">"xiaotianquan"</span>)</span><br><span class="line">    <span class="keyword">new</span> <span class="type">Party</span>[<span class="type">Person</span>](erlangshen,xiaotianquan)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180418193958192-1529150253.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-05-09-Scala学习之路 （九）Scala的上界和下届.html" class="pre-post btn btn-default" title='Scala学习之路 （九）Scala的上界和下届'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Scala学习之路 （九）Scala的上界和下届</span>
+    </a>
+    
+    
+    <a href="/2019-05-07-Scala学习之路 （七）Scala的柯里化及其应用.html" class="next-post btn btn-default" title='Scala学习之路 （七）Scala的柯里化及其应用'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Scala学习之路 （七）Scala的柯里化及其应用</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、概念"><span class="toc-text">一、概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、作用"><span class="toc-text">二、作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、隐式参数"><span class="toc-text">三、隐式参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、隐式转换函数"><span class="toc-text">四、隐式转换函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、隐士转换的发生的时机"><span class="toc-text">四、隐士转换的发生的时机</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、当一个对象去调用某个方法，但是这个对象并不具备这个方法"><span class="toc-text">1、当一个对象去调用某个方法，但是这个对象并不具备这个方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）scala源码示例"><span class="toc-text">（1）scala源码示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）快学Scala示例值File和RichFile示例"><span class="toc-text">（2）快学Scala示例值File和RichFile示例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）超人示例"><span class="toc-text">（3）超人示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配"><span class="toc-text">2、调用某个方法的时候，这个方法确实也存在，存入的参数类型不匹配</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#售票厅卖票"><span class="toc-text">售票厅卖票</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、视图边界"><span class="toc-text">3、视图边界</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
