@@ -19,13 +19,13 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Spark">
+<meta name="keywords" content="Hive">
 
 
-<meta name="description" content="** 模板：** &lt;Excerpt in index | 首页摘要&gt;
-​        Spark学习之路 （一）Spark初识
+<meta name="description" content="** Hive学习之路 （八）Hive中文乱码：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （八）Hive中文乱码
 
-&lt;The rest of contents ...">
+&lt;The...">
 
 
 <meta name="robots" content="all">
@@ -36,7 +36,7 @@
 
 <title>
     
-    模板 |
+    Hive学习之路 （八）Hive中文乱码 |
     
     福星
 </title>
@@ -175,16 +175,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="模板">
+        <h1 id="Hive学习之路 （八）Hive中文乱码">
             
-            模板
+            Hive学习之路 （八）Hive中文乱码
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Spark/">Spark</a>
+        <a class="category-link" href="/categories/Hive/">Hive</a>
     </span>
     
     
@@ -192,7 +192,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
             
         </span>
     </span>
@@ -202,7 +202,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/06/01</span>
+            2019/05/08</span>
     </span>
     
     <span class="fa-wrap">
@@ -217,12 +217,30 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** 模板：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        Spark学习之路 （一）Spark初识</p>
+        <p>** Hive学习之路 （八）Hive中文乱码：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （八）Hive中文乱码</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
-<h2 id="1-1官网"><a href="#1-1官网" class="headerlink" title="1.1官网"></a>1.1官网</h2><p>官网地址：<a href="http://spark.apache.org" target="_blank" rel="noopener">http://spark.apache.org</a></p>
-<h3 id="1、什么是Spark"><a href="#1、什么是Spark" class="headerlink" title="1、什么是Spark"></a>1、什么是Spark</h3>
+<h2 id="Hive注释中文乱码"><a href="#Hive注释中文乱码" class="headerlink" title="Hive注释中文乱码"></a>Hive注释中文乱码</h2><p>创建表的时候，comment说明字段包含中文，表成功创建成功之后，中文说明显示乱码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">external</span> <span class="keyword">table</span> movie(</span><br><span class="line">userID <span class="built_in">int</span> <span class="keyword">comment</span> <span class="string">'用户ID'</span>,</span><br><span class="line">movieID <span class="built_in">int</span> <span class="keyword">comment</span> <span class="string">'电影ID'</span>,</span><br><span class="line">rating <span class="built_in">int</span> <span class="keyword">comment</span> <span class="string">'电影评分'</span>,</span><br><span class="line">timestamped <span class="built_in">bigint</span> <span class="keyword">comment</span> <span class="string">'评分时间戳'</span>,</span><br><span class="line">movieName <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'电影名字'</span>, </span><br><span class="line">movieType <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'电影类型'</span>, </span><br><span class="line">sex <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'性别'</span>, </span><br><span class="line">age <span class="built_in">int</span> <span class="keyword">comment</span> <span class="string">'年龄'</span>, </span><br><span class="line">occupation <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'职业'</span>, </span><br><span class="line">zipcode <span class="keyword">string</span> <span class="keyword">comment</span> <span class="string">'邮政编码'</span></span><br><span class="line">) <span class="keyword">comment</span> <span class="string">'影评三表合一'</span> </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> <span class="keyword">delimited</span> <span class="keyword">fields</span> <span class="keyword">terminated</span> <span class="keyword">by</span> <span class="string">","</span></span><br><span class="line">location <span class="string">'/hive/movie'</span>;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180405195942097-172064801.png" alt="img"></p>
+<p>这是因为在MySQL中的元数据出现乱码</p>
+<h3 id="针对元数据库metastore中的表-分区-视图的编码设置"><a href="#针对元数据库metastore中的表-分区-视图的编码设置" class="headerlink" title="针对元数据库metastore中的表,分区,视图的编码设置"></a>针对元数据库metastore中的表,分区,视图的编码设置</h3><p>因为我们知道 metastore 支持数据库级别，表级别的字符集是 latin1</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180405200316676-1087898740.png" alt="img"></p>
+<p>那么我们只需要把相应注释的地方的字符集由 latin1 改成 utf-8，就可以了。用到注释的就三个地方，表、分区、视图。如下修改分为两个步骤：</p>
+<h3 id="1、进入数据库-Metastore-中执行以下-5-条-SQL-语句"><a href="#1、进入数据库-Metastore-中执行以下-5-条-SQL-语句" class="headerlink" title="1、进入数据库 Metastore 中执行以下 5 条 SQL 语句"></a>1、进入数据库 Metastore 中执行以下 5 条 SQL 语句</h3><h4 id="（1）修改表字段注解和表注解"><a href="#（1）修改表字段注解和表注解" class="headerlink" title="（1）修改表字段注解和表注解"></a>（1）修改表字段注解和表注解</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table COLUMNS_V2 modify column COMMENT varchar(256) character set utf8；</span><br><span class="line">alter table TABLE_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8；</span><br></pre></td></tr></table></figure>
+
+<h4 id="（2）修改分区字段注解"><a href="#（2）修改分区字段注解" class="headerlink" title="（2）修改分区字段注解"></a>（2）修改分区字段注解</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">alter table PARTITION_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8 ;</span><br><span class="line">alter table PARTITION_KEYS modify column PKEY_COMMENT varchar(4000) character set utf8;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）修改索引注解"><a href="#（3）修改索引注解" class="headerlink" title="（3）修改索引注解"></a>（3）修改索引注解</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table INDEX_PARAMS modify column PARAM_VALUE varchar(4000) character set utf8;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、修改-metastore-的连接-URL"><a href="#2、修改-metastore-的连接-URL" class="headerlink" title="2、修改 metastore 的连接 URL"></a>2、修改 metastore 的连接 URL</h3><p> 修改hive-site.xml配置文件</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>javax.jdo.option.ConnectionURL<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">value</span>&gt;</span>jdbc:mysql://IP:3306/db_name?createDatabaseIfNotExist=true&amp;amp;useUnicode=true&amp;characterEncoding=UTF-8<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>JDBC connect string for a JDBC metastore<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>做完可以解决乱码问题</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180405201734055-866615241.png" alt="img"></p>
+
     </div>
     
     <div class="post-footer">
@@ -240,17 +258,17 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019-06-01-Spark学习之路 （一）Spark初识.html" class="pre-post btn btn-default" title='Spark学习之路 （一）Spark初识'>
+    <a href="/2019-05-10-Hive学习之路 （十）Hive的高级操作.html" class="pre-post btn btn-default" title='Hive学习之路 （十）Hive的高级操作'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            Spark学习之路 （一）Spark初识</span>
+            Hive学习之路 （十）Hive的高级操作</span>
     </a>
     
     
-    <a href="/2019-06-02-模板.html" class="next-post btn btn-default" title='模板'>
+    <a href="/2019-05-06-Hive学习之路 （六）Hive SQL之数据类型和存储格式.html" class="next-post btn btn-default" title='Hive学习之路 （六）Hive SQL之数据类型和存储格式'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            模板</span><i class="fa fa-angle-right fa-fw"></i>
+            Hive学习之路 （六）Hive SQL之数据类型和存储格式</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -289,7 +307,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1官网"><span class="toc-text">1.1官网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是Spark"><span class="toc-text">1、什么是Spark</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hive注释中文乱码"><span class="toc-text">Hive注释中文乱码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#针对元数据库metastore中的表-分区-视图的编码设置"><span class="toc-text">针对元数据库metastore中的表,分区,视图的编码设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、进入数据库-Metastore-中执行以下-5-条-SQL-语句"><span class="toc-text">1、进入数据库 Metastore 中执行以下 5 条 SQL 语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）修改表字段注解和表注解"><span class="toc-text">（1）修改表字段注解和表注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）修改分区字段注解"><span class="toc-text">（2）修改分区字段注解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）修改索引注解"><span class="toc-text">（3）修改索引注解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、修改-metastore-的连接-URL"><span class="toc-text">2、修改 metastore 的连接 URL</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证"><span class="toc-text">验证</span></a></li></ol>
         
     </div>
 </aside>

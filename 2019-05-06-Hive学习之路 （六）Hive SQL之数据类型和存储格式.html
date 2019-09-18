@@ -19,13 +19,11 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Spark">
+<meta name="keywords" content="Hive">
 
 
-<meta name="description" content="** 模板：** &lt;Excerpt in index | 首页摘要&gt;
-​        Spark学习之路 （一）Spark初识
-
-&lt;The rest of contents ...">
+<meta name="description" content="** Hive学习之路 （六）Hive SQL之数据类型和存储格式：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （六）Hive SQ...">
 
 
 <meta name="robots" content="all">
@@ -36,7 +34,7 @@
 
 <title>
     
-    模板 |
+    Hive学习之路 （六）Hive SQL之数据类型和存储格式 |
     
     福星
 </title>
@@ -175,16 +173,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="模板">
+        <h1 id="Hive学习之路 （六）Hive SQL之数据类型和存储格式">
             
-            模板
+            Hive学习之路 （六）Hive SQL之数据类型和存储格式
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Spark/">Spark</a>
+        <a class="category-link" href="/categories/Hive/">Hive</a>
     </span>
     
     
@@ -192,7 +190,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
             
         </span>
     </span>
@@ -202,7 +200,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/06/01</span>
+            2019/05/07</span>
     </span>
     
     <span class="fa-wrap">
@@ -217,12 +215,149 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** 模板：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        Spark学习之路 （一）Spark初识</p>
+        <p>** Hive学习之路 （六）Hive SQL之数据类型和存储格式：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （六）Hive SQL之数据类型和存储格式</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
-<h2 id="1-1官网"><a href="#1-1官网" class="headerlink" title="1.1官网"></a>1.1官网</h2><p>官网地址：<a href="http://spark.apache.org" target="_blank" rel="noopener">http://spark.apache.org</a></p>
-<h3 id="1、什么是Spark"><a href="#1、什么是Spark" class="headerlink" title="1、什么是Spark"></a>1、什么是Spark</h3>
+<h2 id="一、数据类型"><a href="#一、数据类型" class="headerlink" title="一、数据类型"></a>一、数据类型</h2><h3 id="1、基本数据类型"><a href="#1、基本数据类型" class="headerlink" title="1、基本数据类型"></a>1、基本数据类型</h3><p>Hive 支持关系型数据中大多数基本数据类型</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>true/false</td>
+<td>TRUE</td>
+</tr>
+<tr>
+<td>tinyint</td>
+<td>1字节的有符号整数</td>
+<td>-128~127 1Y</td>
+</tr>
+<tr>
+<td>smallint</td>
+<td>2个字节的有符号整数，-32768~32767</td>
+<td>1S</td>
+</tr>
+<tr>
+<td>int</td>
+<td>4个字节的带符号整数</td>
+<td>1</td>
+</tr>
+<tr>
+<td>bigint</td>
+<td>8字节带符号整数</td>
+<td>1L</td>
+</tr>
+<tr>
+<td>float</td>
+<td>4字节单精度浮点数</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8字节双精度浮点数</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>deicimal</td>
+<td>任意精度的带符号小数</td>
+<td>1.0</td>
+</tr>
+<tr>
+<td>String</td>
+<td>字符串，变长</td>
+<td>“a”,’b’</td>
+</tr>
+<tr>
+<td>varchar</td>
+<td>变长字符串</td>
+<td>“a”,’b’</td>
+</tr>
+<tr>
+<td>char</td>
+<td>固定长度字符串</td>
+<td>“a”,’b’</td>
+</tr>
+<tr>
+<td>binary</td>
+<td>字节数组</td>
+<td>无法表示</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>时间戳，纳秒精度</td>
+<td>122327493795</td>
+</tr>
+<tr>
+<td>date</td>
+<td>日期</td>
+<td>‘2018-04-07’</td>
+</tr>
+</tbody></table>
+<p>和其他的SQL语言一样，这些都是保留字。需要注意的是所有的这些数据类型都是对Java中接口的实现，因此这些类型的具体行为细节和Java中对应的类型是完全一致的。例如，string类型实现的是Java中的String，float实现的是Java中的float，等等。</p>
+<h3 id="2、复杂类型"><a href="#2、复杂类型" class="headerlink" title="2、复杂类型"></a>2、复杂类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>描述</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>array</td>
+<td>有序的的同类型的集合</td>
+<td>array(1,2)</td>
+</tr>
+<tr>
+<td>map</td>
+<td>key-value,key必须为原始类型，value可以任意类型</td>
+<td>map(‘a’,1,’b’,2)</td>
+</tr>
+<tr>
+<td>struct</td>
+<td>字段集合,类型可以不同</td>
+<td>struct(‘1’,1,1.0), named_stract(‘col1’,’1’,’col2’,1,’clo3’,1.0)</td>
+</tr>
+</tbody></table>
+<h2 id="二、存储格式"><a href="#二、存储格式" class="headerlink" title="二、存储格式"></a>二、存储格式</h2><p>Hive会为每个创建的数据库在HDFS上创建一个目录，该数据库的表会以子目录形式存储，表中的数据会以表目录下的文件形式存储。对于default数据库，默认的缺省数据库没有自己的目录，default数据库下的表默认存放在/user/hive/warehouse目录下。</p>
+<h3 id="（1）textfile"><a href="#（1）textfile" class="headerlink" title="（1）textfile"></a>（1）textfile</h3><p>textfile为默认格式，存储方式为行存储。数据不做压缩，磁盘开销大，数据解析开销大。 </p>
+<h3 id="（2）SequenceFile"><a href="#（2）SequenceFile" class="headerlink" title="（2）SequenceFile"></a>（2）SequenceFile</h3><p>SequenceFile是Hadoop API提供的一种二进制文件支持，其具有使用方便、可分割、可压缩的特点。 </p>
+<p>SequenceFile支持三种压缩选择：NONE, RECORD, BLOCK。 Record压缩率低，一般建议使用BLOCK压缩。 </p>
+<h3 id="（3）RCFile"><a href="#（3）RCFile" class="headerlink" title="（3）RCFile"></a>（3）RCFile</h3><p>一种行列存储相结合的存储方式。 </p>
+<h3 id="（4）ORCFile"><a href="#（4）ORCFile" class="headerlink" title="（4）ORCFile"></a>（4）ORCFile</h3><p>数据按照行分块，每个块按照列存储，其中每个块都存储有一个索引。hive给出的新格式，属于RCFILE的升级版,性能有大幅度提升,而且数据可以压缩存储,压缩快 快速列存取。 </p>
+<h3 id="（5）Parquet"><a href="#（5）Parquet" class="headerlink" title="（5）Parquet"></a>（5）Parquet</h3><p>Parquet也是一种行式存储，同时具有很好的压缩性能；同时可以减少大量的表扫描和反序列化的时间。</p>
+<h2 id="三、数据格式"><a href="#三、数据格式" class="headerlink" title="三、数据格式"></a>三、数据格式</h2><p>当数据存储在文本文件中，必须按照一定格式区别行和列，并且在Hive中指明这些区分符。Hive默认使用了几个平时很少出现的字符，这些字符一般不会作为内容出现在记录中。</p>
+<p>Hive默认的行和列分隔符如下表所示。</p>
+<table>
+<thead>
+<tr>
+<th>分隔符</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>\n</td>
+<td>对于文本文件来说，每行是一条记录，所以\n 来分割记录</td>
+</tr>
+<tr>
+<td>^A (Ctrl+A)</td>
+<td>分割字段，也可以用\001 来表示</td>
+</tr>
+<tr>
+<td>^B (Ctrl+B)</td>
+<td>用于分割 Arrary 或者 Struct 中的元素，或者用于 map 中键值之间的分割，也可以用\002 分割。</td>
+</tr>
+<tr>
+<td>^C</td>
+<td>用于 map 中键和值自己分割，也可以用\003 表示。</td>
+</tr>
+</tbody></table>
+
     </div>
     
     <div class="post-footer">
@@ -240,17 +375,17 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019-06-02-模板 - 副本 (5).html" class="pre-post btn btn-default" title='模板'>
+    <a href="/2019-05-08-Hive学习之路 （八）Hive中文乱码.html" class="pre-post btn btn-default" title='Hive学习之路 （八）Hive中文乱码'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            模板</span>
+            Hive学习之路 （八）Hive中文乱码</span>
     </a>
     
     
-    <a href="/2018-10-30-spark-一文读懂spark.html" class="next-post btn btn-default" title='一文读懂 Spark'>
+    <a href="/2019-05-07-Hive学习之路 （七）Hive的DDL操作.html" class="next-post btn btn-default" title='Hive学习之路 （七）Hive的DDL操作'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            一文读懂 Spark</span><i class="fa fa-angle-right fa-fw"></i>
+            Hive学习之路 （七）Hive的DDL操作</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -289,7 +424,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1官网"><span class="toc-text">1.1官网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是Spark"><span class="toc-text">1、什么是Spark</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、数据类型"><span class="toc-text">一、数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、基本数据类型"><span class="toc-text">1、基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、复杂类型"><span class="toc-text">2、复杂类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、存储格式"><span class="toc-text">二、存储格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#（1）textfile"><span class="toc-text">（1）textfile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（2）SequenceFile"><span class="toc-text">（2）SequenceFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（3）RCFile"><span class="toc-text">（3）RCFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（4）ORCFile"><span class="toc-text">（4）ORCFile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#（5）Parquet"><span class="toc-text">（5）Parquet</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、数据格式"><span class="toc-text">三、数据格式</span></a></li></ol>
         
     </div>
 </aside>

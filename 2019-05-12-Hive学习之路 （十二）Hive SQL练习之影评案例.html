@@ -1,0 +1,586 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hive">
+
+
+<meta name="description" content="** Hive学习之路 （十二）Hive SQL练习之影评案例：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （十二）Hive SQL...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hive学习之路 （十二）Hive SQL练习之影评案例 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hive学习之路 （十二）Hive SQL练习之影评案例">
+            
+            Hive学习之路 （十二）Hive SQL练习之影评案例
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hive/">Hive</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/12</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hive学习之路 （十二）Hive SQL练习之影评案例：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （十二）Hive SQL练习之影评案例</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="案例说明"><a href="#案例说明" class="headerlink" title="案例说明"></a>案例说明</h2><p>现有如此三份数据：<br>1、users.dat 数据格式为： 2::M::56::16::70072，</p>
+<p>共有6040条数据<br>对应字段为：UserID BigInt, Gender String, Age Int, Occupation String, Zipcode String<br>对应字段中文解释：用户id，性别，年龄，职业，邮政编码</p>
+<p>2、movies.dat    数据格式为： 2::Jumanji (1995)::Adventure|Children’s|Fantasy，</p>
+<p>共有3883条数据<br>对应字段为：MovieID BigInt, Title String, Genres String<br>对应字段中文解释：电影ID，电影名字，电影类型</p>
+<p>3、ratings.dat    数据格式为： 1::1193::5::978300760，</p>
+<p>共有1000209条数据<br>对应字段为：UserID BigInt, MovieID BigInt, Rating Double, Timestamped String<br>对应字段中文解释：用户ID，电影ID，评分，评分时间戳</p>
+<p>题目要求</p>
+<p>　　数据要求：<br>　　　　（1）写shell脚本清洗数据。（hive不支持解析多字节的分隔符，也就是说hive只能解析’:’, 不支持解析’::’，所以用普通方式建表来使用是行不通的，要求对数据做一次简单清洗）<br>　　　　（2）使用Hive能解析的方式进行</p>
+<p>　　Hive要求：<br>　　　　（1）正确建表，导入数据（三张表，三份数据），并验证是否正确</p>
+<p>　　　　（2）求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）</p>
+<p>　　　　（3）分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）</p>
+<p>　　　　（4）求movieid = 2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）</p>
+<p>　　　　（5）求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）</p>
+<p>　　　　（6）求好片（评分&gt;=4.0）最多的那个年份的最好看的10部电影</p>
+<p>　　　　（7）求1997年上映的电影中，评分最高的10部Comedy类电影</p>
+<p>　　　　（8）该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）</p>
+<p>　　　　（9）各年评分最高的电影类型（年份，类型，影评分）</p>
+<p>　　　　（10）每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）</p>
+<h2 id="数据下载"><a href="#数据下载" class="headerlink" title="数据下载"></a>数据下载</h2><p><a href="https://files.cnblogs.com/files/qingyunzong/hive影评案例.zip" target="_blank" rel="noopener">https://files.cnblogs.com/files/qingyunzong/hive%E5%BD%B1%E8%AF%84%E6%A1%88%E4%BE%8B.zip</a></p>
+<h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>之前已经使用MapReduce程序将3张表格进行合并，所以只需要将合并之后的表格导入对应的表中进行查询即可。</p>
+<h3 id="1、正确建表，导入数据（三张表，三份数据），并验证是否正确"><a href="#1、正确建表，导入数据（三张表，三份数据），并验证是否正确" class="headerlink" title="1、正确建表，导入数据（三张表，三份数据），并验证是否正确"></a>1、正确建表，导入数据（三张表，三份数据），并验证是否正确</h3><h4 id="（1）分析需求"><a href="#（1）分析需求" class="headerlink" title="（1）分析需求"></a>（1）分析需求</h4><p>需要创建一个数据库movie，在movie数据库中创建3张表，t_user，t_movie，t_rating</p>
+<blockquote>
+<p><strong>t_user</strong>:userid bigint,sex string,age int,occupation string,zipcode string<br><strong>t_movie</strong>:movieid bigint,moviename string,movietype string<br><strong>t_rating</strong>:userid bigint,movieid bigint,rate double,times string</p>
+</blockquote>
+<p>原始数据是以::进行切分的，所以需要使用能解析多字节分隔符的Serde即可</p>
+<p>使用RegexSerde</p>
+<p>需要两个参数：<br>input.regex = “(.<em>)::(.</em>)::(.*)”<br>output.format.string = “%1$s %2$s %3$s”</p>
+<h4 id="（2）创建数据库"><a href="#（2）创建数据库" class="headerlink" title="（2）创建数据库"></a>（2）创建数据库</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">exists</span> movie;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">database</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> movie;</span><br><span class="line"><span class="keyword">use</span> movie;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）创建t-user表"><a href="#（3）创建t-user表" class="headerlink" title="（3）创建t_user表"></a>（3）创建t_user表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_user(</span><br><span class="line">userid <span class="built_in">bigint</span>,</span><br><span class="line">sex <span class="keyword">string</span>,</span><br><span class="line">age <span class="built_in">int</span>,</span><br><span class="line">occupation <span class="keyword">string</span>,</span><br><span class="line">zipcode <span class="keyword">string</span>) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> serde <span class="string">'org.apache.hadoop.hive.serde2.RegexSerDe'</span> </span><br><span class="line"><span class="keyword">with</span> serdeproperties(<span class="string">'input.regex'</span>=<span class="string">'(.*)::(.*)::(.*)::(.*)::(.*)'</span>,<span class="string">'output.format.string'</span>=<span class="string">'%1$s %2$s %3$s %4$s %5$s'</span>)</span><br><span class="line"><span class="keyword">stored</span> <span class="keyword">as</span> textfile;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（4）创建t-movie表"><a href="#（4）创建t-movie表" class="headerlink" title="（4）创建t_movie表"></a>（4）创建t_movie表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> movie;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_movie(</span><br><span class="line">movieid <span class="built_in">bigint</span>,</span><br><span class="line">moviename <span class="keyword">string</span>,</span><br><span class="line">movietype <span class="keyword">string</span>) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> serde <span class="string">'org.apache.hadoop.hive.serde2.RegexSerDe'</span> </span><br><span class="line"><span class="keyword">with</span> serdeproperties(<span class="string">'input.regex'</span>=<span class="string">'(.*)::(.*)::(.*)'</span>,<span class="string">'output.format.string'</span>=<span class="string">'%1$s %2$s %3$s'</span>)</span><br><span class="line"><span class="keyword">stored</span> <span class="keyword">as</span> textfile;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（5）创建t-rating表"><a href="#（5）创建t-rating表" class="headerlink" title="（5）创建t_rating表"></a>（5）创建t_rating表</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> movie;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> t_rating(</span><br><span class="line">userid <span class="built_in">bigint</span>,</span><br><span class="line">movieid <span class="built_in">bigint</span>,</span><br><span class="line">rate <span class="keyword">double</span>,</span><br><span class="line">times <span class="keyword">string</span>) </span><br><span class="line"><span class="keyword">row</span> <span class="keyword">format</span> serde <span class="string">'org.apache.hadoop.hive.serde2.RegexSerDe'</span> </span><br><span class="line"><span class="keyword">with</span> serdeproperties(<span class="string">'input.regex'</span>=<span class="string">'(.*)::(.*)::(.*)::(.*)'</span>,<span class="string">'output.format.string'</span>=<span class="string">'%1$s %2$s %3$s %4$s'</span>)</span><br><span class="line"><span class="keyword">stored</span> <span class="keyword">as</span> textfile;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（6）导入数据"><a href="#（6）导入数据" class="headerlink" title="（6）导入数据"></a>（6）导入数据</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0: jdbc:hive2://hadoop3:10000&gt; load data local inpath "/home/hadoop/movie/users.dat" into table t_user;</span><br><span class="line">No rows affected (0.928 seconds)</span><br><span class="line">0: jdbc:hive2://hadoop3:10000&gt; load data local inpath "/home/hadoop/movie/movies.dat" into table t_movie;</span><br><span class="line">No rows affected (0.538 seconds)</span><br><span class="line">0: jdbc:hive2://hadoop3:10000&gt; load data local inpath "/home/hadoop/movie/ratings.dat" into table t_rating;</span><br><span class="line">No rows affected (0.963 seconds)</span><br><span class="line">0: jdbc:hive2://hadoop3:10000&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（7）验证"><a href="#（7）验证" class="headerlink" title="（7）验证"></a>（7）验证</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> t_user t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410163511811-1216719632.png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> t_movie t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410163646769-516781465.png" alt="img"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> t_rating t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410163751235-1412738103.png" alt="img"></p>
+<h3 id="2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）"><a href="#2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）" class="headerlink" title="2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）"></a>2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）</h3><h4 id="（1）思路分析："><a href="#（1）思路分析：" class="headerlink" title="（1）思路分析："></a>（1）思路分析：</h4><p>　　1、需求字段：电影名        t_movie.moviename</p>
+<p>　　　　　　　　  评分次数    t_rating.rate          count()</p>
+<p>　　2、核心SQL：按照电影名进行分组统计，求出每部电影的评分次数并按照评分次数降序排序</p>
+<h4 id="（2）完整SQL："><a href="#（2）完整SQL：" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer2 <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.moviename <span class="keyword">as</span> moviename,<span class="keyword">count</span>(a.moviename) <span class="keyword">as</span> total </span><br><span class="line"><span class="keyword">from</span> t_movie a <span class="keyword">join</span> t_rating b <span class="keyword">on</span> a.movieid=b.movieid </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.moviename </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> total <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer2;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410164633081-629022259.png" alt="img"></p>
+<h3 id="3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）"><a href="#3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）" class="headerlink" title="3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）"></a>3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）</h3><h4 id="（1）分析思路："><a href="#（1）分析思路：" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：性别　　t_user.sex</p>
+<p>　　　　　　　　  电影名　t_movie.moviename</p>
+<p>　　　　　　　　  影评分　t_rating.rate</p>
+<p>　　2、核心SQL：三表联合查询，按照性别过滤条件，电影名作为分组条件，影评分作为排序条件进行查询</p>
+<h4 id="（2）完整SQL：-1"><a href="#（2）完整SQL：-1" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p>女性当中评分最高的10部电影（性别，电影名，影评分）评论次数大于等于50次</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer3_F <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="string">"F"</span> <span class="keyword">as</span> sex, c.moviename <span class="keyword">as</span> <span class="keyword">name</span>, <span class="keyword">avg</span>(a.rate) <span class="keyword">as</span> avgrate, <span class="keyword">count</span>(c.moviename) <span class="keyword">as</span> total  </span><br><span class="line"><span class="keyword">from</span> t_rating a </span><br><span class="line"><span class="keyword">join</span> t_user b <span class="keyword">on</span> a.userid=b.userid </span><br><span class="line"><span class="keyword">join</span> t_movie c <span class="keyword">on</span> a.movieid=c.movieid </span><br><span class="line"><span class="keyword">where</span> b.sex=<span class="string">"F"</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> c.moviename </span><br><span class="line"><span class="keyword">having</span> total &gt;= <span class="number">50</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> avgrate <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer3_F；</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410170214113-1840938708.png" alt="img"></p>
+<p>男性当中评分最高的10部电影（性别，电影名，影评分）评论次数大于等于50次</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer3_M <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="string">"M"</span> <span class="keyword">as</span> sex, c.moviename <span class="keyword">as</span> <span class="keyword">name</span>, <span class="keyword">avg</span>(a.rate) <span class="keyword">as</span> avgrate, <span class="keyword">count</span>(c.moviename) <span class="keyword">as</span> total  </span><br><span class="line"><span class="keyword">from</span> t_rating a </span><br><span class="line"><span class="keyword">join</span> t_user b <span class="keyword">on</span> a.userid=b.userid </span><br><span class="line"><span class="keyword">join</span> t_movie c <span class="keyword">on</span> a.movieid=c.movieid </span><br><span class="line"><span class="keyword">where</span> b.sex=<span class="string">"M"</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> c.moviename </span><br><span class="line"><span class="keyword">having</span> total &gt;= <span class="number">50</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> avgrate <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer3_M；</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410170316416-1654694572.png" alt="img"></p>
+<h3 id="4、求movieid-2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）"><a href="#4、求movieid-2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）" class="headerlink" title="4、求movieid = 2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）"></a>4、求movieid = 2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）</h3><h4 id="（1）分析思路：-1"><a href="#（1）分析思路：-1" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：年龄段　　t_user.age</p>
+<p>　　　　　　　　  影评分　t_rating.rate</p>
+<p>　　2、核心SQL：t_user和t_rating表进行联合查询，用movieid=2116作为过滤条件，用年龄段作为分组条件</p>
+<h4 id="（2）完整SQL：-2"><a href="#（2）完整SQL：-2" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer4 <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.age <span class="keyword">as</span> age, <span class="keyword">avg</span>(b.rate) <span class="keyword">as</span> avgrate </span><br><span class="line"><span class="keyword">from</span> t_user a <span class="keyword">join</span> t_rating b <span class="keyword">on</span> a.userid=b.userid </span><br><span class="line"><span class="keyword">where</span> b.movieid=<span class="number">2116</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.age;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer4;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410170836707-1154639273.png" alt="img"></p>
+<h3 id="5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）"><a href="#5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）" class="headerlink" title="5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）"></a>5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）</h3><h4 id="（1）分析思路：-2"><a href="#（1）分析思路：-2" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：观影者　t_rating.userid</p>
+<p>　　　　　　　　  电影名　t_movie.moviename</p>
+<p>　　　　　　　　  影评分　t_rating.rate</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要先求出最喜欢看电影的那位女性</p>
+<p>　　　　　　　　　　需要查询的字段：性别：t_user.sex</p>
+<p>　　　　　　　　　　　　　　　　　　观影次数：count(t_rating.userid)</p>
+<p>　　　　B.　　根据A中求出的女性userid作为where过滤条件，以看过的电影的影评分rate作为排序条件进行排序，求出评分最高的10部电影</p>
+<p>　　　　　　　　　　需要查询的字段：电影的ID：t_rating.movieid</p>
+<p>　　　　C.　　求出B中10部电影的平均影评分</p>
+<p>　　　　　　　　　　需要查询的字段：电影的ID：answer5_B.movieid</p>
+<p>　　　　　　　　　　　　　　　　　　影评分：t_rating.rate</p>
+<h4 id="（2）完整SQL：-3"><a href="#（2）完整SQL：-3" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p> A.　　需要先求出最喜欢看电影的那位女性</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.userid, <span class="keyword">count</span>(a.userid) <span class="keyword">as</span> total </span><br><span class="line"><span class="keyword">from</span> t_rating a <span class="keyword">join</span> t_user b <span class="keyword">on</span> a.userid = b.userid </span><br><span class="line"><span class="keyword">where</span> b.sex=<span class="string">"F"</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.userid </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> total <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410172157137-2052414004.png" alt="img"></p>
+<p>B.　　根据A中求出的女性userid作为where过滤条件，以看过的电影的影评分rate作为排序条件进行排序，求出评分最高的10部电影</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer5_B <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.movieid <span class="keyword">as</span> movieid, a.rate <span class="keyword">as</span> rate  </span><br><span class="line"><span class="keyword">from</span> t_rating a </span><br><span class="line"><span class="keyword">where</span> a.userid=<span class="number">1150</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> rate <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer5_B;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410172614162-1700464534.png" alt="img"></p>
+<p>C.　　求出B中10部电影的平均影评分</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer5_C <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> b.movieid <span class="keyword">as</span> movieid, c.moviename <span class="keyword">as</span> moviename, <span class="keyword">avg</span>(b.rate) <span class="keyword">as</span> avgrate </span><br><span class="line"><span class="keyword">from</span> answer5_B a </span><br><span class="line"><span class="keyword">join</span> t_rating b <span class="keyword">on</span> a.movieid=b.movieid </span><br><span class="line"><span class="keyword">join</span> t_movie c <span class="keyword">on</span> b.movieid=c.movieid </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> b.movieid,c.moviename;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer5_C;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410173209987-971071603.png" alt="img"></p>
+<h3 id="6、求好片（评分-gt-4-0）最多的那个年份的最好看的10部电影"><a href="#6、求好片（评分-gt-4-0）最多的那个年份的最好看的10部电影" class="headerlink" title="6、求好片（评分&gt;=4.0）最多的那个年份的最好看的10部电影"></a>6、求好片（评分&gt;=4.0）最多的那个年份的最好看的10部电影</h3><h4 id="（1）分析思路：-3"><a href="#（1）分析思路：-3" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：电影id　t_rating.movieid</p>
+<p>　　　　　　　　  电影名　t_movie.moviename（包含年份）</p>
+<p>　　　　　　　　  影评分　t_rating.rate</p>
+<p>　　　　　　　　  上映年份　xxx.years</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要将t_rating和t_movie表进行联合查询，将电影名当中的上映年份截取出来，保存到临时表answer6_A中</p>
+<p>　　　　　　　　　　需要查询的字段：电影id　t_rating.movieid</p>
+<p>　　　　　　　　　　　　　　　　　　电影名　t_movie.moviename（包含年份）</p>
+<p>　　　　　　　　　　　　　　　　　　影评分　t_rating.rate</p>
+<p>　　　　B.　　从answer6_A按照年份进行分组条件，按照评分&gt;=4.0作为where过滤条件，按照count(years)作为排序条件进行查询</p>
+<p>　　　　　　　　　　需要查询的字段：电影的ID：answer6_A.years</p>
+<p>　　　　C.　　从answer6_A按照years=1998作为where过滤条件，按照评分作为排序条件进行查询</p>
+<p>　　　　　　　　　　需要查询的字段：电影的ID：answer6_A.moviename</p>
+<p>　　　　　　　　　　　　　　　　　　影评分：answer6_A.avgrate</p>
+<h4 id="（2）完整SQL：-4"><a href="#（2）完整SQL：-4" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p>A.　　需要将t_rating和t_movie表进行联合查询，将电影名当中的上映年份截取出来</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer6_A <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span>  a.movieid <span class="keyword">as</span> movieid, a.moviename <span class="keyword">as</span> moviename, <span class="keyword">substr</span>(a.moviename,<span class="number">-5</span>,<span class="number">4</span>) <span class="keyword">as</span> <span class="keyword">years</span>, <span class="keyword">avg</span>(b.rate) <span class="keyword">as</span> avgrate</span><br><span class="line"><span class="keyword">from</span> t_movie a <span class="keyword">join</span> t_rating b <span class="keyword">on</span> a.movieid=b.movieid </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.movieid, a.moviename;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer6_A;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410184026515-566278137.png" alt="img"></p>
+<p>B.　　从answer6_A按照年份进行分组条件，按照评分&gt;=4.0作为where过滤条件，按照count(years)作为排序条件进行查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">years</span>, <span class="keyword">count</span>(<span class="keyword">years</span>) <span class="keyword">as</span> total </span><br><span class="line"><span class="keyword">from</span> answer6_A a </span><br><span class="line"><span class="keyword">where</span> avgrate &gt;= <span class="number">4.0</span> </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">years</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> total <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410184710241-171102133.png" alt="img"></p>
+<p>C.　　从answer6_A按照years=1998作为where过滤条件，按照评分作为排序条件进行查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer6_C <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> a.moviename <span class="keyword">as</span> <span class="keyword">name</span>, a.avgrate <span class="keyword">as</span> rate </span><br><span class="line"><span class="keyword">from</span> answer6_A a </span><br><span class="line"><span class="keyword">where</span> a.years=<span class="number">1998</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> rate <span class="keyword">desc</span> </span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer6_C;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410185149876-690755903.png" alt="img"></p>
+<h3 id="7、求1997年上映的电影中，评分最高的10部Comedy类电影"><a href="#7、求1997年上映的电影中，评分最高的10部Comedy类电影" class="headerlink" title="7、求1997年上映的电影中，评分最高的10部Comedy类电影"></a>7、求1997年上映的电影中，评分最高的10部Comedy类电影</h3><h4 id="（1）分析思路：-4"><a href="#（1）分析思路：-4" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：电影id　t_rating.movieid</p>
+<p>　　　　　　　　  电影名　t_movie.moviename（包含年份）</p>
+<p>　　　　　　　　  影评分　t_rating.rate</p>
+<p>　　　　　　　　 上映年份　xxx.years（最终查询结果可不显示）</p>
+<p>　　　　　　　　 电影类型　xxx.type（最终查询结果可不显示）</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要电影类型，所有可以将第六步中求出answer6_A表和t_movie表进行联合查询</p>
+<p>　　　　　　　　　　需要查询的字段：电影id　answer6_A.movieid</p>
+<p>　　　　　　　　　　　　　　　　　　电影名　answer6_A.moviename</p>
+<p>　　　　　　　　　　　　　　　　　　影评分　answer6_A.rate</p>
+<p>　　　　　　　　　　　　　　　　　　电影类型　t_movie.movietype　</p>
+<p>　　　　　　　　　　　　　　　　　　上映年份　answer6_A.years</p>
+<p>　　　　B.　　从answer7_A按照电影类型中是否包含Comedy和按上映年份作为where过滤条件，按照评分作为排序条件进行查询，将结果保存到answer7_B中</p>
+<p>　　　　　　　　　　需要查询的字段：电影的ID：answer7_A.id</p>
+<p>　　　　　　　　　　　　　　　　　　电影的名称：answer7_A.name</p>
+<p>　　　　　　　　　　　　　　　　　　电影的评分：answer7_A.rate</p>
+<h4 id="（2）完整SQL：-5"><a href="#（2）完整SQL：-5" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p>A.　　需要电影类型，所有可以将第六步中求出answer6_A表和t_movie表进行联合查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer7_A <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> b.movieid <span class="keyword">as</span> <span class="keyword">id</span>, b.moviename <span class="keyword">as</span> <span class="keyword">name</span>, b.years <span class="keyword">as</span> <span class="keyword">years</span>, b.avgrate <span class="keyword">as</span> rate, a.movietype <span class="keyword">as</span> <span class="keyword">type</span> </span><br><span class="line"><span class="keyword">from</span> t_movie a <span class="keyword">join</span> answer6_A b <span class="keyword">on</span> a.movieid=b.movieid;</span><br><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> answer7_A t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410192030317-443456540.png" alt="img"></p>
+<p>B.　　从answer7_A按照电影类型中是否包含Comedy和按照评分&gt;=4.0作为where过滤条件，按照评分作为排序条件进行查询，将结果保存到answer7_B中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer7_B <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> t.id <span class="keyword">as</span> <span class="keyword">id</span>, t.name <span class="keyword">as</span> <span class="keyword">name</span>, t.rate <span class="keyword">as</span> rate </span><br><span class="line"><span class="keyword">from</span> answer7_A t </span><br><span class="line"><span class="keyword">where</span> t.years=<span class="number">1997</span> <span class="keyword">and</span> <span class="keyword">instr</span>(<span class="keyword">lcase</span>(t.type),<span class="string">'comedy'</span>) &gt;<span class="number">0</span> </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> rate <span class="keyword">desc</span></span><br><span class="line"><span class="keyword">limit</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer7_B;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410193635839-727010468.png" alt="img"></p>
+<h3 id="8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）"><a href="#8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）" class="headerlink" title="8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）"></a>8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）</h3><h4 id="（1）分析思路：-5"><a href="#（1）分析思路：-5" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：电影id　movieid</p>
+<p>　　　　　　　　  电影名　moviename</p>
+<p>　　　　　　　　  影评分　rate（排序条件）</p>
+<p>　　　　　　　　 电影类型　type（分组条件）</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要电影类型，所有需要将answer7_A中的type字段进行裂变，将结果保存到answer8_A中</p>
+<p>　　　　　　　　　　需要查询的字段：电影id　answer7_A.id</p>
+<p>　　　　　　　　　　　　　　　　　　电影名　answer7_A.name（包含年份）</p>
+<p>　　　　　　　　　　　　　　　　　　上映年份　answer7_A.years</p>
+<p>　　　　　　　　　　　　　　　　　　影评分　answer7_A.rate</p>
+<p>　　　　　　　　　　　　　　　　　　电影类型　answer7_A.movietype　</p>
+<p>　　　　B.　　求TopN，按照type分组，需要添加一列来记录每组的顺序，将结果保存到answer8_B中</p>
+<blockquote>
+<p>row_number() ：用来生成 num字段的值</p>
+<p>distribute by movietype ：按照type进行分组</p>
+<p>sort by avgrate desc ：每组数据按照rate排降序</p>
+<p>num：新列， 值就是每一条记录在每一组中按照排序规则计算出来的排序值</p>
+</blockquote>
+<p>　　　　C.　　从answer8_B中取出num列序号&lt;=5的</p>
+<h4 id="（2）完整SQL：-6"><a href="#（2）完整SQL：-6" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p>A.　　需要电影类型，所有需要将answer7_A中的type字段进行裂变，将结果保存到answer8_A中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer8_A <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.id <span class="keyword">as</span> <span class="keyword">id</span>, a.name <span class="keyword">as</span> <span class="keyword">name</span>, a.years <span class="keyword">as</span> <span class="keyword">years</span>, a.rate <span class="keyword">as</span> rate, tv.type <span class="keyword">as</span> <span class="keyword">type</span> </span><br><span class="line"><span class="keyword">from</span> answer7_A a </span><br><span class="line"><span class="keyword">lateral</span> <span class="keyword">view</span> <span class="keyword">explode</span>(<span class="keyword">split</span>(a.type,<span class="string">"\\|"</span>)) tv <span class="keyword">as</span> <span class="keyword">type</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer8_A;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410194801735-397806737.png" alt="img"></p>
+<p>B.　　求TopN，按照type分组，需要添加一列来记录每组的顺序，将结果保存到answer8_B中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer8_B <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,<span class="keyword">years</span>,rate,<span class="keyword">type</span>,row_number() <span class="keyword">over</span>(<span class="keyword">distribute</span> <span class="keyword">by</span> <span class="keyword">type</span> <span class="keyword">sort</span> <span class="keyword">by</span> rate <span class="keyword">desc</span> ) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> answer8_A;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer8_B;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410195900115-1011015068.png" alt="img"></p>
+<p>C.　　从answer8_B中取出num列序号&lt;=5的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.* <span class="keyword">from</span> answer8_B a <span class="keyword">where</span> a.num &lt;= <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410200238591-1498325084.png" alt="img"></p>
+<h3 id="9、各年评分最高的电影类型（年份，类型，影评分）"><a href="#9、各年评分最高的电影类型（年份，类型，影评分）" class="headerlink" title="9、各年评分最高的电影类型（年份，类型，影评分）"></a>9、各年评分最高的电影类型（年份，类型，影评分）</h3><h4 id="（1）分析思路：-6"><a href="#（1）分析思路：-6" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：电影id　movieid</p>
+<p>　　　　　　　　  电影名　moviename</p>
+<p>　　　　　　　　  影评分　rate（排序条件）</p>
+<p>　　　　　　　　  电影类型　type（分组条件）</p>
+<p>　　　　　　　　 上映年份　years（分组条件）</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要按照电影类型和上映年份进行分组，按照影评分进行排序，将结果保存到answer9_A中</p>
+<p>　　　　　　　　　　需要查询的字段：</p>
+<p>　　　　　　　　　　　　　　　　　　上映年份　answer7_A.years</p>
+<p>　　　　　　　　　　　　　　　　　　影评分　answer7_A.rate</p>
+<p>　　　　　　　　　　　　　　　　　　电影类型　answer7_A.movietype　</p>
+<p>　　　　B.　　求TopN，按照years分组，需要添加一列来记录每组的顺序，将结果保存到answer9_B中</p>
+<p>　　　　C.　　按照num=1作为where过滤条件取出结果数据</p>
+<h4 id="（2）完整SQL：-7"><a href="#（2）完整SQL：-7" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p>A.　　需要按照电影类型和上映年份进行分组，按照影评分进行排序，将结果保存到answer9_A中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer9_A <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> a.years <span class="keyword">as</span> <span class="keyword">years</span>, a.type <span class="keyword">as</span> <span class="keyword">type</span>, <span class="keyword">avg</span>(a.rate) <span class="keyword">as</span> rate </span><br><span class="line"><span class="keyword">from</span> answer8_A a </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.years,a.type </span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> rate <span class="keyword">desc</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer9_A;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410201710877-165323305.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410201710877-165323305.png" alt="img"></p>
+<p>B.　　求TopN，按照years分组，需要添加一列来记录每组的顺序，将结果保存到answer9_B中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer9_B <span class="keyword">as</span> </span><br><span class="line"><span class="keyword">select</span> <span class="keyword">years</span>,<span class="keyword">type</span>,rate,row_number() <span class="keyword">over</span> (<span class="keyword">distribute</span> <span class="keyword">by</span> <span class="keyword">years</span> <span class="keyword">sort</span> <span class="keyword">by</span> rate) <span class="keyword">as</span> <span class="keyword">num</span></span><br><span class="line"><span class="keyword">from</span> answer9_A;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer9_B;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410202105613-1494957407.png" alt="img"></p>
+<p>C.　　按照num=1作为where过滤条件取出结果数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> answer9_B <span class="keyword">where</span> <span class="keyword">num</span>=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410202237858-1872842838.png" alt="img"></p>
+<h3 id="10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）"><a href="#10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）" class="headerlink" title="10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）"></a>10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）</h3><h4 id="（1）分析思路：-7"><a href="#（1）分析思路：-7" class="headerlink" title="（1）分析思路："></a>（1）分析思路：</h4><p>　　1、需求字段：电影id　t_movie.movieid</p>
+<p>　　　　　　　　  电影名　t_movie.moviename</p>
+<p>　　　　　　　　  影评分　t_rating.rate（排序条件）</p>
+<p>　　　　　　　　  地区　t_user.zipcode（分组条件）</p>
+<p>　　2、核心SQL：</p>
+<p>　　　　A.　　需要把三张表进行联合查询，取出电影id、电影名称、影评分、地区，将结果保存到answer10_A表中</p>
+<p>　　　　　　　　　　需要查询的字段：电影id　t_movie.movieid</p>
+<p>　　　　　　　　  　　　　　　　　　 电影名　t_movie.moviename</p>
+<p>　　　　　　　　  　　　　　　　　　 影评分　t_rating.rate（排序条件）</p>
+<p>　　　　　　　　  　　　　　　　　　 地区　t_user.zipcode（分组条件）</p>
+<p>　　　　B.　　求TopN，按照地区分组，按照平均排序，添加一列num用来记录地区排名，将结果保存到answer10_B表中</p>
+<p>　　　　C.　　按照num=1作为where过滤条件取出结果数据</p>
+<h4 id="（2）完整SQL：-8"><a href="#（2）完整SQL：-8" class="headerlink" title="（2）完整SQL："></a>（2）完整SQL：</h4><p> A.　　需要把三张表进行联合查询，取出电影id、电影名称、影评分、地区，将结果保存到answer10_A表中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer10_A <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> c.movieid, c.moviename, <span class="keyword">avg</span>(b.rate) <span class="keyword">as</span> avgrate, a.zipcode</span><br><span class="line"><span class="keyword">from</span> t_user a </span><br><span class="line"><span class="keyword">join</span> t_rating b <span class="keyword">on</span> a.userid=b.userid </span><br><span class="line"><span class="keyword">join</span> t_movie c <span class="keyword">on</span> b.movieid=c.movieid </span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.zipcode,c.movieid, c.moviename;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> answer10_A t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410203328988-1213590724.png" alt="img"></p>
+<p>B.　　求TopN，按照地区分组，按照平均排序，添加一列num用来记录地区排名，将结果保存到answer10_B表中</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> answer10_B <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> movieid,moviename,avgrate,zipcode, row_number() <span class="keyword">over</span> (<span class="keyword">distribute</span> <span class="keyword">by</span> zipcode <span class="keyword">sort</span> <span class="keyword">by</span> avgrate) <span class="keyword">as</span> <span class="keyword">num</span> </span><br><span class="line"><span class="keyword">from</span> answer10_A; </span><br><span class="line"><span class="keyword">select</span> t.* <span class="keyword">from</span> answer10_B t;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410204043457-1325388358.png" alt="img"></p>
+<p>C.　　按照num=1作为where过滤条件取出结果数据并保存到HDFS上</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> overwrite <span class="keyword">directory</span> <span class="string">"/movie/answer10/"</span> <span class="keyword">select</span> t.* <span class="keyword">from</span> answer10_B t <span class="keyword">where</span> t.num=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180410204402851-479530041.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-05-13-Hive学习之路 （十三）Hive分析窗口函数(一) SUM,AVG,MIN,MAX.html" class="pre-post btn btn-default" title='Hive学习之路 （十三）Hive分析窗口函数(一) SUM,AVG,MIN,MAX'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （十三）Hive分析窗口函数(一) SUM,AVG,MIN,MAX</span>
+    </a>
+    
+    
+    <a href="/2019-05-11-Hive学习之路 （十一）Hive的5个面试题.html" class="next-post btn btn-default" title='Hive学习之路 （十一）Hive的5个面试题'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （十一）Hive的5个面试题</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#案例说明"><span class="toc-text">案例说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据下载"><span class="toc-text">数据下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解析"><span class="toc-text">解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、正确建表，导入数据（三张表，三份数据），并验证是否正确"><span class="toc-text">1、正确建表，导入数据（三张表，三份数据），并验证是否正确</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析需求"><span class="toc-text">（1）分析需求</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）创建数据库"><span class="toc-text">（2）创建数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）创建t-user表"><span class="toc-text">（3）创建t_user表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）创建t-movie表"><span class="toc-text">（4）创建t_movie表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（5）创建t-rating表"><span class="toc-text">（5）创建t_rating表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（6）导入数据"><span class="toc-text">（6）导入数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（7）验证"><span class="toc-text">（7）验证</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）"><span class="toc-text">2、求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）思路分析："><span class="toc-text">（1）思路分析：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL："><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）"><span class="toc-text">3、分别求男性，女性当中评分最高的10部电影（性别，电影名，影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路："><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-1"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、求movieid-2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）"><span class="toc-text">4、求movieid = 2116这部电影各年龄段（因为年龄就只有7个，就按这个7个分就好了）的平均影评（年龄段，影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-1"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-2"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）"><span class="toc-text">5、求最喜欢看电影（影评次数最多）的那位女性评最高分的10部电影的平均影评分（观影者，电影名，影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-2"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-3"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、求好片（评分-gt-4-0）最多的那个年份的最好看的10部电影"><span class="toc-text">6、求好片（评分&gt;=4.0）最多的那个年份的最好看的10部电影</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-3"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-4"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、求1997年上映的电影中，评分最高的10部Comedy类电影"><span class="toc-text">7、求1997年上映的电影中，评分最高的10部Comedy类电影</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-4"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-5"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）"><span class="toc-text">8、该影评库中各种类型电影中评价最高的5部电影（类型，电影名，平均影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-5"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-6"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、各年评分最高的电影类型（年份，类型，影评分）"><span class="toc-text">9、各年评分最高的电影类型（年份，类型，影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-6"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-7"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）"><span class="toc-text">10、每个地区最高评分的电影名，把结果存入HDFS（地区，电影名，影评分）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）分析思路：-7"><span class="toc-text">（1）分析思路：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）完整SQL：-8"><span class="toc-text">（2）完整SQL：</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

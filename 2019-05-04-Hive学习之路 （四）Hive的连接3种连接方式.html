@@ -1,0 +1,430 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hive">
+
+
+<meta name="description" content="** Hive学习之路 （四）Hive的连接3种连接方式：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （四）Hive的连接3种连接方...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hive学习之路 （四）Hive的连接3种连接方式 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hive学习之路 （四）Hive的连接3种连接方式">
+            
+            Hive学习之路 （四）Hive的连接3种连接方式
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hive/">Hive</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/05/04</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hive学习之路 （四）Hive的连接3种连接方式：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （四）Hive的连接3种连接方式</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、CLI连接"><a href="#一、CLI连接" class="headerlink" title="一、CLI连接"></a>一、CLI连接</h2><p>进入到 bin 目录下，直接输入命令： </p>
+<p>[hadoop@hadoop3 ~]$ <strong>hive</strong><br>SLF4J: Class path contains multiple SLF4J bindings.<br>SLF4J: Found binding in [jar:file:/home/hadoop/apps/apache-hive-2.3.3-bin/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]<br>SLF4J: Found binding in [jar:file:/home/hadoop/apps/hadoop-2.7.5/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]<br>SLF4J: See <a href="http://www.slf4j.org/codes.html#multiple_bindings" target="_blank" rel="noopener">http://www.slf4j.org/codes.html#multiple_bindings</a> for an explanation.<br>SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]</p>
+<p>Logging initialized using configuration in jar:file:/home/hadoop/apps/apache-hive-2.3.3-bin/lib/hive-common-2.3.3.jar!/hive-log4j2.properties Async: true<br>Hive-on-MR is deprecated in Hive 2 and may not be available in the future versions. Consider using a different execution engine (i.e. spark, tez) or using Hive 1.X releases.<br>hive&gt; <strong>show databases;</strong><br>OK<br>default<br>myhive<br>Time taken: 6.569 seconds, Fetched: 2 row(s)<br>hive&gt;</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404094203204-1654342331.png" alt="img"></p>
+<p>启动成功的话如上图所示，接下来便可以做 hive 相关操作</p>
+<p>补充：</p>
+<p>　　1、上面的 hive 命令相当于在启动的时候执行：<strong>hive –service cli</strong></p>
+<p>　　2、使用 <strong>hive –help</strong>，可以查看 hive 命令可以启动那些服务</p>
+<p>　　3、通过 <strong>hive –service serviceName –help</strong> 可以查看某个具体命令的使用方式</p>
+<h2 id="二、HiveServer2-beeline"><a href="#二、HiveServer2-beeline" class="headerlink" title="二、HiveServer2/beeline"></a>二、HiveServer2/beeline</h2><p>在现在使用的最新的 hive-2.3.3 版本中：都需要对 hadoop 集群做如下改变，否则无法使用</p>
+<h3 id="1、修改-hadoop-集群的-hdfs-site-xml-配置文件"><a href="#1、修改-hadoop-集群的-hdfs-site-xml-配置文件" class="headerlink" title="1、修改 hadoop 集群的 hdfs-site.xml 配置文件"></a>1、修改 hadoop 集群的 hdfs-site.xml 配置文件</h3><p>加入一条配置信息，表示启用 webhdfs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;dfs.webhdfs.enabled&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、修改-hadoop-集群的-core-site-xml-配置文件"><a href="#2、修改-hadoop-集群的-core-site-xml-配置文件" class="headerlink" title="2、修改 hadoop 集群的 core-site.xml 配置文件"></a>2、修改 hadoop 集群的 core-site.xml 配置文件</h3><p>加入两条配置信息：表示设置 hadoop 的代理用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;hadoop.proxyuser.hadoop.hosts&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;hadoop.proxyuser.hadoop.groups&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;*&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>配置解析：</p>
+<p>hadoop.proxyuser.hadoop.hosts 配置成*的意义，表示任意节点使用 hadoop 集群的代理用户 hadoop 都能访问 hdfs 集群，hadoop.proxyuser.hadoop.groups 表示代理用户的组所属</p>
+<p>以上操作做好了之后（最好重启一下HDFS集群），请继续做如下两步：</p>
+<p><strong>第一步：先启动 hiveserver2 服务</strong></p>
+<p>启动方式，（假如是在 hadoop3 上）：</p>
+<p>启动为前台：hiveserver2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 ~]$ hiveserver2</span><br><span class="line">2018-04-04 10:21:49: Starting HiveServer2</span><br><span class="line">SLF4J: Class path contains multiple SLF4J bindings.</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/apache-hive-2.3.3-bin/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/hadoop-2.7.5/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.</span><br><span class="line">SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404102339802-1449905367.png" alt="img"></p>
+<p>启动会多一个进程</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404102444648-1107890873.png" alt="img"></p>
+<p>启动为后台：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nohup hiveserver2 1&gt;/home/hadoop/hiveserver.log 2&gt;/home/hadoop/hiveserver.err &amp;</span><br><span class="line">或者：nohup hiveserver2 1&gt;/dev/null 2&gt;/dev/null &amp;</span><br><span class="line">或者：nohup hiveserver2 &gt;/dev/null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>以上 3 个命令是等价的，第一个表示记录日志，第二个和第三个表示不记录日志</p>
+<p>命令中的 1 和 2 的意义分别是：</p>
+<p><strong>1：表示标准日志输出</strong></p>
+<p><strong>2：表示错误日志输出 如果我没有配置日志的输出路径，日志会生成在当前工作目录，默认的日志名称叫做： nohup.xxx</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 ~]$ nohup hiveserver2 1&gt;/home/hadoop/log/hivelog/hiveserver.log 2&gt;/home/hadoop/log/hivelog/hiveserver.err &amp;</span><br><span class="line">[1] 4352</span><br><span class="line">[hadoop@hadoop3 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404102754557-1513350234.png" alt="img"></p>
+<p>PS：nohup 命令：如果你正在运行一个进程，而且你觉得在退出帐户时该进程还不会结束， 那么可以使用 nohup 命令。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。 nohup 就是不挂起的意思(no hang up)。 该命令的一般形式为：nohup command &amp;</p>
+<p><strong>第二步：然后启动 beeline 客户端去连接：</strong></p>
+<p>执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 ~]$ beeline -u jdbc:hive2//hadoop3:10000 -n hadoop</span><br><span class="line">SLF4J: Class path contains multiple SLF4J bindings.</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/apache-hive-2.3.3-bin/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/hadoop-2.7.5/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.</span><br><span class="line">SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]</span><br><span class="line">scan complete in 1ms</span><br><span class="line">scan complete in 2374ms</span><br><span class="line">No known driver to handle &quot;jdbc:hive2//hadoop3:10000&quot;</span><br><span class="line">Beeline version 2.3.3 by Apache Hive</span><br><span class="line">beeline&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404103024076-887839080.png" alt="img"></p>
+<p>-u : 指定元数据库的链接信息</p>
+<p>-n : 指定用户名和密码</p>
+<p>另外还有一种方式也可以去连接：</p>
+<p>先执行 beeline</p>
+<p>然后按图所示输入：!connect jdbc:hive2://hadoop02:10000</p>
+<p>按回车，然后输入用户名，这个 用户名就是安装 hadoop 集群的用户名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 ~]$ beeline</span><br><span class="line">SLF4J: Class path contains multiple SLF4J bindings.</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/apache-hive-2.3.3-bin/lib/log4j-slf4j-impl-2.6.2.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: Found binding in [jar:file:/home/hadoop/apps/hadoop-2.7.5/share/hadoop/common/lib/slf4j-log4j12-1.7.10.jar!/org/slf4j/impl/StaticLoggerBinder.class]</span><br><span class="line">SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.</span><br><span class="line">SLF4J: Actual binding is of type [org.apache.logging.slf4j.Log4jLoggerFactory]</span><br><span class="line">Beeline version 2.3.3 by Apache Hive</span><br><span class="line">beeline&gt; !connect jdbc:hive2://hadoop3:10000</span><br><span class="line">Connecting to jdbc:hive2://hadoop3:10000</span><br><span class="line">Enter username for jdbc:hive2://hadoop3:10000: hadoop</span><br><span class="line">Enter password for jdbc:hive2://hadoop3:10000: ******</span><br><span class="line">Connected to: Apache Hive (version 2.3.3)</span><br><span class="line">Driver: Hive JDBC (version 2.3.3)</span><br><span class="line">Transaction isolation: TRANSACTION_REPEATABLE_READ</span><br><span class="line">0: jdbc:hive2://hadoop3:10000&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404103449430-1687396282.png" alt="img"></p>
+<p>接下来便可以做 hive 操作</p>
+<h2 id="三、Web-UI"><a href="#三、Web-UI" class="headerlink" title="三、Web UI"></a>三、Web UI</h2><p> 1、 下载对应版本的 src 包：apache-hive-2.3.2-src.tar.gz</p>
+<p>2、 上传，解压</p>
+<p>tar -zxvf apache-hive-2.3.2-src.tar.gz</p>
+<p>3、 然后进入目录${HIVE_SRC_HOME}/hwi/web，执行打包命令:</p>
+<p>jar -cvf hive-hwi-2.3.2.war *</p>
+<p>在当前目录会生成一个 hive-hwi-2.3.2.war</p>
+<p>4、 得到 hive-hwi-2.3.2.war 文件，复制到 hive 下的 lib 目录中</p>
+<p>cp hive-hwi-2.3.2.war ${HIVE_HOME}/lib/</p>
+<p>5、 修改配置文件 hive-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;hive.hwi.listen.host&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;0.0.0.0&lt;/value&gt;</span><br><span class="line"> &lt;description&gt;监听的地址&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;hive.hwi.listen.port&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;9999&lt;/value&gt;</span><br><span class="line"> &lt;description&gt;监听的端口号&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line"> &lt;name&gt;hive.hwi.war.file&lt;/name&gt;</span><br><span class="line"> &lt;value&gt;lib/hive-hwi-2.3.2.war&lt;/value&gt;</span><br><span class="line"> &lt;description&gt;war 包所在的地址&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>6、 复制所需 jar 包</p>
+<p>　　1、cp ${JAVA_HOME}/lib/tools.jar ${HIVE_HOME}/lib</p>
+<p>　　2、再寻找三个 jar 包，都放入${HIVE_HOME}/lib 目录：</p>
+<p>　　　　commons-el-1.0.jar</p>
+<p>　　　　jasper-compiler-5.5.23.jar</p>
+<p>　　　　jasper-runtime-5.5.23.jar</p>
+<p>　　　　不然启动 hwi 服务的时候会报错。</p>
+<p>7、 安装 ant</p>
+<blockquote>
+<p>1、 上传 ant 包：apache-ant-1.9.4-bin.tar.gz</p>
+<p>2、 解压 tar -zxvf apache-ant-1.9.4-bin.tar.gz -C ~/apps/</p>
+<p>3、 配置环境变量 vi /etc/profile 在最后增加两行： export ANT_HOME=/home/hadoop/apps/apache-ant-1.9.4 export PATH=$PATH:$ANT_HOME/bin 配置完环境变量别忘记执行：source /etc/profile</p>
+<p>4、 验证是否安装成功</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404105055045-2058439962.png" alt="img"></p>
+</blockquote>
+<p>8、上面的步骤都配置完，基本就大功告成了。进入${HIVE_HOME}/bin 目录：</p>
+<p>　　 ${HIVE_HOME}/bin/hive –service hwi</p>
+<p>　　或者让在后台运行： nohup bin/hive –service hwi &gt; /dev/null 2&gt; /dev/null &amp;</p>
+<p>9、 前面配置了端口号为 9999，所以这里直接在浏览器中输入: hadoop02:9999/hwi</p>
+<p>10、至此大功告成</p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404105149756-1584607098.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2019-05-05-Hive学习之路 （五）DbVisualizer配置连接hive.html" class="pre-post btn btn-default" title='Hive学习之路 （五）DbVisualizer配置连接hive'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （五）DbVisualizer配置连接hive</span>
+    </a>
+    
+    
+    <a href="/2019-05-03-Hive学习之路 （三）Hive元数据信息对应MySQL数据库表.html" class="next-post btn btn-default" title='Hive学习之路 （三）Hive元数据信息对应MySQL数据库表'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hive学习之路 （三）Hive元数据信息对应MySQL数据库表</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、CLI连接"><span class="toc-text">一、CLI连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、HiveServer2-beeline"><span class="toc-text">二、HiveServer2/beeline</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、修改-hadoop-集群的-hdfs-site-xml-配置文件"><span class="toc-text">1、修改 hadoop 集群的 hdfs-site.xml 配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、修改-hadoop-集群的-core-site-xml-配置文件"><span class="toc-text">2、修改 hadoop 集群的 core-site.xml 配置文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Web-UI"><span class="toc-text">三、Web UI</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

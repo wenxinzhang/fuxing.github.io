@@ -19,13 +19,11 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Spark">
+<meta name="keywords" content="Hive">
 
 
-<meta name="description" content="** 模板：** &lt;Excerpt in index | 首页摘要&gt;
-​        Spark学习之路 （一）Spark初识
-
-&lt;The rest of contents ...">
+<meta name="description" content="** Hive学习之路 （五）DbVisualizer配置连接hive：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hive学习之路 （五）DbVis...">
 
 
 <meta name="robots" content="all">
@@ -36,7 +34,7 @@
 
 <title>
     
-    模板 |
+    Hive学习之路 （五）DbVisualizer配置连接hive |
     
     福星
 </title>
@@ -175,16 +173,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="模板">
+        <h1 id="Hive学习之路 （五）DbVisualizer配置连接hive">
             
-            模板
+            Hive学习之路 （五）DbVisualizer配置连接hive
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Spark/">Spark</a>
+        <a class="category-link" href="/categories/Hive/">Hive</a>
     </span>
     
     
@@ -192,7 +190,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Spark/">Spark</a>
+            <a class="tag-link" href="/tags/Hive/">Hive</a>
             
         </span>
     </span>
@@ -202,7 +200,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/06/01</span>
+            2019/05/05</span>
     </span>
     
     <span class="fa-wrap">
@@ -217,12 +215,42 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** 模板：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        Spark学习之路 （一）Spark初识</p>
+        <p>** Hive学习之路 （五）DbVisualizer配置连接hive：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hive学习之路 （五）DbVisualizer配置连接hive</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
-<h2 id="1-1官网"><a href="#1-1官网" class="headerlink" title="1.1官网"></a>1.1官网</h2><p>官网地址：<a href="http://spark.apache.org" target="_blank" rel="noopener">http://spark.apache.org</a></p>
-<h3 id="1、什么是Spark"><a href="#1、什么是Spark" class="headerlink" title="1、什么是Spark"></a>1、什么是Spark</h3>
+<h2 id="一、安装DbVisualizer"><a href="#一、安装DbVisualizer" class="headerlink" title="一、安装DbVisualizer"></a>一、安装DbVisualizer</h2><p>下载地址<a href="http://www.dbvis.com/" target="_blank" rel="noopener">http://www.dbvis.com/</a></p>
+<p>也可以从网上下载破解版程序，此处使用的版本是DbVisualizer 9.1.1</p>
+<p>具体的安装步骤可以百度，或是修改安装目录之后默认安装就可以</p>
+<h2 id="二、配置DbVisualizer里的hive-jdbc"><a href="#二、配置DbVisualizer里的hive-jdbc" class="headerlink" title="二、配置DbVisualizer里的hive jdbc"></a>二、配置DbVisualizer里的hive jdbc</h2><h3 id="1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹"><a href="#1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹" class="headerlink" title="1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹"></a>1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹</h3><p>D:\Program Files\DbVisualizer\jdbc</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404130621506-310954602.png" alt="img"></p>
+<h3 id="2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面"><a href="#2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面" class="headerlink" title="2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面"></a>2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面</h3><p>jar包位置:　　</p>
+<h4 id="1-hadoop-2-7-5-share-hadoop-common-hadoop-common-2-7-5-jar"><a href="#1-hadoop-2-7-5-share-hadoop-common-hadoop-common-2-7-5-jar" class="headerlink" title="(1)　　hadoop-2.7.5/share/hadoop/common/hadoop-common-2.7.5.jar"></a>(1)　　hadoop-2.7.5/share/hadoop/common/hadoop-common-2.7.5.jar</h4><p>把图中红框中的jar包拷贝到新建的hive文件夹里面</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404130944730-1360228643.png" alt="img"></p>
+<h4 id="2-hadoop-2-7-5-share-hadoop-common-lib"><a href="#2-hadoop-2-7-5-share-hadoop-common-lib" class="headerlink" title="(2)　　hadoop-2.7.5/share/hadoop/common/lib/"></a>(2)　　hadoop-2.7.5/share/hadoop/common/lib/</h4><p>把图中涉及到的jar包拷贝到新建的hive文件夹里面</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404135500221-969827221.png" alt="img"></p>
+<h3 id="3、拷贝Hive的相关jar包放入新建的hive文件夹里面"><a href="#3、拷贝Hive的相关jar包放入新建的hive文件夹里面" class="headerlink" title="3、拷贝Hive的相关jar包放入新建的hive文件夹里面"></a>3、拷贝Hive的相关jar包放入新建的hive文件夹里面</h3><p>jar包位置:　　</p>
+<h4 id="1-apache-hive-2-3-3-bin-jdbc-lib"><a href="#1-apache-hive-2-3-3-bin-jdbc-lib" class="headerlink" title="(1)　　apache-hive-2.3.3-bin/jdbc/lib"></a>(1)　　apache-hive-2.3.3-bin/jdbc/lib</h4><p>把图中涉及到的jar包拷贝到新建的hive文件夹里面</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404135543042-1208593430.png" alt="img"></p>
+<h3 id="4、结果"><a href="#4、结果" class="headerlink" title="4、结果"></a>4、结果</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404135722643-192560741.png" alt="img"></p>
+<h3 id="5、在tools-Driver-manager中进行配置"><a href="#5、在tools-Driver-manager中进行配置" class="headerlink" title="5、在tools/Driver manager中进行配置"></a>5、在tools/Driver manager中进行配置</h3><p> 打开DbVisualizer，此时会进行加载刚添加的jar包</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404135954967-49547825.png" alt="img"></p>
+<h3 id="6、在Tool–Driver-manager中进行配置"><a href="#6、在Tool–Driver-manager中进行配置" class="headerlink" title="6、在Tool–Driver manager中进行配置"></a>6、在Tool–Driver manager中进行配置</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140106979-609721263.png" alt="img"></p>
+<p>点击左上角的添加</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140151086-476092228.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140500114-1367641987.png" alt="img"></p>
+<p>完成之后关闭窗口</p>
+<p>点击添加连接数据库</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140704331-601865750.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140721278-889862110.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140758891-1791585887.png" alt="img"></p>
+<p>选择驱动</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140826037-708008515.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404140947419-1363418024.png" alt="img"></p>
+<p>点击完成</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404141035449-800125990.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180404145450132-447921151.png" alt="img"></p>
+
     </div>
     
     <div class="post-footer">
@@ -240,17 +268,17 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019-06-02-模板.html" class="pre-post btn btn-default" title='模板'>
+    <a href="/2019-05-07-Hive学习之路 （七）Hive的DDL操作.html" class="pre-post btn btn-default" title='Hive学习之路 （七）Hive的DDL操作'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            模板</span>
+            Hive学习之路 （七）Hive的DDL操作</span>
     </a>
     
     
-    <a href="/2019-06-02-模板 - 副本 (7).html" class="next-post btn btn-default" title='模板'>
+    <a href="/2019-05-04-Hive学习之路 （四）Hive的连接3种连接方式.html" class="next-post btn btn-default" title='Hive学习之路 （四）Hive的连接3种连接方式'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            模板</span><i class="fa fa-angle-right fa-fw"></i>
+            Hive学习之路 （四）Hive的连接3种连接方式</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -289,7 +317,7 @@ new Valine({
             文章目录
         </h3>
         
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1官网"><span class="toc-text">1.1官网</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、什么是Spark"><span class="toc-text">1、什么是Spark</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、安装DbVisualizer"><span class="toc-text">一、安装DbVisualizer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、配置DbVisualizer里的hive-jdbc"><span class="toc-text">二、配置DbVisualizer里的hive jdbc</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹"><span class="toc-text">1、在DbVisualizer的安装目录jdbc文件夹下新建hive文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面"><span class="toc-text">2、拷贝Hadoop的相关jar包放入新建的hive文件夹里面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-hadoop-2-7-5-share-hadoop-common-hadoop-common-2-7-5-jar"><span class="toc-text">(1)　　hadoop-2.7.5/share/hadoop/common/hadoop-common-2.7.5.jar</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-hadoop-2-7-5-share-hadoop-common-lib"><span class="toc-text">(2)　　hadoop-2.7.5/share/hadoop/common/lib/</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、拷贝Hive的相关jar包放入新建的hive文件夹里面"><span class="toc-text">3、拷贝Hive的相关jar包放入新建的hive文件夹里面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-apache-hive-2-3-3-bin-jdbc-lib"><span class="toc-text">(1)　　apache-hive-2.3.3-bin/jdbc/lib</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、结果"><span class="toc-text">4、结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、在tools-Driver-manager中进行配置"><span class="toc-text">5、在tools/Driver manager中进行配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、在Tool–Driver-manager中进行配置"><span class="toc-text">6、在Tool–Driver manager中进行配置</span></a></li></ol></li></ol>
         
     </div>
 </aside>
