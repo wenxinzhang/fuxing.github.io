@@ -1,0 +1,403 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="HBase">
+
+
+<meta name="description" content="** HBase学习之路 （十一）HBase的协过滤器：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （十一）HBase的协过滤器
+...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （十一）HBase的协过滤器 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （十一）HBase的协过滤器">
+            
+            HBase学习之路 （十一）HBase的协过滤器
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/HBase/">HBase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/06/11</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （十一）HBase的协过滤器：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （十一）HBase的协过滤器</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="协处理器—Coprocessor"><a href="#协处理器—Coprocessor" class="headerlink" title="协处理器—Coprocessor"></a>协处理器—Coprocessor</h2><h3 id="1、-起源"><a href="#1、-起源" class="headerlink" title="1、 起源"></a>1、 起源</h3><p>　　Hbase 作为列族数据库最经常被人诟病的特性包括：无法轻易建立“二级索引”，难以执 行求和、计数、排序等操作。比如，在旧版本的(&lt;0.92)Hbase 中，统计数据表的总行数，需 要使用 Counter 方法，执行一次 MapReduce Job 才能得到。虽然 HBase 在数据存储层中集成 了 MapReduce，能够有效用于数据表的分布式计算。然而在很多情况下，做一些简单的相 加或者聚合计算的时候，<strong>如果直接将计算过程放置在 server 端，能够减少通讯开销，从而获 得很好的性能提升。</strong>于是，HBase 在 0.92 之后引入了协处理器(coprocessors)，实现一些激动 人心的新特性：能够轻易建立二次索引、复杂过滤器(谓词下推)以及访问控制等。</p>
+<h2 id="2、介绍"><a href="#2、介绍" class="headerlink" title="2、介绍"></a>2、介绍</h2><p>　　协处理器有两种：<strong>observer 和 endpoint</strong></p>
+<p>　　Observer 类似于传统数据库中的触发器，当发生某些事件的时候这类协处理器会被 Server 端调用。Observer Coprocessor 就是一些散布在 HBase Server 端代码中的 hook 钩子， 在固定的事件发生时被调用。比如：put 操作之前有钩子函数 prePut，该函数在 put 操作执 行前会被 Region Server 调用；在 put 操作之后则有 postPut 钩子函数</p>
+<p>　　以 HBase0.92 版本为例，它提供了三种观察者接口：</p>
+<blockquote>
+<p><strong>RegionObserver</strong>：提供客户端的数据操纵事件钩子：Get、Put、Delete、Scan 等。</p>
+<p><strong>WALObserver</strong>：提供 WAL 相关操作钩子。</p>
+<p><strong>MasterObserver</strong>：提供 DDL-类型的操作钩子。如创建、删除、修改数据表等。</p>
+<p>到 0.96 版本又新增一个 <strong>RegionServerObserver</strong></p>
+</blockquote>
+<p>　　下图是以 RegionObserver 为例子讲解 Observer 这种协处理器的原理：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403130003416-1058757311.png" alt="img"></p>
+<p>　　1、客户端发出 put 请求</p>
+<p>　　2、该请求被分派给合适的 RegionServer 和 region</p>
+<p>　　3、coprocessorHost 拦截该请求，然后在该表上登记的每个 RegionObserver 上调用 prePut()</p>
+<p>　　4、如果没有被 prePut()拦截，该请求继续送到 region，然后进行处理</p>
+<p>　　5、region 产生的结果再次被 CoprocessorHost 拦截，调用 postPut()</p>
+<p>　　6、假如没有 postPut()拦截该响应，最终结果被返回给客户端</p>
+<p>　　Endpoint 协处理器类似传统数据库中的存储过程，客户端可以调用这些 Endpoint 协处 理器执行一段 Server 端代码，并将 Server 端代码的结果返回给客户端进一步处理，最常见 的用法就是进行聚集操作。如果没有协处理器，当用户需要找出一张表中的最大数据，即 max 聚合操作，就必须进行全表扫描，在客户端代码内遍历扫描结果，并执行求最大值的 操作。这样的方法无法利用底层集群的并发能力，而将所有计算都集中到 Client 端统一执行， 势必效率低下。利用 Coprocessor，用户可以将求最大值的代码部署到 HBase Server 端，HBase 将利用底层 cluster 的多个节点并发执行求最大值的操作。即在每个 Region 范围内执行求最 大值的代码，将每个 Region 的最大值在 Region Server 端计算出，仅仅将该 max 值返回给客 户端。在客户端进一步将多个 Region 的最大值进一步处理而找到其中的最大值。这样整体 的执行效率就会提高很多</p>
+<p>　　下图是 EndPoint 的工作原理：</p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201804/1228818-20180403130107289-1349588066.png" alt="img"></p>
+<h3 id="3、总结"><a href="#3、总结" class="headerlink" title="3、总结"></a>3、总结</h3><p>　　Observer 允许集群在正常的客户端操作过程中可以有不同的行为表现</p>
+<p>　　Endpoint 允许扩展集群的能力，对客户端应用开放新的运算命令</p>
+<p>　　Observer 类似于 RDBMS 中的触发器，主要在服务端工作</p>
+<p>　　Endpoint 类似于 RDBMS 中的存储过程，主要在服务端工作</p>
+<p>　　Observer 可以实现权限管理、优先级设置、监控、ddl 控制、<strong>二级索引</strong>等功能</p>
+<p>　　Endpoint 可以实现 <strong>min、max、avg、sum、distinct、group by</strong> 等功能</p>
+<h2 id="协处理加载方式"><a href="#协处理加载方式" class="headerlink" title="协处理加载方式"></a>协处理加载方式</h2><p>　　协处理器的加载方式有两种，我们称之为<strong>静态加载方式（Static Load）和动态加载方式 （Dynamic Load）</strong>。静态加载的协处理器称之为 System Coprocessor，动态加载的协处理器称 之为 Table Coprocessor。</p>
+<h3 id="1、-静态加载"><a href="#1、-静态加载" class="headerlink" title="1、 静态加载"></a>1、 静态加载</h3><p>通过修改 hbase-site.xml 这个文件来实现，启动全局 aggregation，能过操纵所有的表上 的数据。只需要添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;hbase.coprocessor.user.region.classes&lt;/name&gt;</span><br><span class="line">&lt;value&gt;org.apache.hadoop.hbase.coprocessor.AggregateImplementation&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>为所有 table 加载了一个 cp class，可以用”,”分割加载多个 class</p>
+<h3 id="2、-动态加载"><a href="#2、-动态加载" class="headerlink" title="2、 动态加载"></a>2、 动态加载</h3><p>启用表 aggregation，只对特定的表生效。通过 HBase Shell 来实现。</p>
+<p>（1）停用表　　disable ‘guanzhu’</p>
+<p>（2）添加协处理器　　alter ‘guanzhu’, METHOD =&gt; ‘table_att’, ‘coprocessor’ =&gt; ‘hdfs://myha01/hbase/guanzhu.jar|com.study.hbase.cp.HbaseCoprocessorTest|1001|’</p>
+<p>（3）启用表　　enable ‘guanzhu’</p>
+<h3 id="3、-协处理器卸载"><a href="#3、-协处理器卸载" class="headerlink" title="3、 协处理器卸载"></a>3、 协处理器卸载</h3><p>同样是3步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">disable &apos;mytable&apos;</span><br><span class="line">alter &apos;mytable&apos;,METHOD=&gt;&apos;table_att_unset&apos;,NAME=&gt;&apos;coprocessor$1&apos;</span><br><span class="line">enable &apos;mytable&apos;</span><br></pre></td></tr></table></figure>
+
+<h3 id="案例（二级索引）"><a href="#案例（二级索引）" class="headerlink" title="案例（二级索引）"></a>案例（二级索引）</h3><p>说明：二狗子是王宝强的粉丝</p>
+<p>关注表：二狗子关注了王宝强　　rowKey=’ergouzi’　　cell=”star:wangbaoqiang”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">put &apos;guanzhu&apos;, &apos;ergouzi&apos;, &apos;cf:star&apos;, &apos;wangbaoqiang&apos;</span><br></pre></td></tr></table></figure>
+
+<p>粉丝表：二狗子是王宝强的粉丝　　rowKey=”wangbaoqiang”　　cell=”fensi:ergouzi”</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">put &apos;fans&apos;, &apos;wangbaoqiang&apos;, &apos;cf:fensi&apos;, &apos;ergouzi&apos;</span><br></pre></td></tr></table></figure>
+
+<p>java实现代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">public class HbaseCoprocessorTest extends BaseRegionObserver&#123;</span><br><span class="line"></span><br><span class="line">    static Configuration conf = HBaseConfiguration.create();</span><br><span class="line">    static Connection conn = null;</span><br><span class="line">    static Table table = null;</span><br><span class="line">    </span><br><span class="line">    static &#123;</span><br><span class="line">        conf.set(&quot;hbase.zookeeper.quorum&quot;, &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;);</span><br><span class="line">        try &#123;</span><br><span class="line">            conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">            table = conn.getTable(TableName.valueOf(&quot;fans&quot;));</span><br><span class="line">        &#125; catch (IOException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    /**</span><br><span class="line">     * 此方法是在真正的put方法调用之前进行调用</span><br><span class="line">     * 参数put为table.put(put)里面的参数put对象，是要进行插入的那条数据</span><br><span class="line">     * </span><br><span class="line">     * 例如：要向关注表里面插入一条数据    姓名：二狗子    关注的明星：王宝强</span><br><span class="line">     * shell语句：put &apos;guanzhu&apos;,&apos;ergouzi&apos;, &apos;cf:star&apos;, &apos;wangbaoqiang&apos;</span><br><span class="line">     *</span><br><span class="line">     * */</span><br><span class="line">    @Override</span><br><span class="line">    public void prePut(ObserverContext&lt;RegionCoprocessorEnvironment&gt; e, Put put, WALEdit edit, Durability durability)</span><br><span class="line">            throws IOException &#123;</span><br><span class="line">        //获取put对象里面的rowkey&apos;ergouzi&apos;</span><br><span class="line">        byte[] row = put.getRow();</span><br><span class="line">        //获取put对象里面的cell</span><br><span class="line">        List&lt;Cell&gt; list = put.get(&quot;cf&quot;.getBytes(), &quot;star&quot;.getBytes());</span><br><span class="line">        Cell cell = list.get(0);</span><br><span class="line">        </span><br><span class="line">        //创建一个新的put对象</span><br><span class="line">        Put new_put = new Put(cell.getValueArray());</span><br><span class="line">        new_put.addColumn(&quot;cf&quot;.getBytes(), &quot;fensi&quot;.getBytes(), row);</span><br><span class="line">        table.put(new_put);</span><br><span class="line">        conn.close();</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>打成jar包，命名为guanzhu.jar，将其上传到HDFS目录/hbase下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -put guanzhu.jar /hbase</span><br></pre></td></tr></table></figure>
+
+
+
+<p>打开hbase shell命令，按顺序呢执行（提前已经创建好guanzhu和fans表）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">hbase(main):001:0&gt; disable &apos;guanzhu&apos;</span><br><span class="line">0 row(s) in 2.8850 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):002:0&gt; alter &apos;guanzhu&apos;, METHOD =&gt; &apos;table_att&apos;, &apos;coprocessor&apos; =&gt; &apos;hdfs://myha01/hbase/guanzhu.jar|com.study.hbase.cp.HbaseCoprocessorTest|1001|&apos;</span><br><span class="line">Updating all regions with the new schema...</span><br><span class="line">1/1 regions updated.</span><br><span class="line">Done.</span><br><span class="line">0 row(s) in 2.7570 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):003:0&gt; enable &apos;guanzhu&apos;</span><br><span class="line">0 row(s) in 2.3400 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):004:0&gt; desc &apos;guanzhu&apos;</span><br><span class="line">Table guanzhu is ENABLED                                                                                        </span><br><span class="line">guanzhu, &#123;TABLE_ATTRIBUTES =&gt; &#123;coprocessor$1 =&gt; &apos;hdfs://myha01/hbase/guanzhu.jar|com.study.hbase.cp.HbaseCoproce</span><br><span class="line">ssorTest|1001|&apos;&#125;                                                                                                </span><br><span class="line">COLUMN FAMILIES DESCRIPTION                                                                                     </span><br><span class="line">&#123;NAME =&gt; &apos;cf&apos;, BLOOMFILTER =&gt; &apos;ROW&apos;, VERSIONS =&gt; &apos;1&apos;, IN_MEMORY =&gt; &apos;false&apos;, KEEP_DELETED_CELLS =&gt; &apos;FALSE&apos;, DATA_</span><br><span class="line">BLOCK_ENCODING =&gt; &apos;NONE&apos;, TTL =&gt; &apos;FOREVER&apos;, COMPRESSION =&gt; &apos;NONE&apos;, MIN_VERSIONS =&gt; &apos;0&apos;, BLOCKCACHE =&gt; &apos;true&apos;, BL</span><br><span class="line">OCKSIZE =&gt; &apos;65536&apos;, REPLICATION_SCOPE =&gt; &apos;0&apos;&#125;                                                                   </span><br><span class="line">1 row(s) in 0.0500 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):005:0&gt; put &apos;guanzhu&apos;, &apos;ergouzi&apos;, &apos;cf:star&apos;, &apos;wangbaoqiang&apos;</span><br><span class="line">0 row(s) in 0.3050 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):006:0&gt; scan &apos;guanzhu&apos;</span><br><span class="line">ROW                           COLUMN+CELL                                                                       </span><br><span class="line"> ergouzi                      column=cf:star, timestamp=1522759023001, value=wangbaoqiang                       </span><br><span class="line">1 row(s) in 0.0790 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):007:0&gt; scan &apos;fans&apos;</span><br><span class="line">ROW                           COLUMN+CELL                                                                       </span><br><span class="line"> \x00\x00\x00\x19\x00\x00\x00 column=cf:fensi, timestamp=1522759022996, value=ergouzi                           </span><br><span class="line"> \x0C\x00\x07ergouzi\x02cfsta                                                                                   </span><br><span class="line"> r\x7F\xFF\xFF\xFF\xFF\xFF\xF                                                                                   </span><br><span class="line"> F\xFF\x04wangbaoqiang                                                                                          </span><br><span class="line">1 row(s) in 0.0330 seconds</span><br><span class="line"></span><br><span class="line">hbase(main):008:0&gt;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-10-30-spark-一文读懂spark.html" class="pre-post btn btn-default" title='一文读懂 Spark'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            一文读懂 Spark</span>
+    </a>
+    
+    
+    <a href="/2018-06-10-HBase学习之路 （十）HBase表的设计原则.html" class="next-post btn btn-default" title='HBase学习之路 （十）HBase表的设计原则'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （十）HBase表的设计原则</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#协处理器—Coprocessor"><span class="toc-text">协处理器—Coprocessor</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、-起源"><span class="toc-text">1、 起源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、介绍"><span class="toc-text">2、介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3、总结"><span class="toc-text">3、总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#协处理加载方式"><span class="toc-text">协处理加载方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、-静态加载"><span class="toc-text">1、 静态加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、-动态加载"><span class="toc-text">2、 动态加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、-协处理器卸载"><span class="toc-text">3、 协处理器卸载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#案例（二级索引）"><span class="toc-text">案例（二级索引）</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

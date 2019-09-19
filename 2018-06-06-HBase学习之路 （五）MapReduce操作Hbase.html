@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="HBase">
+
+
+<meta name="description" content="** HBase学习之路 （五）MapReduce操作Hbase：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （五）MapRedu...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （五）MapReduce操作Hbase |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （五）MapReduce操作Hbase">
+            
+            HBase学习之路 （五）MapReduce操作Hbase
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/HBase/">HBase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/06/06</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （五）MapReduce操作Hbase：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （五）MapReduce操作Hbase</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="MapReduce从HDFS读取数据存储到HBase中"><a href="#MapReduce从HDFS读取数据存储到HBase中" class="headerlink" title="MapReduce从HDFS读取数据存储到HBase中"></a>MapReduce从HDFS读取数据存储到HBase中</h2><p>现有HDFS中有一个student.txt文件，格式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">95002,刘晨,女,19,IS</span><br><span class="line">95017,王风娟,女,18,IS</span><br><span class="line">95018,王一,女,19,IS</span><br><span class="line">95013,冯伟,男,21,CS</span><br><span class="line">95014,王小丽,女,19,CS</span><br><span class="line">95019,邢小丽,女,19,IS</span><br><span class="line">95020,赵钱,男,21,IS</span><br><span class="line">95003,王敏,女,22,MA</span><br><span class="line">95004,张立,男,19,IS</span><br><span class="line">95012,孙花,女,20,CS</span><br><span class="line">95010,孔小涛,男,19,CS</span><br><span class="line">95005,刘刚,男,18,MA</span><br><span class="line">95006,孙庆,男,23,CS</span><br><span class="line">95007,易思玲,女,19,MA</span><br><span class="line">95008,李娜,女,18,CS</span><br><span class="line">95021,周二,男,17,MA</span><br><span class="line">95022,郑明,男,20,MA</span><br><span class="line">95001,李勇,男,20,CS</span><br><span class="line">95011,包小柏,男,18,MA</span><br><span class="line">95009,梦圆圆,女,18,MA</span><br><span class="line">95015,王君,男,18,MA</span><br></pre></td></tr></table></figure>
+
+<p>将HDFS上的这个文件里面的数据写入到HBase数据块中</p>
+<p>MapReduce实现代码如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.conf.Configured;</span><br><span class="line">import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.hbase.HBaseConfiguration;</span><br><span class="line">import org.apache.hadoop.hbase.client.Put;</span><br><span class="line">import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;</span><br><span class="line">import org.apache.hadoop.hbase.mapreduce.TableReducer;</span><br><span class="line">import org.apache.hadoop.io.LongWritable;</span><br><span class="line">import org.apache.hadoop.io.NullWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">import org.apache.hadoop.util.Tool;</span><br><span class="line">import org.apache.hadoop.util.ToolRunner;</span><br><span class="line"></span><br><span class="line">public class ReadHDFSDataToHbaseMR extends Configured implements Tool&#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        </span><br><span class="line">        int run = ToolRunner.run(new ReadHDFSDataToHbaseMR(), args);</span><br><span class="line">        System.exit(run);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int run(String[] arg0) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">        Configuration conf = HBaseConfiguration.create();</span><br><span class="line">        conf.set(&quot;fs.defaultFS&quot;, &quot;hdfs://myha01/&quot;);</span><br><span class="line">        conf.set(&quot;hbase.zookeeper.quorum&quot;, &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;);</span><br><span class="line">        System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line">        FileSystem fs = FileSystem.get(conf);</span><br><span class="line">//        conf.addResource(&quot;config/core-site.xml&quot;);</span><br><span class="line">//        conf.addResource(&quot;config/hdfs-site.xml&quot;);</span><br><span class="line">        </span><br><span class="line">        Job job = Job.getInstance(conf);</span><br><span class="line">        </span><br><span class="line">        job.setJarByClass(ReadHDFSDataToHbaseMR.class);</span><br><span class="line">        </span><br><span class="line">        job.setMapperClass(HDFSToHbaseMapper.class);</span><br><span class="line">        job.setMapOutputKeyClass(Text.class);</span><br><span class="line">        job.setMapOutputValueClass(NullWritable.class);</span><br><span class="line"></span><br><span class="line">        TableMapReduceUtil.initTableReducerJob(&quot;student&quot;, HDFSToHbaseReducer.class, job,null,null,null,null,false);</span><br><span class="line">        job.setOutputKeyClass(NullWritable.class);</span><br><span class="line">        job.setOutputValueClass(Put.class);</span><br><span class="line">        </span><br><span class="line">        Path inputPath = new Path(&quot;/student/input/&quot;);</span><br><span class="line">        Path outputPath = new Path(&quot;/student/output/&quot;);</span><br><span class="line">        </span><br><span class="line">        if(fs.exists(outputPath)) &#123;</span><br><span class="line">            fs.delete(outputPath,true);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        FileInputFormat.addInputPath(job, inputPath);</span><br><span class="line">        FileOutputFormat.setOutputPath(job, outputPath);</span><br><span class="line">        </span><br><span class="line">        boolean isDone = job.waitForCompletion(true);</span><br><span class="line">        </span><br><span class="line">        return isDone ? 0 : 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    public static class HDFSToHbaseMapper extends Mapper&lt;LongWritable, Text, Text, NullWritable&gt;&#123;</span><br><span class="line">        </span><br><span class="line">        @Override</span><br><span class="line">        protected void map(LongWritable key, Text value, Context context)</span><br><span class="line">                throws IOException, InterruptedException &#123;    </span><br><span class="line">            context.write(value, NullWritable.get());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /**</span><br><span class="line">     * 95015,王君,男,18,MA</span><br><span class="line">     * */</span><br><span class="line">    public static class HDFSToHbaseReducer extends TableReducer&lt;Text, NullWritable, NullWritable&gt;&#123;</span><br><span class="line">        </span><br><span class="line">        @Override</span><br><span class="line">        protected void reduce(Text key, Iterable&lt;NullWritable&gt; values,Context context)</span><br><span class="line">                throws IOException, InterruptedException &#123;</span><br><span class="line">            </span><br><span class="line">            String[] split = key.toString().split(&quot;,&quot;);</span><br><span class="line">            </span><br><span class="line">            Put put = new Put(split[0].getBytes());</span><br><span class="line">            </span><br><span class="line">            put.addColumn(&quot;info&quot;.getBytes(), &quot;name&quot;.getBytes(), split[1].getBytes());</span><br><span class="line">            put.addColumn(&quot;info&quot;.getBytes(), &quot;sex&quot;.getBytes(), split[2].getBytes());</span><br><span class="line">            put.addColumn(&quot;info&quot;.getBytes(), &quot;age&quot;.getBytes(), split[3].getBytes());</span><br><span class="line">            put.addColumn(&quot;info&quot;.getBytes(), &quot;department&quot;.getBytes(), split[4].getBytes());</span><br><span class="line">            </span><br><span class="line">            context.write(NullWritable.get(), put);</span><br><span class="line">        </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MapReduce从HBase读取数据计算平均年龄并存储到HDFS中"><a href="#MapReduce从HBase读取数据计算平均年龄并存储到HDFS中" class="headerlink" title="MapReduce从HBase读取数据计算平均年龄并存储到HDFS中"></a>MapReduce从HBase读取数据计算平均年龄并存储到HDFS中</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.List;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.conf.Configuration;</span><br><span class="line">import org.apache.hadoop.conf.Configured;</span><br><span class="line">import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">import org.apache.hadoop.fs.Path;</span><br><span class="line">import org.apache.hadoop.hbase.Cell;</span><br><span class="line">import org.apache.hadoop.hbase.CellUtil;</span><br><span class="line">import org.apache.hadoop.hbase.HBaseConfiguration;</span><br><span class="line">import org.apache.hadoop.hbase.client.Result;</span><br><span class="line">import org.apache.hadoop.hbase.client.Scan;</span><br><span class="line">import org.apache.hadoop.hbase.io.ImmutableBytesWritable;</span><br><span class="line">import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;</span><br><span class="line">import org.apache.hadoop.hbase.mapreduce.TableMapper;</span><br><span class="line">import org.apache.hadoop.hbase.util.Bytes;</span><br><span class="line">import org.apache.hadoop.io.DoubleWritable;</span><br><span class="line">import org.apache.hadoop.io.IntWritable;</span><br><span class="line">import org.apache.hadoop.io.Text;</span><br><span class="line">import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line">import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">import org.apache.hadoop.util.Tool;</span><br><span class="line">import org.apache.hadoop.util.ToolRunner;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class ReadHbaseDataToHDFS extends Configured implements Tool&#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception &#123;</span><br><span class="line">        </span><br><span class="line">        int run = ToolRunner.run(new ReadHbaseDataToHDFS(), args);</span><br><span class="line">        System.exit(run);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public int run(String[] arg0) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">        Configuration conf = HBaseConfiguration.create();</span><br><span class="line">        conf.set(&quot;fs.defaultFS&quot;, &quot;hdfs://myha01/&quot;);</span><br><span class="line">        conf.set(&quot;hbase.zookeeper.quorum&quot;, &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;);</span><br><span class="line">        System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line">        FileSystem fs = FileSystem.get(conf);</span><br><span class="line">//        conf.addResource(&quot;config/core-site.xml&quot;);</span><br><span class="line">//        conf.addResource(&quot;config/hdfs-site.xml&quot;);</span><br><span class="line">        </span><br><span class="line">        Job job = Job.getInstance(conf);</span><br><span class="line">        </span><br><span class="line">        job.setJarByClass(ReadHbaseDataToHDFS.class);</span><br><span class="line">        </span><br><span class="line">        </span><br><span class="line">        // 取对业务有用的数据 info,age</span><br><span class="line">        Scan scan = new Scan();</span><br><span class="line">        scan.addColumn(&quot;info&quot;.getBytes(), &quot;age&quot;.getBytes());</span><br><span class="line">        </span><br><span class="line">        TableMapReduceUtil.initTableMapperJob(</span><br><span class="line">                &quot;student&quot;.getBytes(), // 指定表名</span><br><span class="line">                scan, // 指定扫描数据的条件</span><br><span class="line">                HbaseToHDFSMapper.class, // 指定mapper class</span><br><span class="line">                Text.class,     // outputKeyClass mapper阶段的输出的key的类型</span><br><span class="line">                IntWritable.class, // outputValueClass mapper阶段的输出的value的类型</span><br><span class="line">                job, // job对象</span><br><span class="line">                false</span><br><span class="line">                );</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">        job.setReducerClass(HbaseToHDFSReducer.class);</span><br><span class="line">        job.setOutputKeyClass(Text.class);</span><br><span class="line">        job.setOutputValueClass(DoubleWritable.class);</span><br><span class="line">        </span><br><span class="line">        Path outputPath = new Path(&quot;/student/avg/&quot;);</span><br><span class="line">        </span><br><span class="line">        if(fs.exists(outputPath)) &#123;</span><br><span class="line">            fs.delete(outputPath,true);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        FileOutputFormat.setOutputPath(job, outputPath);</span><br><span class="line">        </span><br><span class="line">        boolean isDone = job.waitForCompletion(true);</span><br><span class="line">        </span><br><span class="line">        return isDone ? 0 : 1;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static class HbaseToHDFSMapper extends TableMapper&lt;Text, IntWritable&gt;&#123;</span><br><span class="line">        </span><br><span class="line">        Text outKey = new Text(&quot;age&quot;);</span><br><span class="line">        IntWritable outValue = new IntWritable();</span><br><span class="line">        // key是hbase中的行键</span><br><span class="line">        // value是hbase中的所行键的所有数据</span><br><span class="line">        @Override</span><br><span class="line">        protected void map(ImmutableBytesWritable key, Result value,Context context)</span><br><span class="line">                throws IOException, InterruptedException &#123;</span><br><span class="line">            </span><br><span class="line">            boolean isContainsColumn = value.containsColumn(&quot;info&quot;.getBytes(), &quot;age&quot;.getBytes());</span><br><span class="line">        </span><br><span class="line">            if(isContainsColumn) &#123;</span><br><span class="line">                </span><br><span class="line">                List&lt;Cell&gt; listCells = value.getColumnCells(&quot;info&quot;.getBytes(), &quot;age&quot;.getBytes());</span><br><span class="line">                System.out.println(&quot;listCells:\t&quot;+listCells);</span><br><span class="line">                Cell cell = listCells.get(0);</span><br><span class="line">                System.out.println(&quot;cells:\t&quot;+cell);</span><br><span class="line">                </span><br><span class="line">                byte[] cloneValue = CellUtil.cloneValue(cell);</span><br><span class="line">                String ageValue = Bytes.toString(cloneValue);</span><br><span class="line">                outValue.set(Integer.parseInt(ageValue));</span><br><span class="line">                </span><br><span class="line">                context.write(outKey,outValue);</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static class HbaseToHDFSReducer extends Reducer&lt;Text, IntWritable, Text, DoubleWritable&gt;&#123;</span><br><span class="line">        </span><br><span class="line">        DoubleWritable outValue = new DoubleWritable();</span><br><span class="line">        </span><br><span class="line">        @Override</span><br><span class="line">        protected void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context)</span><br><span class="line">                throws IOException, InterruptedException &#123;</span><br><span class="line">            </span><br><span class="line">            int count = 0;</span><br><span class="line">            int sum = 0;</span><br><span class="line">            for(IntWritable value : values) &#123;</span><br><span class="line">                count++;</span><br><span class="line">                sum += value.get();</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            double avgAge = sum * 1.0 / count;</span><br><span class="line">            outValue.set(avgAge);</span><br><span class="line">            context.write(key, outValue);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-06-07-HBase学习之路 （六）过滤器.html" class="pre-post btn btn-default" title='HBase学习之路 （六）过滤器'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （六）过滤器</span>
+    </a>
+    
+    
+    <a href="/2018-06-03-HBase学习之路 （三）HBase集群Shell操作.html" class="next-post btn btn-default" title='HBase学习之路 （三）HBase集群Shell操作'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （三）HBase集群Shell操作</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce从HDFS读取数据存储到HBase中"><span class="toc-text">MapReduce从HDFS读取数据存储到HBase中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce从HBase读取数据计算平均年龄并存储到HDFS中"><span class="toc-text">MapReduce从HBase读取数据计算平均年龄并存储到HDFS中</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

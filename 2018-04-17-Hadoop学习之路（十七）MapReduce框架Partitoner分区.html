@@ -19,13 +19,11 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Scala">
+<meta name="keywords" content="Hadoop">
 
 
-<meta name="description" content="** 模板：** &lt;Excerpt in index | 首页摘要&gt;
-​        Spark学习之路 （一）Spark初识
-
-&lt;The rest of contents ...">
+<meta name="description" content="** Hadoop学习之路（十七）MapReduce框架Partitoner分区：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（十...">
 
 
 <meta name="robots" content="all">
@@ -36,7 +34,7 @@
 
 <title>
     
-    模板 |
+    Hadoop学习之路（十七）MapReduce框架Partitoner分区 |
     
     福星
 </title>
@@ -175,16 +173,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="模板">
+        <h1 id="Hadoop学习之路（十七）MapReduce框架Partitoner分区">
             
-            模板
+            Hadoop学习之路（十七）MapReduce框架Partitoner分区
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Spark/">Spark</a>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
     </span>
     
     
@@ -192,7 +190,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
             
         </span>
     </span>
@@ -202,7 +200,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/05/01</span>
+            2018/04/17</span>
     </span>
     
     <span class="fa-wrap">
@@ -217,10 +215,24 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** 模板：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        Spark学习之路 （一）Spark初识</p>
+        <p>** Hadoop学习之路（十七）MapReduce框架Partitoner分区：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（十七）MapReduce框架Partitoner分区</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="Partitioner分区类的作用是什么？"><a href="#Partitioner分区类的作用是什么？" class="headerlink" title="Partitioner分区类的作用是什么？"></a>Partitioner分区类的作用是什么？</h2><p><strong>在进行MapReduce计算时，有时候需要把最终的输出数据分到不同的文件中，比如按照省份划分的话，需要把同一省份的数据放到一个文件中；按照性别划分的话，需要把同一性别的数据放到一个文件中。我们知道最终的输出数据是来自于Reducer任务。那么，如果要得到多个文件，意味着有同样数量的Reducer任务在运行。Reducer任务的数据来自于Mapper任务，也就说Mapper任务要划分数据，对于不同的数据分配给不同的Reducer任务运行。Mapper任务划分数据的过程就称作Partition。负责实现划分数据的类称作Partitioner。</strong></p>
+<p>Partitoner类的源码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">package org.apache.hadoop.mapreduce.lib.partition;</span><br><span class="line"></span><br><span class="line">import org.apache.hadoop.mapreduce.Partitioner;</span><br><span class="line"></span><br><span class="line">/** Partition keys by their &#123;@link Object#hashCode()&#125;. */</span><br><span class="line">public class HashPartitioner&lt;K, V&gt; extends Partitioner&lt;K, V&gt; &#123;</span><br><span class="line"></span><br><span class="line">  /** Use &#123;@link Object#hashCode()&#125; to partition. */</span><br><span class="line">  public int getPartition(K key, V value,</span><br><span class="line">                          int numReduceTasks) &#123;</span><br><span class="line">    //默认使用key的hash值与上int的最大值，避免出现数据溢出 的情况</span><br><span class="line">    return (key.hashCode() &amp; Integer.MAX_VALUE) % numReduceTasks;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="getPartition-三个参数分别是什么？"><a href="#getPartition-三个参数分别是什么？" class="headerlink" title="getPartition()三个参数分别是什么？"></a>getPartition()三个参数分别是什么？</h2><p>　　HashPartitioner是处理Mapper任务输出的，getPartition()方法有三个形参，源码中<strong>key、value分别指的是Mapper任务的输出，numReduceTasks指的是设置的Reducer任务数量，默认值是1</strong>。那么任何整数与1相除的余数肯定是0。也就是说getPartition(…)方法的返回值总是0。也就是Mapper任务的输出总是送给一个Reducer任务，最终只能输出到一个文件中。</p>
+<p>　　据此分析，如果想要最终输出到多个文件中，在Mapper任务中对数据应该划分到多个区中。那么，我们只需要按照一定的规则让getPartition(…)方法的返回值是0,1,2,3…即可。</p>
+<p>　　大部分情况下，我们都会使用默认的分区函数，但有时我们又有一些，特殊的需求，而需要定制Partition来完成我们的业务，</p>
+<p>案例如下：按照能否被5除尽去分区</p>
+<p>1、如果除以5的余数是0， 放在0号分区<br>2、如果除以5的余数部是0， 放在1分区</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.hadoop.io.IntWritable;</span><br><span class="line">import org.apache.hadoop.mapreduce.Partitioner;</span><br><span class="line"></span><br><span class="line">public class FivePartitioner extends Partitioner&lt;IntWritable, IntWritable&gt;&#123;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 我们的需求：按照能否被5除尽去分区</span><br><span class="line">     * </span><br><span class="line">     * 1、如果除以5的余数是0，  放在0号分区</span><br><span class="line">     * 2、如果除以5的余数部是0，  放在1分区</span><br><span class="line">     */</span><br><span class="line">    @Override</span><br><span class="line">    public int getPartition(IntWritable key, IntWritable value, int numPartitions) &#123;</span><br><span class="line">        </span><br><span class="line">        int intValue = key.get();</span><br><span class="line">        </span><br><span class="line">        if(intValue % 5 == 0)&#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            if(intValue % 2 == 0)&#123;</span><br><span class="line">                return 1;</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                return 2;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在运行Mapreduce程序时，只需在主函数里加入如下两行代码即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">job.setPartitionerClass(FivePartitioner.class);</span><br><span class="line">job.setNumReduceTasks(3);//设置为3</span><br></pre></td></tr></table></figure>
+
 
     </div>
     
@@ -239,17 +251,17 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019-05-01-Scala学习之路 （一）Scala的安装.html" class="pre-post btn btn-default" title='Scala学习之路 （一）Scala的安装'>
+    <a href="/2018-04-18-Hadoop学习之路（十八）MapReduce框架Combiner分区.html" class="pre-post btn btn-default" title='Hadoop学习之路（十八）MapReduce框架Combiner分区'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            Scala学习之路 （一）Scala的安装</span>
+            Hadoop学习之路（十八）MapReduce框架Combiner分区</span>
     </a>
     
     
-    <a href="/2019-04-21-Hive学习之路 （二十一）Hive 优化策略.html" class="next-post btn btn-default" title='Hive学习之路 （二十一）Hive 优化策略'>
+    <a href="/2018-04-15-Hadoop学习之路（十五）MapReduce的多Job串联和全局计数器.html" class="next-post btn btn-default" title='Hadoop学习之路（十五）MapReduce的多Job串联和全局计数器'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            Hive学习之路 （二十一）Hive 优化策略</span><i class="fa fa-angle-right fa-fw"></i>
+            Hadoop学习之路（十五）MapReduce的多Job串联和全局计数器</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -288,7 +300,7 @@ new Valine({
             文章目录
         </h3>
         
-        <p>暂无目录</p>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Partitioner分区类的作用是什么？"><span class="toc-text">Partitioner分区类的作用是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#getPartition-三个参数分别是什么？"><span class="toc-text">getPartition()三个参数分别是什么？</span></a></li></ol>
         
     </div>
 </aside>

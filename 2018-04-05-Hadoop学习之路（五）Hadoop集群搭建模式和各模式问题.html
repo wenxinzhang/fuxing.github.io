@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（五）Hadoo...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题">
+            
+            Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/05</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="分布式集群的通用问题"><a href="#分布式集群的通用问题" class="headerlink" title="分布式集群的通用问题"></a>分布式集群的通用问题</h2><p>当前的HDFS和YARN都是一主多从的分布式架构，主从节点—管理者和工作者</p>
+<p>问题：如果主节点或是管理者宕机了。会出现什么问题？</p>
+<p>群龙无首，整个集群不可用。所以在一主多从的架构中都会有一个通用的问题：</p>
+<p>当集群中的主节点宕机之后，整个集群不可用。这个现象叫做：单点故障。SPOF</p>
+<h4 id="单点故障讲述的概念有两点"><a href="#单点故障讲述的概念有两点" class="headerlink" title="单点故障讲述的概念有两点"></a>单点故障讲述的概念有两点</h4><p>1、如果说宕机的那个节点是从节点，那么整个集群能够继续运行，并且对外提供正常的服务。</p>
+<p>2、如果说宕机的那个节点是主节点，那么整个集群就处于宕机状态。</p>
+<p>通用的解决方案：高可用</p>
+<p>概念：当正在对外提供服务器的主从节点宕机，那么备用的主节点立马上位对外提供服务。无缝的瞬时切换。</p>
+<p>皇帝驾崩，太子继位。</p>
+<h2 id="集群的搭建的集中通用模式"><a href="#集群的搭建的集中通用模式" class="headerlink" title="集群的搭建的集中通用模式"></a>集群的搭建的集中通用模式</h2><h3 id="1、单机模式"><a href="#1、单机模式" class="headerlink" title="1、单机模式"></a>1、单机模式</h3><p>　　表示所有的分布式系统都是单机的。</p>
+<h3 id="2、伪分布式模式（搭建在了只有一个节点的集群中）"><a href="#2、伪分布式模式（搭建在了只有一个节点的集群中）" class="headerlink" title="2、伪分布式模式（搭建在了只有一个节点的集群中）"></a>2、伪分布式模式（搭建在了只有一个节点的集群中）</h3><p>　　表示集群中的所有角色都分配给了一个节点。</p>
+<p>　　表示整个集群被安装在了只有一个节点的集群中的。</p>
+<p>　　主要用于做快速使用，去模拟分布式的效果。</p>
+<h3 id="3、分布式模式"><a href="#3、分布式模式" class="headerlink" title="3、分布式模式"></a>3、分布式模式</h3><p>　　表示集群中的节点会被分配成很多种角色，分散在整个集群中。</p>
+<p>　　主要用于学习测试等等一些场景中。</p>
+<h3 id="4、高可用模式"><a href="#4、高可用模式" class="headerlink" title="4、高可用模式"></a>4、高可用模式</h3><p>　　表示整个集群中的主节点会有多个</p>
+<p>　　注意区分：能够对外提供服务的主节点还是只有一个。其他的主节点全部处于一个热备的状态。</p>
+<p>　　正在对外提供服务的主节点：active　　有且仅有一个</p>
+<p>　　热备的主节点：standby　　可以有多个</p>
+<p>　　工作模式：1、在任意时刻，只有一个主节点是active的，active的主节点对外提供服务</p>
+<p>　　　　　　　2、在任意时刻，都应至少有一个standby的主节点，等待active的宕机来进行接替</p>
+<p>　　架构模式：就是为了解决分布式集群中的通用问题SPOF</p>
+<p>　　不管是分布式架构还是高可用架构，都存在一个问题：主从结构—从节点数量太多了。最直观的的问题：造成主节点的工作压力过载，主节点会宕机，当前的这种现象是一种死循环</p>
+<h3 id="5、联邦模式"><a href="#5、联邦模式" class="headerlink" title="5、联邦模式"></a>5、联邦模式</h3><p>　　表示当前集群中的主从节点都可以有很多个。</p>
+<p>　　1）主节点：可以有很多个的意思是说：同时对外提供服务的主节点有很多个。</p>
+<p>　　　　　　      重点：每一个主节点都是用来管理整个集群中的一部分</p>
+<p>　　2）从节点：一定会有很多个。</p>
+<p>　　在联邦模式下还是会有问题：</p>
+<p>　　虽然这个集群中的一个主节点的压力被分摊到了多个主节点。但是这个多个主节点依然会有一个问题：SOFP</p>
+<h2 id="安装Hadoop集群中的一些通用问题"><a href="#安装Hadoop集群中的一些通用问题" class="headerlink" title="安装Hadoop集群中的一些通用问题"></a>安装Hadoop集群中的一些通用问题</h2><p>1、假如安装不成功，并且不知道应该怎么去解决这个安装错误：重装</p>
+<p>　  需要做的处理：处理安装步骤中不同的部分即可。第一次安装和重装时候的不同步骤：</p>
+<p>　  1）到修改配置文件以前，全部都不用动</p>
+<p>　  2）检查配置文件是否都正确</p>
+<p>　　　　先检查一个节点上的配置文件是否都正确，如果都正确，重新分发一次即可</p>
+<p>　  3）在安装分布式集群时，所有节点中的安装的安装目录和安装者，需要检查和确定</p>
+<p>　  4）删掉数据目录</p>
+<p>　　　　A.　删除主节点的工作目录：namenode的数据目录</p>
+<p>　　　　　   删除即可，只需要在主节点删除即可</p>
+<p>　　　　B.　删除从节点的工作目录：datanode的数据目录</p>
+<p>　　　　　   删除即可，把每个从节点上的这个对应数据目录都删掉</p>
+<p>　　　　　   如果以上两份数据都被删除了之后。整个集群当中就相当于没有存储任何的历史数据。所以就是一个全新的集群</p>
+<p> 　5）在确保数据正常和安装包都正常之后，进行重新初始化</p>
+<p>　　   重点强调： hadoop集群的初始化，其实就是初始化HDFS集群， 只能在主节点进行初始化</p>
+<p>　　   如果你只需要搭建YARN集群，那么是可以不用做初始化的。</p>
+<p>　 6）启动集群</p>
+<p>　 7）验证集群是否成功</p>
+<h2 id="Linux环境变量加载的顺序"><a href="#Linux环境变量加载的顺序" class="headerlink" title="Linux环境变量加载的顺序"></a>Linux环境变量加载的顺序</h2><p>用户环境变量 ：仅仅只是当前用户使用 ~/.bashrc　　 ~/.bash_profile<br>系统环境变量 ：给当前系统中的所有用户使用 /etc/profile</p>
+<p>任何普通用户在进行登录的时候：会同时加载几个环境变量的配置文件：</p>
+<p>按顺序：<br>1、/etc/profile<br>2、<del>/.bash_profile<br>3、</del>/.bashrc</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-06-Hadoop学习之路（六）HDFS基础.html" class="pre-post btn btn-default" title='Hadoop学习之路（六）HDFS基础'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（六）HDFS基础</span>
+    </a>
+    
+    
+    <a href="/2018-04-04-Hadoop学习之路（四）Hadoop集群搭建和简单应用.html" class="next-post btn btn-default" title='Hadoop学习之路（四）Hadoop集群搭建和简单应用'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（四）Hadoop集群搭建和简单应用</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分布式集群的通用问题"><span class="toc-text">分布式集群的通用问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#单点故障讲述的概念有两点"><span class="toc-text">单点故障讲述的概念有两点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群的搭建的集中通用模式"><span class="toc-text">集群的搭建的集中通用模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、单机模式"><span class="toc-text">1、单机模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、伪分布式模式（搭建在了只有一个节点的集群中）"><span class="toc-text">2、伪分布式模式（搭建在了只有一个节点的集群中）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、分布式模式"><span class="toc-text">3、分布式模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、高可用模式"><span class="toc-text">4、高可用模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、联邦模式"><span class="toc-text">5、联邦模式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Hadoop集群中的一些通用问题"><span class="toc-text">安装Hadoop集群中的一些通用问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux环境变量加载的顺序"><span class="toc-text">Linux环境变量加载的顺序</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

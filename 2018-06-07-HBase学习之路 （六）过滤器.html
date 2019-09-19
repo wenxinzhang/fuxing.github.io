@@ -1,0 +1,414 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="HBase">
+
+
+<meta name="description" content="** HBase学习之路 （六）过滤器：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （六）过滤器
+
+&lt;The rest of...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （六）过滤器 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （六）过滤器">
+            
+            HBase学习之路 （六）过滤器
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/HBase/">HBase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/06/07</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （六）过滤器：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （六）过滤器</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="过滤器（Filter）"><a href="#过滤器（Filter）" class="headerlink" title="过滤器（Filter）"></a>过滤器（Filter）</h2><p>　　基础API中的查询操作在面对大量数据的时候是非常苍白的，这里Hbase提供了高级的查询方法：Filter。Filter可以根据簇、列、版本等更多的条件来对数据进行过滤，基于Hbase本身提供的三维有序（主键有序、列有序、版本有序），这些Filter可以高效的完成查询过滤的任务。带有Filter条件的RPC查询请求会把Filter分发到各个RegionServer，是一个服务器端（Server-side）的过滤器，这样也可以降低网络传输的压力。</p>
+<p>　　要完成一个过滤的操作，至少需要两个参数。<strong>一个是抽象的操作符</strong>，Hbase提供了枚举类型的变量来表示这些抽象的操作符：LESS/LESS_OR_EQUAL/EQUAL/NOT_EUQAL等；<strong>另外一个就是具体的比较器（Comparator）</strong>，代表具体的比较逻辑，如果可以提高字节级的比较、字符串级的比较等。有了这两个参数，我们就可以清晰的定义筛选的条件，过滤数据。</p>
+<p><strong>抽象操作符（比较运算符）</strong></p>
+<blockquote>
+<p>LESS &lt;</p>
+<p>LESS_OR_EQUAL &lt;=</p>
+<p>EQUAL =</p>
+<p>NOT_EQUAL &lt;&gt;</p>
+<p>GREATER_OR_EQUAL &gt;=</p>
+<p>GREATER &gt;</p>
+<p>NO_OP 排除所有</p>
+</blockquote>
+<p><strong>比较器（指定比较机制）</strong></p>
+<blockquote>
+<p>BinaryComparator 按字节索引顺序比较指定字节数组，采用 Bytes.compareTo(byte[])</p>
+<p>BinaryPrefixComparator 跟前面相同，只是比较左端的数据是否相同</p>
+<p>NullComparator 判断给定的是否为空</p>
+<p>BitComparator 按位比较</p>
+<p>RegexStringComparator 提供一个正则的比较器，仅支持 EQUAL 和非 EQUAL</p>
+<p>SubstringComparator 判断提供的子串是否出现在 value 中</p>
+</blockquote>
+<h2 id="HBase过滤器的分类"><a href="#HBase过滤器的分类" class="headerlink" title="HBase过滤器的分类"></a>HBase过滤器的分类</h2><h3 id="比较过滤器"><a href="#比较过滤器" class="headerlink" title="比较过滤器"></a>比较过滤器</h3><h4 id="1、行键过滤器-RowFilter"><a href="#1、行键过滤器-RowFilter" class="headerlink" title="1、行键过滤器 RowFilter"></a>1、行键过滤器 RowFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Filter rowFilter = new RowFilter(CompareOp.GREATER, new BinaryComparator(&quot;95007&quot;.getBytes()));</span><br><span class="line">scan.setFilter(rowFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         Filter rowFilter = new RowFilter(CompareOp.GREATER, new BinaryComparator(&quot;95007&quot;.getBytes()));</span><br><span class="line">20         scan.setFilter(rowFilter);</span><br><span class="line">21         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">22         for(Result result : resultScanner) &#123;</span><br><span class="line">23             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">24             for(Cell cell : cells) &#123;</span><br><span class="line">25                 System.out.println(cell);</span><br><span class="line">26             &#125;</span><br><span class="line">27         &#125;</span><br><span class="line">28         </span><br><span class="line">29         </span><br><span class="line">30     &#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行结果部分截图</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331142700638-33411889.png" alt="img"></p>
+<h4 id="2、列簇过滤器-FamilyFilter"><a href="#2、列簇过滤器-FamilyFilter" class="headerlink" title="2、列簇过滤器 FamilyFilter"></a>2、列簇过滤器 FamilyFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Filter familyFilter = new FamilyFilter(CompareOp.EQUAL, new BinaryComparator(&quot;info&quot;.getBytes()));</span><br><span class="line">scan.setFilter(familyFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18 </span><br><span class="line">19         Filter familyFilter = new FamilyFilter(CompareOp.EQUAL, new BinaryComparator(&quot;info&quot;.getBytes()));</span><br><span class="line">20         scan.setFilter(familyFilter);</span><br><span class="line">21         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">22         for(Result result : resultScanner) &#123;</span><br><span class="line">23             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">24             for(Cell cell : cells) &#123;</span><br><span class="line">25                 System.out.println(cell);</span><br><span class="line">26             &#125;</span><br><span class="line">27         &#125;</span><br><span class="line">28         </span><br><span class="line">29         </span><br><span class="line">30     &#125;</span><br><span class="line">31     </span><br><span class="line">32     </span><br><span class="line">33 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331142550951-1320138981.png" alt="img"></p>
+<h4 id="3、列过滤器-QualifierFilter"><a href="#3、列过滤器-QualifierFilter" class="headerlink" title="3、列过滤器 QualifierFilter"></a>3、列过滤器 QualifierFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Filter qualifierFilter = new QualifierFilter(CompareOp.EQUAL, new BinaryComparator(&quot;name&quot;.getBytes()));</span><br><span class="line">scan.setFilter(qualifierFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         Filter qualifierFilter = new QualifierFilter(CompareOp.EQUAL, new BinaryComparator(&quot;name&quot;.getBytes()));</span><br><span class="line">20         scan.setFilter(qualifierFilter);</span><br><span class="line">21         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">22         for(Result result : resultScanner) &#123;</span><br><span class="line">23             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">24             for(Cell cell : cells) &#123;</span><br><span class="line">25                 System.out.println(cell);</span><br><span class="line">26             &#125;</span><br><span class="line">27         &#125;</span><br><span class="line">28         </span><br><span class="line">29         </span><br><span class="line">30     &#125;</span><br><span class="line">31     </span><br><span class="line">32     </span><br><span class="line">33 &#125;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331142440045-1822520821.png" alt="img"></p>
+<h4 id="4、值过滤器-ValueFilter"><a href="#4、值过滤器-ValueFilter" class="headerlink" title="4、值过滤器 ValueFilter"></a>4、值过滤器 ValueFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Filter valueFilter = new ValueFilter(CompareOp.EQUAL, new SubstringComparator(&quot;男&quot;));</span><br><span class="line">scan.setFilter(valueFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         Filter valueFilter = new ValueFilter(CompareOp.EQUAL, new SubstringComparator(&quot;男&quot;));</span><br><span class="line">20         scan.setFilter(valueFilter);</span><br><span class="line">21         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">22         for(Result result : resultScanner) &#123;</span><br><span class="line">23             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">24             for(Cell cell : cells) &#123;</span><br><span class="line">25                 System.out.println(cell);</span><br><span class="line">26             &#125;</span><br><span class="line">27         &#125;</span><br><span class="line">28         </span><br><span class="line">29         </span><br><span class="line">30     &#125;</span><br><span class="line">31     </span><br><span class="line">32     </span><br><span class="line">33 &#125;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331142810385-1010448988.png" alt="img"></p>
+<h4 id="5、时间戳过滤器-TimestampsFilter"><a href="#5、时间戳过滤器-TimestampsFilter" class="headerlink" title="5、时间戳过滤器 TimestampsFilter"></a>5、时间戳过滤器 TimestampsFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Long&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">list.add(1522469029503l);</span><br><span class="line">TimestampsFilter timestampsFilter = new TimestampsFilter(list);</span><br><span class="line">scan.setFilter(timestampsFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         List&lt;Long&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">20         list.add(1522469029503l);</span><br><span class="line">21         TimestampsFilter timestampsFilter = new TimestampsFilter(list);</span><br><span class="line">22         scan.setFilter(timestampsFilter);</span><br><span class="line">23         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">24         for(Result result : resultScanner) &#123;</span><br><span class="line">25             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">26             for(Cell cell : cells) &#123;</span><br><span class="line">27                 System.out.println(Bytes.toString(cell.getRow()) + &quot;\t&quot; + Bytes.toString(cell.getFamily()) + &quot;\t&quot; + Bytes.toString(cell.getQualifier())</span><br><span class="line">28                 + &quot;\t&quot; + Bytes.toString(cell.getValue()) + &quot;\t&quot; + cell.getTimestamp());</span><br><span class="line">29             &#125;</span><br><span class="line">30         &#125;</span><br><span class="line">31         </span><br><span class="line">32         </span><br><span class="line">33     &#125;</span><br><span class="line">34     </span><br><span class="line">35     </span><br><span class="line">36 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331143422193-1859430510.png" alt="img"></p>
+<h3 id="专用过滤器"><a href="#专用过滤器" class="headerlink" title="专用过滤器"></a>专用过滤器</h3><h4 id="1、单列值过滤器-SingleColumnValueFilter-—-会返回满足条件的整行"><a href="#1、单列值过滤器-SingleColumnValueFilter-—-会返回满足条件的整行" class="headerlink" title="1、单列值过滤器 SingleColumnValueFilter —-会返回满足条件的整行"></a>1、单列值过滤器 SingleColumnValueFilter —-会返回满足条件的整行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SingleColumnValueFilter singleColumnValueFilter = new SingleColumnValueFilter(</span><br><span class="line">                &quot;info&quot;.getBytes(), //列簇</span><br><span class="line">                &quot;name&quot;.getBytes(), //列</span><br><span class="line">                CompareOp.EQUAL, </span><br><span class="line">                new SubstringComparator(&quot;刘晨&quot;));</span><br><span class="line">//如果不设置为 true，则那些不包含指定 column 的行也会返回</span><br><span class="line">singleColumnValueFilter.setFilterIfMissing(true);</span><br><span class="line">scan.setFilter(singleColumnValueFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest2 &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         SingleColumnValueFilter singleColumnValueFilter = new SingleColumnValueFilter(</span><br><span class="line">20                 &quot;info&quot;.getBytes(), </span><br><span class="line">21                 &quot;name&quot;.getBytes(), </span><br><span class="line">22                 CompareOp.EQUAL, </span><br><span class="line">23                 new SubstringComparator(&quot;刘晨&quot;));</span><br><span class="line">24         singleColumnValueFilter.setFilterIfMissing(true);</span><br><span class="line">25         </span><br><span class="line">26         scan.setFilter(singleColumnValueFilter);</span><br><span class="line">27         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">28         for(Result result : resultScanner) &#123;</span><br><span class="line">29             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">30             for(Cell cell : cells) &#123;</span><br><span class="line">31                 System.out.println(Bytes.toString(cell.getRow()) + &quot;\t&quot; + Bytes.toString(cell.getFamily()) + &quot;\t&quot; + Bytes.toString(cell.getQualifier())</span><br><span class="line">32                 + &quot;\t&quot; + Bytes.toString(cell.getValue()) + &quot;\t&quot; + cell.getTimestamp());</span><br><span class="line">33             &#125;</span><br><span class="line">34         &#125;</span><br><span class="line">35         </span><br><span class="line">36         </span><br><span class="line">37     &#125;</span><br><span class="line">38     </span><br><span class="line">39     </span><br><span class="line">40 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331145327073-421109265.png" alt="img"></p>
+<h4 id="2、单列值排除器-SingleColumnValueExcludeFilter"><a href="#2、单列值排除器-SingleColumnValueExcludeFilter" class="headerlink" title="2、单列值排除器 SingleColumnValueExcludeFilter"></a>2、单列值排除器 SingleColumnValueExcludeFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SingleColumnValueExcludeFilter singleColumnValueExcludeFilter = new SingleColumnValueExcludeFilter(</span><br><span class="line">                &quot;info&quot;.getBytes(), </span><br><span class="line">                &quot;name&quot;.getBytes(), </span><br><span class="line">                CompareOp.EQUAL, </span><br><span class="line">                new SubstringComparator(&quot;刘晨&quot;));</span><br><span class="line">singleColumnValueExcludeFilter.setFilterIfMissing(true);</span><br><span class="line">        </span><br><span class="line">scan.setFilter(singleColumnValueExcludeFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest2 &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         SingleColumnValueExcludeFilter singleColumnValueExcludeFilter = new SingleColumnValueExcludeFilter(</span><br><span class="line">20                 &quot;info&quot;.getBytes(), </span><br><span class="line">21                 &quot;name&quot;.getBytes(), </span><br><span class="line">22                 CompareOp.EQUAL, </span><br><span class="line">23                 new SubstringComparator(&quot;刘晨&quot;));</span><br><span class="line">24         singleColumnValueExcludeFilter.setFilterIfMissing(true);</span><br><span class="line">25         </span><br><span class="line">26         scan.setFilter(singleColumnValueExcludeFilter);</span><br><span class="line">27         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">28         for(Result result : resultScanner) &#123;</span><br><span class="line">29             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">30             for(Cell cell : cells) &#123;</span><br><span class="line">31                 System.out.println(Bytes.toString(cell.getRow()) + &quot;\t&quot; + Bytes.toString(cell.getFamily()) + &quot;\t&quot; + Bytes.toString(cell.getQualifier())</span><br><span class="line">32                 + &quot;\t&quot; + Bytes.toString(cell.getValue()) + &quot;\t&quot; + cell.getTimestamp());</span><br><span class="line">33             &#125;</span><br><span class="line">34         &#125;</span><br><span class="line">35         </span><br><span class="line">36         </span><br><span class="line">37     &#125;</span><br><span class="line">38     </span><br><span class="line">39     </span><br><span class="line">40 &#125;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331145530417-602264605.png" alt="img"></p>
+<h4 id="3、前缀过滤器-PrefixFilter—-针对行键"><a href="#3、前缀过滤器-PrefixFilter—-针对行键" class="headerlink" title="3、前缀过滤器 PrefixFilter—-针对行键"></a>3、前缀过滤器 PrefixFilter—-针对行键</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PrefixFilter prefixFilter = new PrefixFilter(&quot;9501&quot;.getBytes());</span><br><span class="line">        </span><br><span class="line">scan.setFilter(prefixFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest2 &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         PrefixFilter prefixFilter = new PrefixFilter(&quot;9501&quot;.getBytes());</span><br><span class="line">20         </span><br><span class="line">21         scan.setFilter(prefixFilter);</span><br><span class="line">22         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">23         for(Result result : resultScanner) &#123;</span><br><span class="line">24             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">25             for(Cell cell : cells) &#123;</span><br><span class="line">26                 System.out.println(Bytes.toString(cell.getRow()) + &quot;\t&quot; + Bytes.toString(cell.getFamily()) + &quot;\t&quot; + Bytes.toString(cell.getQualifier())</span><br><span class="line">27                 + &quot;\t&quot; + Bytes.toString(cell.getValue()) + &quot;\t&quot; + cell.getTimestamp());</span><br><span class="line">28             &#125;</span><br><span class="line">29         &#125;</span><br><span class="line">30         </span><br><span class="line">31         </span><br><span class="line">32     &#125;</span><br><span class="line">33     </span><br><span class="line">34     </span><br><span class="line">35 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331150009860-2063523179.png" alt="img"></p>
+<h4 id="4、列前缀过滤器-ColumnPrefixFilter"><a href="#4、列前缀过滤器-ColumnPrefixFilter" class="headerlink" title="4、列前缀过滤器 ColumnPrefixFilter"></a>4、列前缀过滤器 ColumnPrefixFilter</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ColumnPrefixFilter columnPrefixFilter = new ColumnPrefixFilter(&quot;name&quot;.getBytes());</span><br><span class="line">        </span><br><span class="line">scan.setFilter(columnPrefixFilter);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class HbaseFilterTest2 &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 4     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 5 </span><br><span class="line"> 6     private static Connection conn = null;</span><br><span class="line"> 7     private static Admin admin = null;</span><br><span class="line"> 8     </span><br><span class="line"> 9     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">10         </span><br><span class="line">11         Configuration conf = HBaseConfiguration.create();</span><br><span class="line">12         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line">13         conn = ConnectionFactory.createConnection(conf);</span><br><span class="line">14         admin = conn.getAdmin();</span><br><span class="line">15         Table table = conn.getTable(TableName.valueOf(&quot;student&quot;));</span><br><span class="line">16         </span><br><span class="line">17         Scan scan = new Scan();</span><br><span class="line">18         </span><br><span class="line">19         ColumnPrefixFilter columnPrefixFilter = new ColumnPrefixFilter(&quot;name&quot;.getBytes());</span><br><span class="line">20         </span><br><span class="line">21         scan.setFilter(columnPrefixFilter);</span><br><span class="line">22         ResultScanner resultScanner = table.getScanner(scan);</span><br><span class="line">23         for(Result result : resultScanner) &#123;</span><br><span class="line">24             List&lt;Cell&gt; cells = result.listCells();</span><br><span class="line">25             for(Cell cell : cells) &#123;</span><br><span class="line">26                 System.out.println(Bytes.toString(cell.getRow()) + &quot;\t&quot; + Bytes.toString(cell.getFamily()) + &quot;\t&quot; + Bytes.toString(cell.getQualifier())</span><br><span class="line">27                 + &quot;\t&quot; + Bytes.toString(cell.getValue()) + &quot;\t&quot; + cell.getTimestamp());</span><br><span class="line">28             &#125;</span><br><span class="line">29         &#125;</span><br><span class="line">30         </span><br><span class="line">31         </span><br><span class="line">32     &#125;</span><br><span class="line">33     </span><br><span class="line">34     </span><br><span class="line">35 &#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180331150519676-692732493.png" alt="img"></p>
+<h4 id="5、分页过滤器-PageFilter"><a href="#5、分页过滤器-PageFilter" class="headerlink" title="5、分页过滤器 PageFilter"></a>5、分页过滤器 PageFilter</h4>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-06-08-HBase学习之路 （七）HBase 原理.html" class="pre-post btn btn-default" title='HBase学习之路 （七）HBase 原理'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （七）HBase 原理</span>
+    </a>
+    
+    
+    <a href="/2018-06-06-HBase学习之路 （五）MapReduce操作Hbase.html" class="next-post btn btn-default" title='HBase学习之路 （五）MapReduce操作Hbase'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （五）MapReduce操作Hbase</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#过滤器（Filter）"><span class="toc-text">过滤器（Filter）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase过滤器的分类"><span class="toc-text">HBase过滤器的分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#比较过滤器"><span class="toc-text">比较过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、行键过滤器-RowFilter"><span class="toc-text">1、行键过滤器 RowFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、列簇过滤器-FamilyFilter"><span class="toc-text">2、列簇过滤器 FamilyFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、列过滤器-QualifierFilter"><span class="toc-text">3、列过滤器 QualifierFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、值过滤器-ValueFilter"><span class="toc-text">4、值过滤器 ValueFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、时间戳过滤器-TimestampsFilter"><span class="toc-text">5、时间戳过滤器 TimestampsFilter</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#专用过滤器"><span class="toc-text">专用过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、单列值过滤器-SingleColumnValueFilter-—-会返回满足条件的整行"><span class="toc-text">1、单列值过滤器 SingleColumnValueFilter —-会返回满足条件的整行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、单列值排除器-SingleColumnValueExcludeFilter"><span class="toc-text">2、单列值排除器 SingleColumnValueExcludeFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、前缀过滤器-PrefixFilter—-针对行键"><span class="toc-text">3、前缀过滤器 PrefixFilter—-针对行键</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、列前缀过滤器-ColumnPrefixFilter"><span class="toc-text">4、列前缀过滤器 ColumnPrefixFilter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、分页过滤器-PageFilter"><span class="toc-text">5、分页过滤器 PageFilter</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

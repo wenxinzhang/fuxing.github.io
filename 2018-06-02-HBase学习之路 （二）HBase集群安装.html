@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="HBase">
+
+
+<meta name="description" content="** HBase学习之路 （二）HBase集群安装：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （二）HBase集群安装
+
+&lt...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （二）HBase集群安装 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （二）HBase集群安装">
+            
+            HBase学习之路 （二）HBase集群安装
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/HBase/">HBase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/06/02</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （二）HBase集群安装：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （二）HBase集群安装</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="前提"><a href="#前提" class="headerlink" title="前提"></a>前提</h2><p>1、HBase 依赖于 HDFS 做底层的数据存储</p>
+<p>2、HBase 依赖于 MapReduce 做数据计算</p>
+<p>3、HBase 依赖于 ZooKeeper 做服务协调</p>
+<p>4、HBase源码是java编写的，安装需要依赖JDK</p>
+<h2 id="版本选择"><a href="#版本选择" class="headerlink" title="版本选择"></a>版本选择</h2><p>打开官方的版本说明<a href="http://hbase.apache.org/1.2/book.html" target="_blank" rel="noopener">http://hbase.apache.org/1.2/book.html</a></p>
+<h3 id="JDK的选择"><a href="#JDK的选择" class="headerlink" title="JDK的选择"></a>JDK的选择</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329113922497-155780788.png" alt="img"></p>
+<h3 id="Hadoop的选择"><a href="#Hadoop的选择" class="headerlink" title="Hadoop的选择"></a>Hadoop的选择</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329114135620-1227767001.png" alt="img"></p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329114414143-737897699.png" alt="img"></p>
+<p>此处我们的hadoop版本用的的是2.7.5，HBase选择的版本是1.2.6</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="1、zookeeper的安装"><a href="#1、zookeeper的安装" class="headerlink" title="1、zookeeper的安装"></a>1、zookeeper的安装</h3><p>参考<a href="http://www.cnblogs.com/qingyunzong/p/8619184.html" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8619184.html</a></p>
+<h3 id="2、Hadoopd的安装"><a href="#2、Hadoopd的安装" class="headerlink" title="2、Hadoopd的安装"></a>2、Hadoopd的安装</h3><p>参考<a href="http://www.cnblogs.com/qingyunzong/p/8634335.html" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8634335.html</a></p>
+<h3 id="3、下载安装包"><a href="#3、下载安装包" class="headerlink" title="3、下载安装包"></a>3、下载安装包</h3><p>找到官网下载 hbase 安装包 hbase-1.2.6-bin.tar.gz，这里给大家提供一个下载地址： <a href="http://mirrors.hust.edu.cn/apache/hbase/" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/apache/hbase/</a></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329114720014-1743547970.png" alt="img"></p>
+<h3 id="4、上传服务器并解压缩到指定目录"><a href="#4、上传服务器并解压缩到指定目录" class="headerlink" title="4、上传服务器并解压缩到指定目录"></a>4、上传服务器并解压缩到指定目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data  hbase-1.2.6-bin.tar.gz  hello.txt  log  zookeeper.out</span><br><span class="line">[hadoop@hadoop1 ~]$ tar -zxvf hbase-1.2.6-bin.tar.gz -C apps/</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、修改配置文件"><a href="#5、修改配置文件" class="headerlink" title="5、修改配置文件"></a>5、修改配置文件</h3><p>配置文件目录在安装包的conf文件夹中</p>
+<h4 id="（1）修改hbase-env-sh"><a href="#（1）修改hbase-env-sh" class="headerlink" title="（1）修改hbase-env.sh"></a>（1）修改hbase-env.sh</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ vi hbase-env.sh</span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73export HBASE_MANAGES_ZK=false</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329115352886-1492779607.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329115451607-2133828594.png" alt="img"></p>
+<h4 id="（2）修改hbase-site-xml"><a href="#（2）修改hbase-site-xml" class="headerlink" title="（2）修改hbase-site.xml"></a>（2）修改hbase-site.xml</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ vi hbase-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;!-- 指定 hbase 在 HDFS 上存储的路径 --&gt;</span><br><span class="line">                &lt;name&gt;hbase.rootdir&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hdfs://myha01/hbase126&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;!-- 指定 hbase 是分布式的 --&gt;</span><br><span class="line">                &lt;name&gt;hbase.cluster.distributed&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;!-- 指定 zk 的地址，多个用“,”分割 --&gt;</span><br><span class="line">                &lt;name&gt;hbase.zookeeper.quorum&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hadoop1:2181,hadoop2:2181,hadoop3:2181,hadoop4:2181&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="（3）修改regionservers"><a href="#（3）修改regionservers" class="headerlink" title="（3）修改regionservers"></a>（3）修改regionservers</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ vi regionservers </span><br><span class="line">hadoop1</span><br><span class="line">hadoop2</span><br><span class="line">hadoop3</span><br><span class="line">hadoop4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329125540901-2106027549.png" alt="img"></p>
+<h4 id="（4）修改backup-masters"><a href="#（4）修改backup-masters" class="headerlink" title="（4）修改backup-masters"></a>（4）修改backup-masters</h4><p>该文件是不存在的，先自行创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ vi backup-masters</span><br><span class="line">hadoop4</span><br></pre></td></tr></table></figure>
+
+<h4 id="（5）修改hdfs-site-xml-和-core-site-xml"><a href="#（5）修改hdfs-site-xml-和-core-site-xml" class="headerlink" title="（5）修改hdfs-site.xml 和 core-site.xml"></a>（5）修改<strong>hdfs-site.xml 和 core-site.xml</strong></h4><p><strong>最重要一步，要把 hadoop 的 hdfs-site.xml 和 core-site.xml 放到 hbase-1.2.6/conf 下</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ cd ~/apps/hadoop-2.7.5/etc/hadoop/</span><br><span class="line">[hadoop@hadoop1 hadoop]$ cp core-site.xml hdfs-site.xml ~/apps/hbase-1.2.6/conf/</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、将HBase安装包分发到其他节点"><a href="#6、将HBase安装包分发到其他节点" class="headerlink" title="6、将HBase安装包分发到其他节点"></a>6、将HBase安装包分发到其他节点</h3><p>分发之前先删除HBase目录下的docs文件夹，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hbase-1.2.6]$ rm -rf docs/</span><br></pre></td></tr></table></figure>
+
+<p>在进行分发</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ scp -r hbase-1.2.6/ hadoop2:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r hbase-1.2.6/ hadoop3:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r hbase-1.2.6/ hadoop4:$PWD</span><br></pre></td></tr></table></figure>
+
+<h3 id="7、-同步时间"><a href="#7、-同步时间" class="headerlink" title="7、 同步时间"></a>7、 同步时间</h3><p>HBase 集群对于时间的同步要求的比 HDFS 严格，所以，集群启动之前千万记住要进行 时间同步，要求相差不要超过 30s</p>
+<h3 id="8、配置环境变量"><a href="#8、配置环境变量" class="headerlink" title="8、配置环境变量"></a>8、配置环境变量</h3><p>所有服务器都有进行配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ vi ~/.bashrc </span><br><span class="line">#HBase</span><br><span class="line">export HBASE_HOME=/home/hadoop/apps/hbase-1.2.6</span><br><span class="line">export PATH=$PATH:$HBASE_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>使环境变量立即生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动HBase集群"><a href="#启动HBase集群" class="headerlink" title="启动HBase集群"></a>启动HBase集群</h2><p>严格按照启动顺序进行</p>
+<h3 id="1、启动zookeeper集群"><a href="#1、启动zookeeper集群" class="headerlink" title="1、启动zookeeper集群"></a>1、启动zookeeper集群</h3><p>每个zookeeper节点都要执行以下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ zkServer.sh start</span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /home/hadoop/apps/zookeeper-3.4.10/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[hadoop@hadoop1 apps]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、启动HDFS集群及YARN集群"><a href="#2、启动HDFS集群及YARN集群" class="headerlink" title="2、启动HDFS集群及YARN集群"></a>2、启动HDFS集群及YARN集群</h3><p>如果需要运行MapReduce程序则启动yarn集群，否则不需要启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ start-dfs.sh</span><br><span class="line">Starting namenodes on [hadoop1 hadoop2]</span><br><span class="line">hadoop2: starting namenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-namenode-hadoop2.out</span><br><span class="line">hadoop1: starting namenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-namenode-hadoop1.out</span><br><span class="line">hadoop3: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop3.out</span><br><span class="line">hadoop4: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop4.out</span><br><span class="line">hadoop2: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop2.out</span><br><span class="line">hadoop1: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop1.out</span><br><span class="line">Starting journal nodes [hadoop1 hadoop2 hadoop3]</span><br><span class="line">hadoop3: starting journalnode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-journalnode-hadoop3.out</span><br><span class="line">hadoop2: starting journalnode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-journalnode-hadoop2.out</span><br><span class="line">hadoop1: starting journalnode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-journalnode-hadoop1.out</span><br><span class="line">Starting ZK Failover Controllers on NN hosts [hadoop1 hadoop2]</span><br><span class="line">hadoop2: starting zkfc, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-zkfc-hadoop2.out</span><br><span class="line">hadoop1: starting zkfc, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-zkfc-hadoop1.out</span><br><span class="line">[hadoop@hadoop1 apps]$</span><br></pre></td></tr></table></figure>
+
+<p>启动完成之后检查以下namenode的状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ hdfs haadmin -getServiceState nn1</span><br><span class="line">standby</span><br><span class="line">[hadoop@hadoop1 apps]$ hdfs haadmin -getServiceState nn2</span><br><span class="line">active</span><br><span class="line">[hadoop@hadoop1 apps]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、启动HBase"><a href="#3、启动HBase" class="headerlink" title="3、启动HBase"></a>3、启动HBase</h3><p>保证 ZooKeeper 集群和 HDFS 集群启动正常的情况下启动 HBase 集群 启动命令：start-hbase.sh，在哪台节点上执行此命令，哪个节点就是主节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ start-hbase.sh</span><br><span class="line">starting master, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-master-hadoop1.out</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop3: starting regionserver, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-regionserver-hadoop3.out</span><br><span class="line">hadoop4: starting regionserver, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-regionserver-hadoop4.out</span><br><span class="line">hadoop2: starting regionserver, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-regionserver-hadoop2.out</span><br><span class="line">hadoop3: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop3: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop4: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop4: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop2: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop2: Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0</span><br><span class="line">hadoop1: starting regionserver, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-regionserver-hadoop1.out</span><br><span class="line">hadoop4: starting master, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-master-hadoop4.out</span><br><span class="line">[hadoop@hadoop1 conf]$</span><br></pre></td></tr></table></figure>
+
+<p>观看启动日志可以看到：</p>
+<p>（1）首先在命令执行节点启动 master</p>
+<p>（2）然后分别在 hadoop02,hadoop03,hadoop04,hadoop05 启动 regionserver</p>
+<p>（3）然后在 backup-masters 文件中配置的备节点上再启动一个 master 主进程</p>
+<h2 id="验证启动是否正常"><a href="#验证启动是否正常" class="headerlink" title="验证启动是否正常"></a>验证启动是否正常</h2><h3 id="1、检查各进程是否启动正常"><a href="#1、检查各进程是否启动正常" class="headerlink" title="1、检查各进程是否启动正常"></a>1、检查各进程是否启动正常</h3><p> 主节点和备用节点都启动 hmaster 进程</p>
+<p> 各从节点都启动 hregionserver 进程</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132223188-429838759.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132240867-541766781.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132301074-29966918.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132326294-1697748614.png" alt="img"></p>
+<p>按照对应的配置信息各个节点应该要启动的进程如上图所示</p>
+<h3 id="2、通过访问浏览器页面"><a href="#2、通过访问浏览器页面" class="headerlink" title="2、通过访问浏览器页面"></a>2、通过访问浏览器页面</h3><p>hadoop1</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132509206-920100773.png" alt="img"></p>
+<p>hadop4</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132546255-325710346.png" alt="img"></p>
+<p>从图中可以看出hadoop4是备用节点</p>
+<h3 id="3、验证高可用"><a href="#3、验证高可用" class="headerlink" title="3、验证高可用"></a>3、验证高可用</h3><p>干掉hadoop1上的hbase进程，观察备用节点是否启用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 conf]$ jps</span><br><span class="line">4960 HMaster</span><br><span class="line">2960 QuorumPeerMain</span><br><span class="line">3169 NameNode</span><br><span class="line">3699 DFSZKFailoverController</span><br><span class="line">3285 DataNode</span><br><span class="line">5098 HRegionServer</span><br><span class="line">5471 Jps</span><br><span class="line">3487 JournalNode</span><br><span class="line">[hadoop@hadoop1 conf]$ kill -9 4960</span><br></pre></td></tr></table></figure>
+
+<p> hadoop1界面访问不了</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132808177-232739231.png" alt="img"></p>
+<p>hadoop4变成主节点</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180329132858305-523100964.png" alt="img"></p>
+<h3 id="4、如果有节点相应的进程没有启动，那么可以手动启动"><a href="#4、如果有节点相应的进程没有启动，那么可以手动启动" class="headerlink" title="4、如果有节点相应的进程没有启动，那么可以手动启动"></a>4、如果有节点相应的进程没有启动，那么可以手动启动</h3><p>启动HMaster进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 conf]$ jps</span><br><span class="line">3360 Jps</span><br><span class="line">2833 JournalNode</span><br><span class="line">2633 QuorumPeerMain</span><br><span class="line">3179 HRegionServer</span><br><span class="line">2732 DataNode</span><br><span class="line">[hadoop@hadoop3 conf]$ hbase-daemon.sh start master</span><br><span class="line">starting master, logging to /home/hadoop/apps/hbase-1.2.6/logs/hbase-hadoop-master-hadoop3.out</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: ignoring option PermSize=128m; support was removed in 8.0</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM warning: ignoring option MaxPermSize=128m; support was removed in 8.0</span><br><span class="line">[hadoop@hadoop3 conf]$ jps</span><br><span class="line">2833 JournalNode</span><br><span class="line">3510 Jps</span><br><span class="line">3432 HMaster</span><br><span class="line">2633 QuorumPeerMain</span><br><span class="line">3179 HRegionServer</span><br><span class="line">2732 DataNode</span><br><span class="line">[hadoop@hadoop3 conf]$</span><br></pre></td></tr></table></figure>
+
+<p>启动HRegionServer进程</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop3 conf]$ hbase-daemon.sh start regionserver</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-06-03-HBase学习之路 （三）HBase集群Shell操作.html" class="pre-post btn btn-default" title='HBase学习之路 （三）HBase集群Shell操作'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （三）HBase集群Shell操作</span>
+    </a>
+    
+    
+    <a href="/2018-06-01-HBase学习之路 （一）HBase基础介绍.html" class="next-post btn btn-default" title='HBase学习之路 （一）HBase基础介绍'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （一）HBase基础介绍</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前提"><span class="toc-text">前提</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本选择"><span class="toc-text">版本选择</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK的选择"><span class="toc-text">JDK的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hadoop的选择"><span class="toc-text">Hadoop的选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装"><span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、zookeeper的安装"><span class="toc-text">1、zookeeper的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Hadoopd的安装"><span class="toc-text">2、Hadoopd的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、下载安装包"><span class="toc-text">3、下载安装包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、上传服务器并解压缩到指定目录"><span class="toc-text">4、上传服务器并解压缩到指定目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、修改配置文件"><span class="toc-text">5、修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#（1）修改hbase-env-sh"><span class="toc-text">（1）修改hbase-env.sh</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（2）修改hbase-site-xml"><span class="toc-text">（2）修改hbase-site.xml</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（3）修改regionservers"><span class="toc-text">（3）修改regionservers</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（4）修改backup-masters"><span class="toc-text">（4）修改backup-masters</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#（5）修改hdfs-site-xml-和-core-site-xml"><span class="toc-text">（5）修改hdfs-site.xml 和 core-site.xml</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、将HBase安装包分发到其他节点"><span class="toc-text">6、将HBase安装包分发到其他节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、-同步时间"><span class="toc-text">7、 同步时间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、配置环境变量"><span class="toc-text">8、配置环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#启动HBase集群"><span class="toc-text">启动HBase集群</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、启动zookeeper集群"><span class="toc-text">1、启动zookeeper集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、启动HDFS集群及YARN集群"><span class="toc-text">2、启动HDFS集群及YARN集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、启动HBase"><span class="toc-text">3、启动HBase</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#验证启动是否正常"><span class="toc-text">验证启动是否正常</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、检查各进程是否启动正常"><span class="toc-text">1、检查各进程是否启动正常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、通过访问浏览器页面"><span class="toc-text">2、通过访问浏览器页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、验证高可用"><span class="toc-text">3、验证高可用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、如果有节点相应的进程没有启动，那么可以手动启动"><span class="toc-text">4、如果有节点相应的进程没有启动，那么可以手动启动</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

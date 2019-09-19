@@ -1,0 +1,422 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（七）Hadoop集群shell常用命令：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（七）Hadoop...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（七）Hadoop集群shell常用命令 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（七）Hadoop集群shell常用命令">
+            
+            Hadoop学习之路（七）Hadoop集群shell常用命令
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/07</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（七）Hadoop集群shell常用命令：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（七）Hadoop集群shell常用命令</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="Hadoop常用命令"><a href="#Hadoop常用命令" class="headerlink" title="Hadoop常用命令"></a>Hadoop常用命令</h2><h3 id="启动HDFS集群"><a href="#启动HDFS集群" class="headerlink" title="启动HDFS集群"></a>启动HDFS集群</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ start-dfs.sh</span><br><span class="line">Starting namenodes on [hadoop1]</span><br><span class="line">hadoop1: starting namenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-namenode-hadoop1.out</span><br><span class="line">hadoop2: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop2.out</span><br><span class="line">hadoop3: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop3.out</span><br><span class="line">hadoop4: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop4.out</span><br><span class="line">hadoop1: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop1.out</span><br><span class="line">Starting secondary namenodes [hadoop3]</span><br><span class="line">hadoop3: starting secondarynamenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-secondarynamenode-hadoop3.out</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动YARN集群"><a href="#启动YARN集群" class="headerlink" title="启动YARN集群"></a>启动YARN集群</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop4 ~]$ start-yarn.sh</span><br><span class="line">starting yarn daemons</span><br><span class="line">starting resourcemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-resourcemanager-hadoop4.out</span><br><span class="line">hadoop2: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop2.out</span><br><span class="line">hadoop3: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop3.out</span><br><span class="line">hadoop4: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop4.out</span><br><span class="line">hadoop1: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop1.out</span><br><span class="line">[hadoop@hadoop4 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看HDFS系统根目录"><a href="#查看HDFS系统根目录" class="headerlink" title="查看HDFS系统根目录"></a>查看HDFS系统根目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /</span><br><span class="line">Found 2 items</span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2018-03-03 11:42 /test</span><br><span class="line">drwx------   - hadoop supergroup          0 2018-03-03 11:42 /tmp</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mkdir /a</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /</span><br><span class="line">Found 3 items</span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2018-03-08 11:09 /a</span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2018-03-03 11:42 /test</span><br><span class="line">drwx------   - hadoop supergroup          0 2018-03-03 11:42 /tmp</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="级联创建文件夹"><a href="#级联创建文件夹" class="headerlink" title="级联创建文件夹"></a>级联创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mkdir -p /aa/bb/cc</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看hsdf系统根目录下的所有文件包括子文件夹里面的文件"><a href="#查看hsdf系统根目录下的所有文件包括子文件夹里面的文件" class="headerlink" title="查看hsdf系统根目录下的所有文件包括子文件夹里面的文件"></a>查看hsdf系统根目录下的所有文件包括子文件夹里面的文件</h3><p><strong>[hadoop@hadoop1 ~]$ hadoop fs -ls -R /aa</strong><br>drwxr-xr-x - hadoop supergroup 0 2018-03-08 11:12 /aa/bb<br>drwxr-xr-x - hadoop supergroup 0 2018-03-08 11:12 /aa/bb/cc<br>[hadoop@hadoop1 ~]$</p>
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p>[hadoop@hadoop1 ~]$ ls<br>apps data words.txt<br><strong>[hadoop@hadoop1 ~]$ hadoop fs -put words.txt /aa</strong><br><strong>[hadoop@hadoop1 ~]$ hadoop fs -copyFromLocal words.txt /aa/bb</strong><br>[hadoop@hadoop1 ~]$</p>
+<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -get /aa/words.txt ~/newwords.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data  newwords.txt  words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -copyToLocal /aa/words.txt ~/newwords1.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data  newwords1.txt  newwords.txt  words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="合并下载"><a href="#合并下载" class="headerlink" title="合并下载"></a>合并下载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -getmerge /aa/words.txt /aa/bb/words.txt ~/2words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ ll</span><br><span class="line">总用量 24</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop   78 3月   8 12:42 2words.txt</span><br><span class="line">drwxrwxr-x. 3 hadoop hadoop 4096 3月   3 10:30 apps</span><br><span class="line">drwxrwxr-x. 3 hadoop hadoop 4096 3月   3 11:40 data</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop   39 3月   8 11:49 newwords1.txt</span><br><span class="line">-rw-r--r--. 1 hadoop hadoop   39 3月   8 11:48 newwords.txt</span><br><span class="line">-rw-rw-r--. 1 hadoop hadoop   39 3月   3 11:31 words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="复制"><a href="#复制" class="headerlink" title="复制"></a>复制</h3><p>从HDFS一个路径拷贝到HDFS另一个路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /a</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -cp /aa/words.txt /a</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /a</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         39 2018-03-08 12:46 /a/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h3><p>在HDFS目录中移动文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /aa/bb/cc</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mv /a/words.txt /aa/bb/cc</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /aa/bb/cc</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         39 2018-03-08 12:46 /aa/bb/cc/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>删除文件或文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -rm /aa/bb/cc/words.txt</span><br><span class="line">18/03/08 12:49:08 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.</span><br><span class="line">Deleted /aa/bb/cc/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /aa/bb/cc</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p>删除空目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -rmdir /aa/bb/cc/</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /aa/bb/</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         39 2018-03-08 11:43 /aa/bb/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p>强制删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -rm /aa/bb/</span><br><span class="line">rm: `/aa/bb&apos;: Is a directory</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -rm -r /aa/bb/</span><br><span class="line">18/03/08 12:51:31 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval = 0 minutes, Emptier interval = 0 minutes.</span><br><span class="line">Deleted /aa/bb</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /aa</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         39 2018-03-08 11:41 /aa/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="从本地剪切文件到HDFS上"><a href="#从本地剪切文件到HDFS上" class="headerlink" title="从本地剪切文件到HDFS上"></a>从本地剪切文件到HDFS上</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data  hello.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -moveFromLocal ~/hello.txt /aa</span><br><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="追加文件"><a href="#追加文件" class="headerlink" title="追加文件"></a>追加文件</h3><p>追加之前hello.txt到words.txt之前</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308125830426-570415929.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -appendToFile ~/hello.txt /aa/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p>追加之前hello.txt到words.txt之后</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308130118866-1783962726.png" alt="img"></p>
+<h3 id="查看文件内容"><a href="#查看文件内容" class="headerlink" title="查看文件内容"></a>查看文件内容</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -cat /aa/hello.txt</span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<h3 id="chgrp"><a href="#chgrp" class="headerlink" title="chgrp"></a>chgrp</h3><p>使用方法：hadoop fs -chgrp [-R] GROUP URI [URI …] Change group association of files. With -R, make the change recursively through the directory structure. The user must be the owner of files, or else a super-user. Additional information is in the <a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_permissions_guide.html" target="_blank" rel="noopener">Permissions User Guide</a>. –&gt;</p>
+<p>改变文件所属的组。使用-R将使改变在目录结构下递归进行。命令的使用者必须是文件的所有者或者超级用户。更多的信息请参见<a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_permissions_guide.html" target="_blank" rel="noopener">HDFS权限用户指南</a>。</p>
+<h3 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h3><p>使用方法：hadoop fs -chmod [-R] &lt;MODE[,MODE]… | OCTALMODE&gt; URI [URI …]</p>
+<p>改变文件的权限。使用-R将使改变在目录结构下递归进行。命令的使用者必须是文件的所有者或者超级用户。更多的信息请参见<a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_permissions_guide.html" target="_blank" rel="noopener">HDFS权限用户指南</a>。</p>
+<h3 id="chown"><a href="#chown" class="headerlink" title="chown"></a>chown</h3><p>使用方法：hadoop fs -chown [-R] [OWNER][:[GROUP]] URI [URI ]</p>
+<p>改变文件的拥有者。使用-R将使改变在目录结构下递归进行。命令的使用者必须是超级用户。更多的信息请参见<a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_permissions_guide.html" target="_blank" rel="noopener">HDFS权限用户指南</a>。</p>
+<h3 id="du"><a href="#du" class="headerlink" title="du"></a>du</h3><p>使用方法：hadoop fs -du URI [URI …]</p>
+<p>显示目录中所有文件的大小，或者当只指定一个文件时，显示此文件的大小。<br>示例：<br>hadoop fs -du /user/hadoop/dir1 /user/hadoop/file1 hdfs://host:port/user/hadoop/dir1<br>返回值：<br>成功返回0，失败返回-1。 </p>
+<h3 id="dus"><a href="#dus" class="headerlink" title="dus"></a>dus</h3><p>使用方法：hadoop fs -dus <args></args></p>
+<p>显示文件的大小。</p>
+<h3 id="expunge"><a href="#expunge" class="headerlink" title="expunge"></a>expunge</h3><p>使用方法：hadoop fs -expunge</p>
+<p>清空回收站。请参考<a href="http://hadoop.apache.org/docs/r1.0.4/cn/hdfs_design.html" target="_blank" rel="noopener">HDFS设计</a>文档以获取更多关于回收站特性的信息。</p>
+<h3 id="setrep"><a href="#setrep" class="headerlink" title="setrep"></a>setrep</h3><p>使用方法：hadoop fs -setrep [-R] <path></path></p>
+<p>改变一个文件的副本系数。-R选项用于递归改变目录下所有文件的副本系数。</p>
+<p>示例：</p>
+<ul>
+<li>hadoop fs -setrep -w 3 -R /user/hadoop/dir1</li>
+</ul>
+<p>返回值：</p>
+<p>成功返回0，失败返回-1。</p>
+<h3 id="tail"><a href="#tail" class="headerlink" title="tail"></a>tail</h3><p>使用方法：hadoop fs -tail [-f] URI</p>
+<p>将文件尾部1K字节的内容输出到stdout。支持-f选项，行为和Unix中一致。</p>
+<p>示例：</p>
+<ul>
+<li>hadoop fs -tail pathname</li>
+</ul>
+<p>返回值：<br>成功返回0，失败返回-1。</p>
+<h3 id="test"><a href="#test" class="headerlink" title="test"></a>test</h3><p>使用方法：hadoop fs -test -[ezd] URI</p>
+<p>选项：<br>-e 检查文件是否存在。如果存在则返回0。<br>-z 检查文件是否是0字节。如果是则返回0。<br>-d 如果路径是个目录，则返回1，否则返回0。</p>
+<p>示例：</p>
+<ul>
+<li><ul>
+<li>hadoop fs -test -e filename</li>
+</ul>
+</li>
+</ul>
+<h3 id="查看集群的工作状态"><a href="#查看集群的工作状态" class="headerlink" title="查看集群的工作状态"></a>查看集群的工作状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hdfs dfsadmin -report</span><br><span class="line">Configured Capacity: 73741402112 (68.68 GB)</span><br><span class="line">Present Capacity: 52781039616 (49.16 GB)</span><br><span class="line">DFS Remaining: 52780457984 (49.16 GB)</span><br><span class="line">DFS Used: 581632 (568 KB)</span><br><span class="line">DFS Used%: 0.00%</span><br><span class="line">Under replicated blocks: 0</span><br><span class="line">Blocks with corrupt replicas: 0</span><br><span class="line">Missing blocks: 0</span><br><span class="line">Missing blocks (with replication factor 1): 0</span><br><span class="line"></span><br><span class="line">-------------------------------------------------</span><br><span class="line">Live datanodes (4):</span><br><span class="line"></span><br><span class="line">Name: 192.168.123.102:50010 (hadoop1)</span><br><span class="line">Hostname: hadoop1</span><br><span class="line">Decommission Status : Normal</span><br><span class="line">Configured Capacity: 18435350528 (17.17 GB)</span><br><span class="line">DFS Used: 114688 (112 KB)</span><br><span class="line">Non DFS Used: 4298661888 (4.00 GB)</span><br><span class="line">DFS Remaining: 13193277440 (12.29 GB)</span><br><span class="line">DFS Used%: 0.00%</span><br><span class="line">DFS Remaining%: 71.57%</span><br><span class="line">Configured Cache Capacity: 0 (0 B)</span><br><span class="line">Cache Used: 0 (0 B)</span><br><span class="line">Cache Remaining: 0 (0 B)</span><br><span class="line">Cache Used%: 100.00%</span><br><span class="line">Cache Remaining%: 0.00%</span><br><span class="line">Xceivers: 1</span><br><span class="line">Last contact: Thu Mar 08 13:05:11 CST 2018</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Name: 192.168.123.105:50010 (hadoop4)</span><br><span class="line">Hostname: hadoop4</span><br><span class="line">Decommission Status : Normal</span><br><span class="line">Configured Capacity: 18435350528 (17.17 GB)</span><br><span class="line">DFS Used: 49152 (48 KB)</span><br><span class="line">Non DFS Used: 4295872512 (4.00 GB)</span><br><span class="line">DFS Remaining: 13196132352 (12.29 GB)</span><br><span class="line">DFS Used%: 0.00%</span><br><span class="line">DFS Remaining%: 71.58%</span><br><span class="line">Configured Cache Capacity: 0 (0 B)</span><br><span class="line">Cache Used: 0 (0 B)</span><br><span class="line">Cache Remaining: 0 (0 B)</span><br><span class="line">Cache Used%: 100.00%</span><br><span class="line">Cache Remaining%: 0.00%</span><br><span class="line">Xceivers: 1</span><br><span class="line">Last contact: Thu Mar 08 13:05:13 CST 2018</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Name: 192.168.123.103:50010 (hadoop2)</span><br><span class="line">Hostname: hadoop2</span><br><span class="line">Decommission Status : Normal</span><br><span class="line">Configured Capacity: 18435350528 (17.17 GB)</span><br><span class="line">DFS Used: 233472 (228 KB)</span><br><span class="line">Non DFS Used: 4295700480 (4.00 GB)</span><br><span class="line">DFS Remaining: 13196120064 (12.29 GB)</span><br><span class="line">DFS Used%: 0.00%</span><br><span class="line">DFS Remaining%: 71.58%</span><br><span class="line">Configured Cache Capacity: 0 (0 B)</span><br><span class="line">Cache Used: 0 (0 B)</span><br><span class="line">Cache Remaining: 0 (0 B)</span><br><span class="line">Cache Used%: 100.00%</span><br><span class="line">Cache Remaining%: 0.00%</span><br><span class="line">Xceivers: 1</span><br><span class="line">Last contact: Thu Mar 08 13:05:11 CST 2018</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Name: 192.168.123.104:50010 (hadoop3)</span><br><span class="line">Hostname: hadoop3</span><br><span class="line">Decommission Status : Normal</span><br><span class="line">Configured Capacity: 18435350528 (17.17 GB)</span><br><span class="line">DFS Used: 184320 (180 KB)</span><br><span class="line">Non DFS Used: 4296941568 (4.00 GB)</span><br><span class="line">DFS Remaining: 13194928128 (12.29 GB)</span><br><span class="line">DFS Used%: 0.00%</span><br><span class="line">DFS Remaining%: 71.57%</span><br><span class="line">Configured Cache Capacity: 0 (0 B)</span><br><span class="line">Cache Used: 0 (0 B)</span><br><span class="line">Cache Remaining: 0 (0 B)</span><br><span class="line">Cache Used%: 100.00%</span><br><span class="line">Cache Remaining%: 0.00%</span><br><span class="line">Xceivers: 1</span><br><span class="line">Last contact: Thu Mar 08 13:05:10 CST 2018</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-08-Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境.html" class="pre-post btn btn-default" title='Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境</span>
+    </a>
+    
+    
+    <a href="/2018-04-06-Hadoop学习之路（六）HDFS基础.html" class="next-post btn btn-default" title='Hadoop学习之路（六）HDFS基础'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（六）HDFS基础</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop常用命令"><span class="toc-text">Hadoop常用命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#启动HDFS集群"><span class="toc-text">启动HDFS集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#启动YARN集群"><span class="toc-text">启动YARN集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看HDFS系统根目录"><span class="toc-text">查看HDFS系统根目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建文件夹"><span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级联创建文件夹"><span class="toc-text">级联创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看hsdf系统根目录下的所有文件包括子文件夹里面的文件"><span class="toc-text">查看hsdf系统根目录下的所有文件包括子文件夹里面的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上传文件"><span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载文件"><span class="toc-text">下载文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#合并下载"><span class="toc-text">合并下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#复制"><span class="toc-text">复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#移动"><span class="toc-text">移动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删除"><span class="toc-text">删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#从本地剪切文件到HDFS上"><span class="toc-text">从本地剪切文件到HDFS上</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#追加文件"><span class="toc-text">追加文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看文件内容"><span class="toc-text">查看文件内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chgrp"><span class="toc-text">chgrp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chmod"><span class="toc-text">chmod</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#chown"><span class="toc-text">chown</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#du"><span class="toc-text">du</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dus"><span class="toc-text">dus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#expunge"><span class="toc-text">expunge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#setrep"><span class="toc-text">setrep</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tail"><span class="toc-text">tail</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#test"><span class="toc-text">test</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看集群的工作状态"><span class="toc-text">查看集群的工作状态</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Docker">
+
+
+<meta name="description" content="** CentOS7 安装Docker：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （一）Spark初识
+
+&lt;The res...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    CentOS7 安装Docker |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="CentOS7 安装Docker">
+            
+            CentOS7 安装Docker
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Linux/">Linux</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Docker/">Docker</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/02/01</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** CentOS7 安装Docker：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （一）Spark初识</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、检查系统内核"><a href="#一、检查系统内核" class="headerlink" title="一、检查系统内核"></a>一、检查系统内核</h2><p>Docker 要求 CentOS 系统的内核版本高于 3.10 ，查看本页面的前提条件来验证你的CentOS 版本是否支持 Docker 。</p>
+<p>通过 <strong>uname -r</strong> 命令查看你当前的内核版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# uname -r</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508193509650-2014211576.png" alt="img"></p>
+<h2 id="二、安装Docker"><a href="#二、安装Docker" class="headerlink" title="二、安装Docker"></a>二、安装Docker</h2><h3 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1　安装"></a>2.1　安装</h3><p>Docker 软件包和依赖包已经包含在默认的 CentOS-Extras 软件源里，安装命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# yum -y install docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508193906464-1646665952.png" alt="img"></p>
+<h3 id="2-2-查看docker版本"><a href="#2-2-查看docker版本" class="headerlink" title="2.2　查看docker版本"></a>2.2　查看docker版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# docker version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508194053682-191708110.png" alt="img"></p>
+<h3 id="2-3-启动docker"><a href="#2-3-启动docker" class="headerlink" title="2.3　启动docker"></a>2.3　启动docker</h3><p>方式一：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# service docker start</span><br><span class="line">Redirecting to /bin/systemctl start docker.service</span><br><span class="line">[root@bigdata ~]#</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508195058989-163681608.png" alt="img"></p>
+<p>方式二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# systemctl start docker.service</span><br><span class="line">[root@bigdata ~]# ps aux | grep docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509091656878-775534744.png" alt="img"></p>
+<h2 id="三、建立docker用户和组"><a href="#三、建立docker用户和组" class="headerlink" title="三、建立docker用户和组"></a>三、建立docker用户和组</h2><h3 id="3-1-创建用户及组"><a href="#3-1-创建用户及组" class="headerlink" title="3.1　创建用户及组"></a>3.1　创建用户及组</h3><p>默认情况下，docker 命令会使用 Unix socket 与 Docker 引擎通讯。而只有 root 用户和 docker 组的用户才可以访问 Docker 引擎的 Unix socket。出于安全考虑，一般 Linux 系统上不会直接使用 root 用户。因此，更好地做法是将需要使用 docker 的用户加入 docker 用户组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# groupadd docker</span><br><span class="line">[root@bigdata ~]# useradd -g docker docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-使用新创建的用户运行helloworld"><a href="#3-2-使用新创建的用户运行helloworld" class="headerlink" title="3.2　使用新创建的用户运行helloworld"></a>3.2　使用新创建的用户运行helloworld</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run hello-world</span><br><span class="line">Unable to find image &apos;hello-world:latest&apos; locally</span><br><span class="line">Trying to pull repository docker.io/library/hello-world ... </span><br><span class="line">latest: Pulling from docker.io/library/hello-world</span><br><span class="line">9bb5a5d4561a: Pulling fs layer </span><br><span class="line">/usr/bin/docker-current: error pulling image configuration: Get https://dseasb33srnrn.cloudfront.net/registry-v2/docker/registry/v2/blobs/sha256/e3/e38bc07ac18ee64e6d59cf2eafcdddf9cec2364dfe129fe0af75f1b0194e0c96/data?Expires=1525823399&amp;Signature=SjqbSNVW5X~uDhy9jXvuLqv22jC3auyGRx4JCRE1ceXkdh0Qpsc21VmhIXwAO6XcxwyJ1gGNVQhnJWYozOWXjysL8taJFBCxKNqAD9Cy~TCt-iMi06z9dHX6-WxxIU3WJ4LbCT7RxsWIKArTVKmPvyQdD4Djkgr~rWzoL6eyTfg_&amp;Key-Pair-Id=APKAJECH5M7VWIS5YZ6Q: net/http: TLS handshake timeout.</span><br><span class="line">See &apos;/usr/bin/docker-current run --help&apos;.</span><br><span class="line">[docker@bigdata ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508195840234-1463116301.png" alt="img"></p>
+<h3 id="3-3-解决报错"><a href="#3-3-解决报错" class="headerlink" title="3.3　解决报错"></a>3.3　解决报错</h3><p>如上图报错<strong>/usr/bin/docker-current: error pulling image configuration。。。</strong></p>
+<p><strong>出现这个问题，一般的原因是无法连接到 docker hub通过（使用root用户执行以下命令）：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# cat /etc/sysconfig/docker</span><br></pre></td></tr></table></figure>
+
+<p>在文件中添加以下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--registry-mirror=http://f2d6cb40.m.daocloud.io</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508200747683-1514086239.png" alt="img"></p>
+<p>重启docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata ~]# service docker restart</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508201036527-1369269603.png" alt="img"></p>
+<p>再次运行helloworld（docker用户）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508201117738-2122905401.png" alt="img"></p>
+<p>由于本地没有hello-world这个镜像，所以会下载一个hello-world的镜像，并在容器内运行。</p>
+<h2 id="四、安装centos镜像"><a href="#四、安装centos镜像" class="headerlink" title="四、安装centos镜像"></a>四、安装centos镜像</h2><h3 id="4-1-下载镜像"><a href="#4-1-下载镜像" class="headerlink" title="4.1　下载镜像"></a>4.1　下载镜像</h3><p>从 Docker 镜像仓库获取镜像的命令是 docker pull。其命令格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull [选项] [Docker Registry 地址[:端口号]/]仓库名[:标签]</span><br></pre></td></tr></table></figure>
+
+<p>可以直接使用docker pull centos:7命令安装镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker pull centos:7</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508201539077-637092308.png" alt="img"></p>
+<h3 id="4-2-查看拥有的镜像"><a href="#4-2-查看拥有的镜像" class="headerlink" title="4.2　查看拥有的镜像"></a>4.2　查看拥有的镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker image ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508201643678-1847283881.png" alt="img"></p>
+<p>一个是centos镜像，另一个是我们之前使用docker run hello-world命令下载的镜像。</p>
+<p>镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的 类 和 实例 一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</p>
+<h3 id="4-3-运行容器"><a href="#4-3-运行容器" class="headerlink" title="4.3　运行容器"></a>4.3　运行容器</h3><p>有了镜像后，我们就能够以这个镜像为基础启动并运行一个容器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run -it --rm centos bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508202330251-712010418.png" alt="img"></p>
+<p>docker run 就是运行容器的命令，说明一下上面用到的参数。</p>
+<blockquote>
+<ul>
+<li>-it：这是两个参数，一个是 -i：交互式操作，一个是 -t 终端。我们这里打算进入 bash 执行一些命令并查看返回结果，因 此我们需要交互式终端。</li>
+<li>–rm：这个参数是说容器退出后随之将其删除。默认情况下，为了排障需求，退出的容器并不会立即删除，除非手动 docker rm。我们这里只是随便执行个命令，看看结果，不需要排障和保留结果，因此使用 –rm 可以避免浪费空间。</li>
+<li>centos ：这是指用centos  镜像为基础来启动容器。</li>
+<li>bash：放在镜像名后的是命令，这里我们希望有个交互式 Shell，因此用的是 bash。</li>
+</ul>
+</blockquote>
+<h3 id="4-4-在容器中运行命令"><a href="#4-4-在容器中运行命令" class="headerlink" title="4.4　在容器中运行命令"></a>4.4　在容器中运行命令</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@cb55b5f51685 /]# cat /etc/os-release</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508202542401-1937736501.png" alt="img"></p>
+<p>进入容器后，我们可以在 Shell 下操作，执行任何所需的命令。这里，我们执行了 cat /etc/os-release，这是 Linux 常用的查看当前系统版本的命令，从返回的结果可以看到容器内是 CentOS Linux 系统。<br>最后我们可以通过 exit 退出了这个容器。</p>
+<h3 id="4-5-查看镜像、容器、数据卷所占用的空间"><a href="#4-5-查看镜像、容器、数据卷所占用的空间" class="headerlink" title="4.5　查看镜像、容器、数据卷所占用的空间"></a>4.5　查看镜像、容器、数据卷所占用的空间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker system df</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508202805476-1397312883.png" alt="img"></p>
+<h3 id="4-6-容器退出再次进入报错"><a href="#4-6-容器退出再次进入报错" class="headerlink" title="4.6　容器退出再次进入报错"></a>4.6　容器退出再次进入报错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run -it -v /home/docker/build:/root/build --privileged -h hadoop1 --name hadoop1 centos /bin/bash</span><br><span class="line">/usr/bin/docker-current: Error response from daemon: Conflict. The container name &quot;/hadoop1&quot; is already in use by container a094bdef9e1cac62a17022e568fe9b1eb021e13adf8ed2624a71be5a2e42c618. You have to remove (or rename) that container to be able to reuse that name..</span><br><span class="line">See &apos;/usr/bin/docker-current run --help&apos;.</span><br><span class="line">[docker@bigdata ~]$</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ul>
+<li><code>docker ps</code>: 查看当前运行的容器</li>
+<li><code>docker ps -a</code>:查看所有容器，包括停止的。</li>
+</ul>
+</blockquote>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508205404959-1539539627.png" alt="img"></p>
+<p>标题含义：</p>
+<blockquote>
+<ul>
+<li>CONTAINER ID:容器的唯一表示ID。</li>
+<li>IMAGE:创建容器时使用的镜像。</li>
+<li>COMMAND:容器最后运行的命令。</li>
+<li>CREATED:创建容器的时间。</li>
+<li>STATUS:容器状态。</li>
+<li>PORTS:对外开放的端口。</li>
+<li>NAMES:容器名。可以和容器ID一样唯一标识容器，同一台宿主机上不允许有同名容器存在，否则会冲突。</li>
+</ul>
+</blockquote>
+<p>使用命令停止并删除这个容器就可以</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508205933028-1455812154.png" alt="img"></p>
+<h2 id="五、运行容器"><a href="#五、运行容器" class="headerlink" title="五、运行容器"></a>五、运行容器</h2><h3 id="5-1-使用命令运行容器"><a href="#5-1-使用命令运行容器" class="headerlink" title="5.1　使用命令运行容器"></a>5.1　使用命令运行容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ docker run -it -v /home/docker/build:/root/build --privileged -h hadoop1 --name hadoop1 centos /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>以centos镜像启动一个容器，容器名是hadoop1，主机名是hadoop1，并且将基于容器的centos系统的/root/build目录与本地/home/docker/build共享。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508203250136-988615963.png" alt="img"></p>
+<p>参数解释：</p>
+<blockquote>
+<ul>
+<li>-v 表示基于容器的centos系统的/root/build目录与本地/home/hadoop/build共享；这可以很方便将本地文件上传到Docker内部的centos系统；</li>
+<li>-h 指定主机名为hadoop1</li>
+<li>–-name  指定容器名</li>
+<li>/bin/bash  使用bash命令</li>
+</ul>
+</blockquote>
+<h3 id="六、刚安装的系统非常纯净，需要安装必备的软件"><a href="#六、刚安装的系统非常纯净，需要安装必备的软件" class="headerlink" title="六、刚安装的系统非常纯净，需要安装必备的软件"></a>六、刚安装的系统非常纯净，需要安装必备的软件</h3><h3 id="6-1-安装vim"><a href="#6-1-安装vim" class="headerlink" title="6.1　安装vim"></a>6.1　安装vim</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# yum install vim</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-2-升级及安装sshd"><a href="#6-2-升级及安装sshd" class="headerlink" title="6.2　升级及安装sshd"></a>6.2　升级及安装sshd</h3><h4 id="6-2-1-安装"><a href="#6-2-1-安装" class="headerlink" title="6.2.1　安装"></a>6.2.1　安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# yum -y update</span><br><span class="line">[root@hadoop1 /]# yum -y install openssh-server</span><br><span class="line">[root@hadoop1 /]# yum -y install openssh-clients</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509092643850-1118717983.png" alt="img"></p>
+<p>编辑sshd的配置文件/etc/ssh/sshd_config，将其中的UsePAM yes改为UsePAM no</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# vi /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509093038727-176729187.png" alt="img"></p>
+<h4 id="6-2-2-启动"><a href="#6-2-2-启动" class="headerlink" title="6.2.2　启动"></a>6.2.2　启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509093402474-923839093.png" alt="img"></p>
+<p>报错如图，解决方案为：创建公私密钥，输入命令后，直接按两次enter键确认就行了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509093635141-1427855583.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509093734236-128491269.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509093845818-407554589.png" alt="img"></p>
+<p>再次启动SSH服务</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509103116501-1930285777.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# yum -y install lsof</span><br><span class="line">[root@hadoop1 /]# lsof -i:22</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509094741072-935231545.png" alt="img"></p>
+<h3 id="6-3-修改root密码"><a href="#6-3-修改root密码" class="headerlink" title="6.3　修改root密码"></a>6.3　修改root密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# passwd</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509094525056-1526638278.png" alt="img"></p>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# ssh localhost</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509103401359-448686039.png" alt="img"></p>
+<p>上图中可以看到已经登录到本机了，也就说容器中的主机拥有了ssh远程登录其它主机的能力，当然你也可以登录其他主机。要退出的话，输入命令exit即可。</p>
+<h3 id="6-4-宿主机能登录本机（容器中的主机）"><a href="#6-4-宿主机能登录本机（容器中的主机）" class="headerlink" title="6.4　宿主机能登录本机（容器中的主机）"></a>6.4　宿主机能登录本机（容器中的主机）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509103544191-424697759.png" alt="img"></p>
+<p>得到容器中的主机的ip地址172.17.0.2（可能和你得到的不一样）</p>
+<p>然后在宿主机中开启一个新的终端输入命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[docker@bigdata ~]$ ssh root@172.17.0.2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509103827941-843699179.png" alt="img"></p>
+<h3 id="6-5-配置ssh无密码登录"><a href="#6-5-配置ssh无密码登录" class="headerlink" title="6.5　配置ssh无密码登录"></a>6.5　配置ssh无密码登录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509104000782-1509822811.png" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# cd .ssh/</span><br><span class="line">[root@hadoop1 .ssh]# cat id_rsa.pub &gt;&gt; authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>输入完后，这时再输入命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 .ssh]# ssh localhost</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509104156362-385616941.png" alt="img"></p>
+<h2 id="七、上传软件到容器里面"><a href="#七、上传软件到容器里面" class="headerlink" title="七、上传软件到容器里面"></a>七、上传软件到容器里面</h2><p>将JDK上传到Linux系统，，然后将其移动到/home/docker/build文件夹下面，注意：这里需要使用root用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@bigdata docker]# mv jdk-8u73-linux-x64.tar.gz build/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508204211692-1348459794.png" alt="img"></p>
+<p>进入容器里面的/root/build文件夹下面进行查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 /]# cd /root/build/</span><br><span class="line">[root@hadoop1 build]# ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508210142987-1838746916.png" alt="img"></p>
+<h4 id="5-2-3-安装JDK"><a href="#5-2-3-安装JDK" class="headerlink" title="5.2.3　安装JDK"></a>5.2.3　安装JDK</h4><p>在容器/root下面建一个apps文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# mkdir apps</span><br></pre></td></tr></table></figure>
+
+<p>解压JDK的安装包到apps文件夹下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 build]# tar -zxvf jdk-8u73-linux-x64.tar.gz -C /root/apps/</span><br></pre></td></tr></table></figure>
+
+<p>修改环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# vi .bashrc</span><br><span class="line">#JAVA</span><br><span class="line">export JAVA_HOME=/root/apps/jdk1.8.0_73</span><br><span class="line">export CLASSPATH=$CLASSPATH:$JAVA_HOME/lib:$JAVA_HOME/jre/lib </span><br><span class="line">export PATH=$JAVA_HOME/bin:$JAVA_HOME/jre/bin:$PATH:$HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>保存使其立即生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 ~]# source .bashrc</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508211002462-8312294.png" alt="img"></p>
+<h2 id="八、保存镜像"><a href="#八、保存镜像" class="headerlink" title="八、保存镜像"></a>八、保存镜像</h2><p>基于已有的docker容器，做一新的dokcer image.</p>
+<p>$ docker commit <container_id> <image_name></image_name></container_id></p>
+<p>另开一个窗口</p>
+<p>举例：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180509113403826-1693220830.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-02-02-Windows连接Linux虚拟机里面的Docker容器.html" class="pre-post btn btn-default" title='Windows连接Linux虚拟机里面的Docker容器'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Windows连接Linux虚拟机里面的Docker容器</span>
+    </a>
+    
+    
+    <a href="/mybatis-generator.html" class="next-post btn btn-default" title='mybatis-generator'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            mybatis-generator</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、检查系统内核"><span class="toc-text">一、检查系统内核</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、安装Docker"><span class="toc-text">二、安装Docker</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-安装"><span class="toc-text">2.1　安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-查看docker版本"><span class="toc-text">2.2　查看docker版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-启动docker"><span class="toc-text">2.3　启动docker</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、建立docker用户和组"><span class="toc-text">三、建立docker用户和组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-创建用户及组"><span class="toc-text">3.1　创建用户及组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-使用新创建的用户运行helloworld"><span class="toc-text">3.2　使用新创建的用户运行helloworld</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-解决报错"><span class="toc-text">3.3　解决报错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、安装centos镜像"><span class="toc-text">四、安装centos镜像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-下载镜像"><span class="toc-text">4.1　下载镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-查看拥有的镜像"><span class="toc-text">4.2　查看拥有的镜像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-运行容器"><span class="toc-text">4.3　运行容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-在容器中运行命令"><span class="toc-text">4.4　在容器中运行命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-查看镜像、容器、数据卷所占用的空间"><span class="toc-text">4.5　查看镜像、容器、数据卷所占用的空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-容器退出再次进入报错"><span class="toc-text">4.6　容器退出再次进入报错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、运行容器"><span class="toc-text">五、运行容器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-使用命令运行容器"><span class="toc-text">5.1　使用命令运行容器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、刚安装的系统非常纯净，需要安装必备的软件"><span class="toc-text">六、刚安装的系统非常纯净，需要安装必备的软件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-安装vim"><span class="toc-text">6.1　安装vim</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-升级及安装sshd"><span class="toc-text">6.2　升级及安装sshd</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-1-安装"><span class="toc-text">6.2.1　安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-2-启动"><span class="toc-text">6.2.2　启动</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-修改root密码"><span class="toc-text">6.3　修改root密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-4-宿主机能登录本机（容器中的主机）"><span class="toc-text">6.4　宿主机能登录本机（容器中的主机）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-5-配置ssh无密码登录"><span class="toc-text">6.5　配置ssh无密码登录</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七、上传软件到容器里面"><span class="toc-text">七、上传软件到容器里面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-3-安装JDK"><span class="toc-text">5.2.3　安装JDK</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#八、保存镜像"><span class="toc-text">八、保存镜像</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询）：** &lt;Excerpt in index | 首页摘要&gt;
+​        Ha...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询） |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询）">
+            
+            Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/21</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询）：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（二十一）MapReduce实现Reduce Join（多个文件联合查询）</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h1 id="MapReduce-Join"><a href="#MapReduce-Join" class="headerlink" title="MapReduce Join"></a>MapReduce Join</h1><p>对两份数据data1和data2进行关键词连接是一个很通用的问题，如果数据量比较小，可以在内存中完成连接。</p>
+<p>如果数据量比较大，在内存进行连接操会发生OOM。mapreduce join可以用来解决大数据的连接。</p>
+<h2 id="1-思路"><a href="#1-思路" class="headerlink" title="1 思路"></a>1 思路</h2><h3 id="1-1-reduce-join"><a href="#1-1-reduce-join" class="headerlink" title="1.1 reduce join"></a>1.1 reduce join</h3><p>在map阶段, 把关键字作为key输出，并在value中标记出数据是来自data1还是data2。因为在shuffle阶段已经自然按key分组，reduce阶段，判断每一个value是来自data1还是data2,在内部分成2组，做集合的乘积。</p>
+<p>这种方法有2个问题：</p>
+<blockquote>
+<p>1, map阶段没有对数据瘦身，shuffle的网络传输和排序性能很低。</p>
+<p>2, reduce端对2个集合做乘积计算，很耗内存，容易导致OOM。</p>
+</blockquote>
+<h3 id="1-2-map-join"><a href="#1-2-map-join" class="headerlink" title="1.2 map join"></a>1.2 map join</h3><p>两份数据中，如果有一份数据比较小，小数据全部加载到内存，按关键字建立索引。大数据文件作为map的输入文件，对map()函数每一对输入，都能够方便地和已加载到内存的小数据进行连接。把连接结果按key输出，经过shuffle阶段，reduce端得到的就是已经按key分组的，并且连接好了的数据。</p>
+<p>这种方法，要使用hadoop中的DistributedCache把小数据分布到各个计算节点，每个map节点都要把小数据库加载到内存，按关键字建立索引。</p>
+<blockquote>
+<p>这种方法有明显的局限性：有一份数据比较小，在map端，能够把它加载到内存，并进行join操作。</p>
+</blockquote>
+<h3 id="1-3-使用内存服务器，扩大节点的内存空间"><a href="#1-3-使用内存服务器，扩大节点的内存空间" class="headerlink" title="1.3 使用内存服务器，扩大节点的内存空间"></a>1.3 使用内存服务器，扩大节点的内存空间</h3><p>针对map join，可以把一份数据存放到专门的内存服务器，在map()方法中，对每一个&lt;key,value&gt;的输入对，根据key到内存服务器中取出数据，进行连接</p>
+<h3 id="1-4-使用BloomFilter过滤空连接的数据"><a href="#1-4-使用BloomFilter过滤空连接的数据" class="headerlink" title="1.4 使用BloomFilter过滤空连接的数据"></a>1.4 使用BloomFilter过滤空连接的数据</h3><p>对其中一份数据在内存中建立BloomFilter，另外一份数据在连接之前，用BloomFilter判断它的key是否存在，如果不存在，那这个记录是空连接，可以忽略。</p>
+<h3 id="1-5-使用mapreduce专为join设计的包"><a href="#1-5-使用mapreduce专为join设计的包" class="headerlink" title="1.5 使用mapreduce专为join设计的包"></a>1.5 使用mapreduce专为join设计的包</h3><p>在mapreduce包里看到有专门为join设计的包，对这些包还没有学习，不知道怎么使用，只是在这里记录下来，作个提醒。</p>
+<blockquote>
+<p>jar： mapreduce-client-core.jar</p>
+<p>package： org.apache.hadoop.mapreduce.lib.join</p>
+</blockquote>
+<h2 id="2-实现reduce-join"><a href="#2-实现reduce-join" class="headerlink" title="2 实现reduce join"></a>2 实现reduce join</h2><p>两个文件，此处只写出部分数据，测试数据movies.dat数据量为3883条，ratings.dat数据量为1000210条数据</p>
+<p>movies.dat 数据格式为：1　　::　　Toy Story (1995)　　::　　Animation|Children’s|Comedy</p>
+<p>对应字段中文解释：　　电影ID 　　电影名字　　　　　　　　电影类型</p>
+<p>ratings.dat 数据格式为：1　　::　　1193　　::　　5　　::　　978300760</p>
+<p>对应字段中文解释：　　用户ID　　电影ID　　　评分　　　　评分时间戳</p>
+<p>2个文件进行关联实现代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line">import java.io.IOException;</span><br><span class="line">  2 import java.net.URI;</span><br><span class="line">  3 import java.util.ArrayList;</span><br><span class="line">  4 import java.util.List;</span><br><span class="line">  5 </span><br><span class="line">  6 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">  7 import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">  8 import org.apache.hadoop.fs.Path;</span><br><span class="line">  9 import org.apache.hadoop.io.IntWritable;</span><br><span class="line"> 10 import org.apache.hadoop.io.LongWritable;</span><br><span class="line"> 11 import org.apache.hadoop.io.Text;</span><br><span class="line"> 12 import org.apache.hadoop.mapreduce.Job;</span><br><span class="line"> 13 import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"> 14 import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"> 15 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"> 16 import org.apache.hadoop.mapreduce.lib.input.FileSplit;</span><br><span class="line"> 17 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"> 18 </span><br><span class="line"> 19 public class MovieMR1 &#123;</span><br><span class="line"> 20 </span><br><span class="line"> 21     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 22         </span><br><span class="line"> 23         Configuration conf1 = new Configuration();</span><br><span class="line"> 24         /*conf1.set(&quot;fs.defaultFS&quot;, &quot;hdfs://hadoop1:9000/&quot;);</span><br><span class="line"> 25         System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);*/</span><br><span class="line"> 26         FileSystem fs1 = FileSystem.get(conf1);</span><br><span class="line"> 27         </span><br><span class="line"> 28         </span><br><span class="line"> 29         Job job = Job.getInstance(conf1);</span><br><span class="line"> 30         </span><br><span class="line"> 31         job.setJarByClass(MovieMR1.class);</span><br><span class="line"> 32         </span><br><span class="line"> 33         job.setMapperClass(MoviesMapper.class);</span><br><span class="line"> 34         job.setReducerClass(MoviesReduceJoinReducer.class);</span><br><span class="line"> 35         </span><br><span class="line"> 36         job.setMapOutputKeyClass(Text.class);</span><br><span class="line"> 37         job.setMapOutputValueClass(Text.class);</span><br><span class="line"> 38         </span><br><span class="line"> 39         job.setOutputKeyClass(Text.class);</span><br><span class="line"> 40         job.setOutputValueClass(Text.class);</span><br><span class="line"> 41         </span><br><span class="line"> 42         Path inputPath1 = new Path(&quot;D:\\MR\\hw\\movie\\input\\movies&quot;);</span><br><span class="line"> 43         Path inputPath2 = new Path(&quot;D:\\MR\\hw\\movie\\input\\ratings&quot;);</span><br><span class="line"> 44         Path outputPath1 = new Path(&quot;D:\\MR\\hw\\movie\\output&quot;);</span><br><span class="line"> 45         if(fs1.exists(outputPath1)) &#123;</span><br><span class="line"> 46             fs1.delete(outputPath1, true);</span><br><span class="line"> 47         &#125;</span><br><span class="line"> 48         FileInputFormat.addInputPath(job, inputPath1);</span><br><span class="line"> 49         FileInputFormat.addInputPath(job, inputPath2);</span><br><span class="line"> 50         FileOutputFormat.setOutputPath(job, outputPath1);</span><br><span class="line"> 51         </span><br><span class="line"> 52         boolean isDone = job.waitForCompletion(true);</span><br><span class="line"> 53         System.exit(isDone ? 0 : 1);</span><br><span class="line"> 54     &#125;</span><br><span class="line"> 55 </span><br><span class="line"> 56     </span><br><span class="line"> 57     public static class MoviesMapper extends Mapper&lt;LongWritable, Text, Text, Text&gt;&#123;</span><br><span class="line"> 58         </span><br><span class="line"> 59         Text outKey = new Text();</span><br><span class="line"> 60         Text outValue = new Text();</span><br><span class="line"> 61         StringBuilder sb = new StringBuilder();</span><br><span class="line"> 62         </span><br><span class="line"> 63         protected void map(LongWritable key, Text value,Context context) throws java.io.IOException ,InterruptedException &#123;</span><br><span class="line"> 64             </span><br><span class="line"> 65             FileSplit inputSplit = (FileSplit)context.getInputSplit();</span><br><span class="line"> 66             String name = inputSplit.getPath().getName();</span><br><span class="line"> 67             String[] split = value.toString().split(&quot;::&quot;);</span><br><span class="line"> 68             sb.setLength(0);</span><br><span class="line"> 69             </span><br><span class="line"> 70             if(name.equals(&quot;movies.dat&quot;)) &#123;</span><br><span class="line"> 71                 //                    1　　::　　Toy Story (1995)　　::　　Animation|Children&apos;s|Comedy</span><br><span class="line"> 72                 //对应字段中文解释：　　电影ID 　　   电影名字　　　　　　　　                 电影类型</span><br><span class="line"> 73                 outKey.set(split[0]);</span><br><span class="line"> 74                 StringBuilder append = sb.append(split[1]).append(&quot;\t&quot;).append(split[2]);</span><br><span class="line"> 75                 String str = &quot;movies#&quot;+append.toString();</span><br><span class="line"> 76                 outValue.set(str);</span><br><span class="line"> 77                 //System.out.println(outKey+&quot;---&quot;+outValue);</span><br><span class="line"> 78                 context.write(outKey, outValue);</span><br><span class="line"> 79             &#125;else&#123;</span><br><span class="line"> 80                 //                    1　　::　　1193　　::　　5　　::　　978300760</span><br><span class="line"> 81                 //对应字段中文解释：　　用户ID　　           电影ID　　　      评分　　　　   评分时间戳</span><br><span class="line"> 82                 outKey.set(split[1]);</span><br><span class="line"> 83                 StringBuilder append = sb.append(split[0]).append(&quot;\t&quot;).append(split[2]).append(&quot;\t&quot;).append(split[3]);</span><br><span class="line"> 84                 String str = &quot;ratings#&quot; + append.toString();</span><br><span class="line"> 85                 outValue.set(str);</span><br><span class="line"> 86                 //System.out.println(outKey+&quot;---&quot;+outValue);</span><br><span class="line"> 87                 context.write(outKey, outValue);</span><br><span class="line"> 88             &#125;</span><br><span class="line"> 89         </span><br><span class="line"> 90         &#125;;</span><br><span class="line"> 91         </span><br><span class="line"> 92     &#125;</span><br><span class="line"> 93     </span><br><span class="line"> 94     </span><br><span class="line"> 95     public static class MoviesReduceJoinReducer extends Reducer&lt;Text, Text, Text, Text&gt;&#123;</span><br><span class="line"> 96         //用来存放    电影ID    电影名称    电影类型    </span><br><span class="line"> 97         List&lt;String&gt; moviesList = new ArrayList&lt;&gt;();</span><br><span class="line"> 98         //用来存放    电影ID    用户ID 用户评分    时间戳</span><br><span class="line"> 99         List&lt;String&gt; ratingsList = new ArrayList&lt;&gt;();</span><br><span class="line">100         Text outValue = new Text();</span><br><span class="line">101         </span><br><span class="line">102         @Override</span><br><span class="line">103         protected void reduce(Text key, Iterable&lt;Text&gt; values, Context context)</span><br><span class="line">104                 throws IOException, InterruptedException &#123;</span><br><span class="line">105             </span><br><span class="line">106             int count = 0;</span><br><span class="line">107             </span><br><span class="line">108             //迭代集合</span><br><span class="line">109             for(Text text : values) &#123;</span><br><span class="line">110                 </span><br><span class="line">111                 //将集合中的元素添加到对应的list中</span><br><span class="line">112                 if(text.toString().startsWith(&quot;movies#&quot;)) &#123;</span><br><span class="line">113                     String string = text.toString().split(&quot;#&quot;)[1];</span><br><span class="line">114                     </span><br><span class="line">115                     moviesList.add(string);</span><br><span class="line">116                 &#125;else if(text.toString().startsWith(&quot;ratings#&quot;))&#123;</span><br><span class="line">117                     String string = text.toString().split(&quot;#&quot;)[1];</span><br><span class="line">118                     ratingsList.add(string);</span><br><span class="line">119                 &#125;</span><br><span class="line">120             &#125;</span><br><span class="line">121             </span><br><span class="line">122             //获取2个集合的长度</span><br><span class="line">123             long moviesSize = moviesList.size();</span><br><span class="line">124             long ratingsSize = ratingsList.size();</span><br><span class="line">125             </span><br><span class="line">126             for(int i=0;i&lt;moviesSize;i++) &#123;</span><br><span class="line">127                 for(int j=0;j&lt;ratingsSize;j++) &#123;</span><br><span class="line">128                     outValue.set(moviesList.get(i)+&quot;\t&quot;+ratingsList.get(j));</span><br><span class="line">129                     //最后的输出是    电影ID    电影名称    电影类型    用户ID 用户评分    时间戳</span><br><span class="line">130                     context.write(key, outValue);</span><br><span class="line">131                 &#125;</span><br><span class="line">132             &#125;</span><br><span class="line">133             </span><br><span class="line">134             moviesList.clear();</span><br><span class="line">135             ratingsList.clear();</span><br><span class="line">136             </span><br><span class="line">137         &#125;</span><br><span class="line">138         </span><br><span class="line">139     &#125;</span><br><span class="line">140     </span><br><span class="line">141 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后的合并结果：　　电影ID　　电影名称　　电影类型　　用户ID　　用户评论　　时间戳</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180319220957397-215356698.png" alt="img"></p>
+<h2 id="3-实现map-join"><a href="#3-实现map-join" class="headerlink" title="3 实现map join"></a>3 实现map join</h2><p>两个文件，此处只写出部分数据，测试数据movies.dat数据量为3883条，ratings.dat数据量为1000210条数据</p>
+<p>movies.dat 数据格式为：1　　::　　Toy Story (1995)　　::　　Animation|Children’s|Comedy</p>
+<p>对应字段中文解释：　　电影ID 　　电影名字　　　　　　　　电影类型</p>
+<p>ratings.dat 数据格式为：1　　::　　1193　　::　　5　　::　　978300760</p>
+<p>对应字段中文解释：　　用户ID　　电影ID　　　评分　　　　评分时间戳</p>
+<p>需求：求被评分次数最多的10部电影，并给出评分次数（电影名，评分次数）</p>
+<p>实现代码</p>
+<p>MovieMR1_1.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"> 1 import java.io.DataInput;</span><br><span class="line"> 2 import java.io.DataOutput;</span><br><span class="line"> 3 import java.io.IOException;</span><br><span class="line"> 4 </span><br><span class="line"> 5 import org.apache.hadoop.io.WritableComparable;</span><br><span class="line"> 6 </span><br><span class="line"> 7 public class MovieRating implements WritableComparable&lt;MovieRating&gt;&#123;</span><br><span class="line"> 8     private String movieName;</span><br><span class="line"> 9     private int count;</span><br><span class="line">10     </span><br><span class="line">11     public String getMovieName() &#123;</span><br><span class="line">12         return movieName;</span><br><span class="line">13     &#125;</span><br><span class="line">14     public void setMovieName(String movieName) &#123;</span><br><span class="line">15         this.movieName = movieName;</span><br><span class="line">16     &#125;</span><br><span class="line">17     public int getCount() &#123;</span><br><span class="line">18         return count;</span><br><span class="line">19     &#125;</span><br><span class="line">20     public void setCount(int count) &#123;</span><br><span class="line">21         this.count = count;</span><br><span class="line">22     &#125;</span><br><span class="line">23     </span><br><span class="line">24     public MovieRating() &#123;&#125;</span><br><span class="line">25     </span><br><span class="line">26     public MovieRating(String movieName, int count) &#123;</span><br><span class="line">27         super();</span><br><span class="line">28         this.movieName = movieName;</span><br><span class="line">29         this.count = count;</span><br><span class="line">30     &#125;</span><br><span class="line">31     </span><br><span class="line">32     </span><br><span class="line">33     @Override</span><br><span class="line">34     public String toString() &#123;</span><br><span class="line">35         return  movieName + &quot;\t&quot; + count;</span><br><span class="line">36     &#125;</span><br><span class="line">37     @Override</span><br><span class="line">38     public void readFields(DataInput in) throws IOException &#123;</span><br><span class="line">39         movieName = in.readUTF();</span><br><span class="line">40         count = in.readInt();</span><br><span class="line">41     &#125;</span><br><span class="line">42     @Override</span><br><span class="line">43     public void write(DataOutput out) throws IOException &#123;</span><br><span class="line">44         out.writeUTF(movieName);</span><br><span class="line">45         out.writeInt(count);</span><br><span class="line">46     &#125;</span><br><span class="line">47     @Override</span><br><span class="line">48     public int compareTo(MovieRating o) &#123;</span><br><span class="line">49         return o.count - this.count ;</span><br><span class="line">50     &#125;</span><br><span class="line">51     </span><br><span class="line">52 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>MovieMR1_2.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br></pre></td><td class="code"><pre><span class="line">  1 import java.io.IOException;</span><br><span class="line">  2 </span><br><span class="line">  3 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">  4 import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">  5 import org.apache.hadoop.fs.Path;</span><br><span class="line">  6 import org.apache.hadoop.io.LongWritable;</span><br><span class="line">  7 import org.apache.hadoop.io.NullWritable;</span><br><span class="line">  8 import org.apache.hadoop.io.Text;</span><br><span class="line">  9 import org.apache.hadoop.mapreduce.Job;</span><br><span class="line"> 10 import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"> 11 import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"> 12 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"> 13 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"> 14 </span><br><span class="line"> 15 public class MovieMR1_2 &#123;</span><br><span class="line"> 16 </span><br><span class="line"> 17     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 18         if(args.length &lt; 2) &#123;</span><br><span class="line"> 19             args = new String[2];</span><br><span class="line"> 20             args[0] = &quot;/movie/output/&quot;;</span><br><span class="line"> 21             args[1] = &quot;/movie/output_last/&quot;;</span><br><span class="line"> 22         &#125;</span><br><span class="line"> 23         </span><br><span class="line"> 24         </span><br><span class="line"> 25         Configuration conf1 = new Configuration();</span><br><span class="line"> 26         conf1.set(&quot;fs.defaultFS&quot;, &quot;hdfs://hadoop1:9000/&quot;);</span><br><span class="line"> 27         System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line"> 28         FileSystem fs1 = FileSystem.get(conf1);</span><br><span class="line"> 29         </span><br><span class="line"> 30         </span><br><span class="line"> 31         Job job = Job.getInstance(conf1);</span><br><span class="line"> 32         </span><br><span class="line"> 33         job.setJarByClass(MovieMR1_2.class);</span><br><span class="line"> 34         </span><br><span class="line"> 35         job.setMapperClass(MoviesMapJoinRatingsMapper2.class);</span><br><span class="line"> 36         job.setReducerClass(MovieMR1Reducer2.class);</span><br><span class="line"> 37 </span><br><span class="line"> 38         </span><br><span class="line"> 39         job.setMapOutputKeyClass(MovieRating.class);</span><br><span class="line"> 40         job.setMapOutputValueClass(NullWritable.class);</span><br><span class="line"> 41         </span><br><span class="line"> 42         job.setOutputKeyClass(MovieRating.class);</span><br><span class="line"> 43         job.setOutputValueClass(NullWritable.class);</span><br><span class="line"> 44         </span><br><span class="line"> 45         </span><br><span class="line"> 46         Path inputPath1 = new Path(args[0]);</span><br><span class="line"> 47         Path outputPath1 = new Path(args[1]);</span><br><span class="line"> 48         if(fs1.exists(outputPath1)) &#123;</span><br><span class="line"> 49             fs1.delete(outputPath1, true);</span><br><span class="line"> 50         &#125;</span><br><span class="line"> 51         //对第一步的输出结果进行降序排序</span><br><span class="line"> 52         FileInputFormat.setInputPaths(job, inputPath1);</span><br><span class="line"> 53         FileOutputFormat.setOutputPath(job, outputPath1);</span><br><span class="line"> 54         </span><br><span class="line"> 55         boolean isDone = job.waitForCompletion(true);</span><br><span class="line"> 56         System.exit(isDone ? 0 : 1);</span><br><span class="line"> 57         </span><br><span class="line"> 58 </span><br><span class="line"> 59     &#125;</span><br><span class="line"> 60     </span><br><span class="line"> 61     //注意输出类型为自定义对象MovieRating，MovieRating按照降序排序</span><br><span class="line"> 62     public static class MoviesMapJoinRatingsMapper2 extends Mapper&lt;LongWritable, Text, MovieRating, NullWritable&gt;&#123;</span><br><span class="line"> 63         </span><br><span class="line"> 64         MovieRating outKey = new MovieRating();</span><br><span class="line"> 65         </span><br><span class="line"> 66         @Override</span><br><span class="line"> 67         protected void map(LongWritable key, Text value, Context context)</span><br><span class="line"> 68                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 69             //&apos;Night Mother (1986)         70</span><br><span class="line"> 70             String[] split = value.toString().split(&quot;\t&quot;);</span><br><span class="line"> 71             </span><br><span class="line"> 72             outKey.setCount(Integer.parseInt(split[1]));;</span><br><span class="line"> 73             outKey.setMovieName(split[0]);</span><br><span class="line"> 74             </span><br><span class="line"> 75             context.write(outKey, NullWritable.get());</span><br><span class="line"> 76                         </span><br><span class="line"> 77         &#125;</span><br><span class="line"> 78                 </span><br><span class="line"> 79     &#125;</span><br><span class="line"> 80     </span><br><span class="line"> 81     //排序之后自然输出，只取前10部电影</span><br><span class="line"> 82     public static class MovieMR1Reducer2 extends Reducer&lt;MovieRating, NullWritable, MovieRating, NullWritable&gt;&#123;</span><br><span class="line"> 83         </span><br><span class="line"> 84         Text outKey = new Text();</span><br><span class="line"> 85         int count = 0;</span><br><span class="line"> 86         </span><br><span class="line"> 87         @Override</span><br><span class="line"> 88         protected void reduce(MovieRating key, Iterable&lt;NullWritable&gt; values,Context context) throws IOException, InterruptedException &#123;</span><br><span class="line"> 89 </span><br><span class="line"> 90             for(NullWritable value : values) &#123;</span><br><span class="line"> 91                 count++;</span><br><span class="line"> 92                 if(count &gt; 10) &#123;</span><br><span class="line"> 93                     return;</span><br><span class="line"> 94                 &#125;</span><br><span class="line"> 95                 context.write(key, value);</span><br><span class="line"> 96                 </span><br><span class="line"> 97             &#125;</span><br><span class="line"> 98         </span><br><span class="line"> 99         &#125;</span><br><span class="line">100         </span><br><span class="line">101     &#125;</span><br><span class="line">102 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>MovieRating.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br></pre></td><td class="code"><pre><span class="line">  1 import java.io.BufferedReader;</span><br><span class="line">  2 import java.io.FileReader;</span><br><span class="line">  3 import java.io.IOException;</span><br><span class="line">  4 import java.net.URI;</span><br><span class="line">  5 import java.util.HashMap;</span><br><span class="line">  6 import java.util.Map;</span><br><span class="line">  7 </span><br><span class="line">  8 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">  9 import org.apache.hadoop.fs.FileSystem;</span><br><span class="line"> 10 import org.apache.hadoop.fs.Path;</span><br><span class="line"> 11 import org.apache.hadoop.io.IntWritable;</span><br><span class="line"> 12 import org.apache.hadoop.io.LongWritable;</span><br><span class="line"> 13 import org.apache.hadoop.io.Text;</span><br><span class="line"> 14 import org.apache.hadoop.mapreduce.Job;</span><br><span class="line"> 15 import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"> 16 import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"> 17 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"> 18 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"> 19 </span><br><span class="line"> 20 </span><br><span class="line"> 21 public class MovieMR1_1 &#123;</span><br><span class="line"> 22 </span><br><span class="line"> 23     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 24         </span><br><span class="line"> 25         if(args.length &lt; 4) &#123;</span><br><span class="line"> 26             args = new String[4];</span><br><span class="line"> 27             args[0] = &quot;/movie/input/&quot;;</span><br><span class="line"> 28             args[1] = &quot;/movie/output/&quot;;</span><br><span class="line"> 29             args[2] = &quot;/movie/cache/movies.dat&quot;;</span><br><span class="line"> 30             args[3] = &quot;/movie/output_last/&quot;;</span><br><span class="line"> 31         &#125;</span><br><span class="line"> 32         </span><br><span class="line"> 33         </span><br><span class="line"> 34         Configuration conf1 = new Configuration();</span><br><span class="line"> 35         conf1.set(&quot;fs.defaultFS&quot;, &quot;hdfs://hadoop1:9000/&quot;);</span><br><span class="line"> 36         System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line"> 37         FileSystem fs1 = FileSystem.get(conf1);</span><br><span class="line"> 38         </span><br><span class="line"> 39         </span><br><span class="line"> 40         Job job1 = Job.getInstance(conf1);</span><br><span class="line"> 41         </span><br><span class="line"> 42         job1.setJarByClass(MovieMR1_1.class);</span><br><span class="line"> 43         </span><br><span class="line"> 44         job1.setMapperClass(MoviesMapJoinRatingsMapper1.class);</span><br><span class="line"> 45         job1.setReducerClass(MovieMR1Reducer1.class);</span><br><span class="line"> 46         </span><br><span class="line"> 47         job1.setMapOutputKeyClass(Text.class);</span><br><span class="line"> 48         job1.setMapOutputValueClass(IntWritable.class);</span><br><span class="line"> 49         </span><br><span class="line"> 50         job1.setOutputKeyClass(Text.class);</span><br><span class="line"> 51         job1.setOutputValueClass(IntWritable.class);</span><br><span class="line"> 52         </span><br><span class="line"> 53         </span><br><span class="line"> 54         </span><br><span class="line"> 55         //缓存普通文件到task运行节点的工作目录</span><br><span class="line"> 56         URI uri = new URI(&quot;hdfs://hadoop1:9000&quot;+args[2]);</span><br><span class="line"> 57         System.out.println(uri);</span><br><span class="line"> 58         job1.addCacheFile(uri);</span><br><span class="line"> 59         </span><br><span class="line"> 60         Path inputPath1 = new Path(args[0]);</span><br><span class="line"> 61         Path outputPath1 = new Path(args[1]);</span><br><span class="line"> 62         if(fs1.exists(outputPath1)) &#123;</span><br><span class="line"> 63             fs1.delete(outputPath1, true);</span><br><span class="line"> 64         &#125;</span><br><span class="line"> 65         FileInputFormat.setInputPaths(job1, inputPath1);</span><br><span class="line"> 66         FileOutputFormat.setOutputPath(job1, outputPath1);</span><br><span class="line"> 67         </span><br><span class="line"> 68         boolean isDone = job1.waitForCompletion(true);</span><br><span class="line"> 69         System.exit(isDone ? 0 : 1);</span><br><span class="line"> 70        </span><br><span class="line"> 71     &#125;</span><br><span class="line"> 72     </span><br><span class="line"> 73     public static class MoviesMapJoinRatingsMapper1 extends Mapper&lt;LongWritable, Text, Text, IntWritable&gt;&#123;</span><br><span class="line"> 74         </span><br><span class="line"> 75         //用了存放加载到内存中的movies.dat数据</span><br><span class="line"> 76         private static Map&lt;String,String&gt; movieMap =  new HashMap&lt;&gt;();</span><br><span class="line"> 77         //key：电影ID</span><br><span class="line"> 78         Text outKey = new Text();</span><br><span class="line"> 79         //value：电影名+电影类型</span><br><span class="line"> 80         IntWritable outValue = new IntWritable();</span><br><span class="line"> 81         </span><br><span class="line"> 82         </span><br><span class="line"> 83         /**</span><br><span class="line"> 84          * movies.dat:    1::Toy Story (1995)::Animation|Children&apos;s|Comedy</span><br><span class="line"> 85          * </span><br><span class="line"> 86          * </span><br><span class="line"> 87          * 将小表(movies.dat)中的数据预先加载到内存中去</span><br><span class="line"> 88          * */</span><br><span class="line"> 89         @Override</span><br><span class="line"> 90         protected void setup(Context context) throws IOException, InterruptedException &#123;</span><br><span class="line"> 91             </span><br><span class="line"> 92             Path[] localCacheFiles = context.getLocalCacheFiles();</span><br><span class="line"> 93             </span><br><span class="line"> 94             String strPath = localCacheFiles[0].toUri().toString();</span><br><span class="line"> 95             </span><br><span class="line"> 96             BufferedReader br = new BufferedReader(new FileReader(strPath));</span><br><span class="line"> 97             String readLine;</span><br><span class="line"> 98             while((readLine = br.readLine()) != null) &#123;</span><br><span class="line"> 99                 </span><br><span class="line">100                 String[] split = readLine.split(&quot;::&quot;);</span><br><span class="line">101                 String movieId = split[0];</span><br><span class="line">102                 String movieName = split[1];</span><br><span class="line">103                 String movieType = split[2];</span><br><span class="line">104                 </span><br><span class="line">105                 movieMap.put(movieId, movieName+&quot;\t&quot;+movieType);</span><br><span class="line">106             &#125;</span><br><span class="line">107             </span><br><span class="line">108             br.close();</span><br><span class="line">109         &#125;</span><br><span class="line">110         </span><br><span class="line">111         </span><br><span class="line">112         /**</span><br><span class="line">113          * movies.dat:    1    ::    Toy Story (1995)    ::    Animation|Children&apos;s|Comedy    </span><br><span class="line">114          *                 电影ID    电影名字                    电影类型</span><br><span class="line">115          * </span><br><span class="line">116          * ratings.dat:    1    ::    1193    ::    5    ::    978300760</span><br><span class="line">117          *                 用户ID    电影ID        评分        评分时间戳</span><br><span class="line">118          * </span><br><span class="line">119          * value:    ratings.dat读取的数据</span><br><span class="line">120          * */</span><br><span class="line">121         @Override</span><br><span class="line">122         protected void map(LongWritable key, Text value, Context context)</span><br><span class="line">123                 throws IOException, InterruptedException &#123;</span><br><span class="line">124             </span><br><span class="line">125             String[] split = value.toString().split(&quot;::&quot;);</span><br><span class="line">126             </span><br><span class="line">127             String userId = split[0];</span><br><span class="line">128             String movieId = split[1];</span><br><span class="line">129             String movieRate = split[2];</span><br><span class="line">130             </span><br><span class="line">131             //根据movieId从内存中获取电影名和类型</span><br><span class="line">132             String movieNameAndType = movieMap.get(movieId);</span><br><span class="line">133             String movieName = movieNameAndType.split(&quot;\t&quot;)[0];</span><br><span class="line">134             String movieType = movieNameAndType.split(&quot;\t&quot;)[1];</span><br><span class="line">135             </span><br><span class="line">136             outKey.set(movieName);</span><br><span class="line">137             outValue.set(Integer.parseInt(movieRate));</span><br><span class="line">138             </span><br><span class="line">139             context.write(outKey, outValue);</span><br><span class="line">140             </span><br><span class="line">141         &#125;</span><br><span class="line">142             </span><br><span class="line">143     &#125;</span><br><span class="line">144 </span><br><span class="line">145     </span><br><span class="line">146     public static class MovieMR1Reducer1 extends Reducer&lt;Text, IntWritable, Text, IntWritable&gt;&#123;</span><br><span class="line">147         //每部电影评论的次数</span><br><span class="line">148         int count;</span><br><span class="line">149         //评分次数</span><br><span class="line">150         IntWritable outValue = new IntWritable();</span><br><span class="line">151         </span><br><span class="line">152         @Override</span><br><span class="line">153         protected void reduce(Text key, Iterable&lt;IntWritable&gt; values,Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">154             </span><br><span class="line">155             count = 0;</span><br><span class="line">156             </span><br><span class="line">157             for(IntWritable value : values) &#123;</span><br><span class="line">158                 count++;</span><br><span class="line">159             &#125;</span><br><span class="line">160             </span><br><span class="line">161             outValue.set(count);</span><br><span class="line">162             </span><br><span class="line">163             context.write(key, outValue);</span><br><span class="line">164         &#125;</span><br><span class="line">165         </span><br><span class="line">166     &#125;</span><br><span class="line">167     </span><br><span class="line">168     </span><br><span class="line">169 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后的结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180319221116843-1408077683.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-22-Hadoop学习之路（二十二）MapReduce的输入和输出.html" class="pre-post btn btn-default" title='Hadoop学习之路（二十二）MapReduce的输入和输出'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十二）MapReduce的输入和输出</span>
+    </a>
+    
+    
+    <a href="/2018-04-20-Hadoop学习之路（二十）MapReduce求TopN.html" class="next-post btn btn-default" title='Hadoop学习之路（二十）MapReduce求TopN'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十）MapReduce求TopN</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MapReduce-Join"><span class="toc-text">MapReduce Join</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-思路"><span class="toc-text">1 思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-reduce-join"><span class="toc-text">1.1 reduce join</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-map-join"><span class="toc-text">1.2 map join</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-使用内存服务器，扩大节点的内存空间"><span class="toc-text">1.3 使用内存服务器，扩大节点的内存空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-使用BloomFilter过滤空连接的数据"><span class="toc-text">1.4 使用BloomFilter过滤空连接的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-使用mapreduce专为join设计的包"><span class="toc-text">1.5 使用mapreduce专为join设计的包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实现reduce-join"><span class="toc-text">2 实现reduce join</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-实现map-join"><span class="toc-text">3 实现map join</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

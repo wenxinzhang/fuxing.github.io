@@ -1,0 +1,421 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（十一）HDFS的读写详解：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（十一）HDFS的读写详解
+
+&...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（十一）HDFS的读写详解 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（十一）HDFS的读写详解">
+            
+            Hadoop学习之路（十一）HDFS的读写详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/11</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（十一）HDFS的读写详解：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（十一）HDFS的读写详解</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="HDFS的写操作"><a href="#HDFS的写操作" class="headerlink" title="HDFS的写操作"></a>HDFS的写操作</h2><h3 id="《HDFS权威指南》图解HDFS写过程"><a href="#《HDFS权威指南》图解HDFS写过程" class="headerlink" title="《HDFS权威指南》图解HDFS写过程"></a>《HDFS权威指南》图解HDFS写过程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180312131601322-859729566.png" alt="img"></p>
+<p>​        <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180312133050238-544764862.png" alt="img"></p>
+<h3 id="详细文字说明（术语）"><a href="#详细文字说明（术语）" class="headerlink" title="详细文字说明（术语）"></a>详细文字说明（术语）</h3><p>1、使用 HDFS 提供的客户端 Client，向远程的 namenode 发起 RPC 请求</p>
+<p>2、namenode 会检查要创建的文件是否已经存在，创建者是否有权限进行操作，成功则会 为文件创建一个记录，否则会让客户端抛出异常；</p>
+<p>3、当客户端开始写入文件的时候，客户端会将文件切分成多个 packets，并在内部以数据队列“data queue（数据队列）”的形式管理这些 packets，并向 namenode 申请 blocks，获 取用来存储 replicas 的合适的 datanode 列表，列表的大小根据 namenode 中 replication 的设定而定；</p>
+<p>4、开始以 pipeline（管道）的形式将 packet 写入所有的 replicas 中。客户端把 packet 以流的 方式写入第一个 datanode，该 datanode 把该 packet 存储之后，再将其传递给在此 pipeline 中的下一个 datanode，直到最后一个 datanode，这种写数据的方式呈流水线的形式。</p>
+<p>5、最后一个 datanode 成功存储之后会返回一个 ack packet（确认队列），在 pipeline 里传递 至客户端，在客户端的开发库内部维护着”ack queue”，成功收到 datanode 返回的 ack packet 后会从”data queue”移除相应的 packet。</p>
+<p>6、如果传输过程中，有某个 datanode 出现了故障，那么当前的 pipeline 会被关闭，出现故 障的 datanode 会从当前的 pipeline 中移除，剩余的 block 会继续剩下的 datanode 中继续 以 pipeline 的形式传输，同时 namenode 会分配一个新的 datanode，保持 replicas 设定的 数量。</p>
+<p>7、客户端完成数据的写入后，会对数据流调用 close()方法，关闭数据流；</p>
+<p>8、只要写入了 dfs.replication.min（最小写入成功的副本数）的复本数（默认为 1），写操作 就会成功，并且这个块可以在集群中异步复制，直到达到其目标复本数（dfs.replication 的默认值为 3），因为 namenode 已经知道文件由哪些块组成，所以它在返回成功前只需 要等待数据块进行最小量的复制。</p>
+<h3 id="详细文字说明（口语）"><a href="#详细文字说明（口语）" class="headerlink" title="详细文字说明（口语）"></a>详细文字说明（口语）</h3><p>1、客户端发起请求：hadoop fs -put hadoop.tar.gz /　</p>
+<blockquote>
+<p><strong>客户端怎么知道请求发给那个节点的哪个进程？</strong></p>
+<p>因为客户端会提供一些工具来解析出来你所指定的HDFS集群的主节点是谁，以及端口号等信息，主要是通过URI来确定，</p>
+<p>url：hdfs://hadoop1:9000</p>
+<p>当前请求会包含一个非常重要的信息： 上传的数据的总大小</p>
+</blockquote>
+<p>2、namenode会响应客户端的这个请求</p>
+<blockquote>
+<p><strong>namenode的职责：</strong></p>
+<p>1 管理元数据（抽象目录树结构）</p>
+<p>用户上传的那个文件在对应的目录如果存在。那么HDFS集群应该作何处理，不会处理</p>
+<p>用户上传的那个文件要存储的目录不存在的话，如果不存在不会创建</p>
+<p>2、响应请求</p>
+<p>真正的操作：做一系列的校验，</p>
+<p>1、校验客户端的请求是否合理<br>2、校验客户端是否有权限进行上传</p>
+</blockquote>
+<p>3、如果namenode返回给客户端的结果是 通过， 那就是允许上传</p>
+<blockquote>
+<p>namenode会给客户端返回对应的所有的数据块的多个副本的存放节点列表，如：</p>
+<p>file1_blk1 hadoop02，hadoop03，hadoop04<br>file1_blk2    hadoop03，hadoop04，hadoop05</p>
+</blockquote>
+<p>4、客户端在获取到了namenode返回回来的所有数据块的多个副本的存放地的数据之后，就可以按照顺序逐一进行数据块的上传操作</p>
+<p>5、对要上传的数据块进行逻辑切片</p>
+<blockquote>
+<p>切片分成两个阶段:</p>
+<p>1、规划怎么切<br>2、真正的切</p>
+<p>物理切片： 1 和 2</p>
+<p>逻辑切片： 1</p>
+<p>file1_blk1 ： file1:0:128<br>file1_blk2 ： file1:128:256</p>
+</blockquote>
+<p>　　逻辑切片只是规划了怎么切</p>
+<p>　　<img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180312133938697-2120240662.png" alt="img"></p>
+<p>6、开始上传第一个数据块</p>
+<p>7、客户端会做一系列准备操作</p>
+<blockquote>
+<p>1、依次发送请求去连接对应的datnaode</p>
+<p>pipline : client - node1 - node2 - node3</p>
+<p>按照一个个的数据包的形式进行发送的。</p>
+<p>每次传输完一个数据包，每个副本节点都会进行校验，依次原路给客户端</p>
+<p>2、在客户端会启动一个服务：</p>
+<p>用户就是用来等到将来要在这个pipline数据管道上进行传输的数据包的校验信息</p>
+<p>客户端就能知道当前从clinet到写node1,2,3三个节点上去的数据是否都写入正确和成功</p>
+</blockquote>
+<p>8、clinet会正式的把这个快中的所有packet都写入到对应的副本节点</p>
+<blockquote>
+<p>1、block是最大的一个单位，它是最终存储于DataNode上的数据粒度，由<strong>dfs.block.size</strong>参数决定，2.x版本默认是<strong>128M</strong>；注：这个参数由客户端配置决定；如：System.out.println(conf.get(“dfs.blocksize”));//结果是134217728</p>
+<p>2、packet是中等的一个单位，它是数据由DFSClient流向DataNode的粒度，以<strong>dfs.write.packet.size</strong>参数为参考值，默认是<strong>64K</strong>；注：这个参数为参考值，是指真正在进行数据传输时，会以它为基准进行调整，调整的原因是一个packet有特定的结构，调整的目标是这个packet的大小刚好包含结构中的所有成员，同时也保证写到DataNode后当前block的大小不超过设定值；</p>
+<p>如：System.out.println(conf.get(“dfs.write.packet.size”));//结果是65536</p>
+<p>3、chunk是最小的一个单位，它是DFSClient到DataNode数据传输中进行数据校验的粒度，由io.bytes.per.checksum参数决定，默认是<strong>512B</strong>；注：事实上一个chunk还包含<strong>4B的校验值</strong>，因而chunk写入packet时是<strong>516B</strong>；数据与检验值的比值为128:1，所以对于一个128M的block会有一个1M的校验文件与之对应；</p>
+<p>如：System.out.println(conf.get(“io.bytes.per.checksum”));//结果是512</p>
+</blockquote>
+<p>9、clinet进行校验，如果校验通过，表示该数据块写入成功</p>
+<p>10、重复7 8 9 三个操作，来继续上传其他的数据块</p>
+<p>11、客户端在意识到所有的数据块都写入成功之后，会给namenode发送一个反馈，就是告诉namenode当前客户端上传的数据已经成功。</p>
+<h2 id="HDFS读操作"><a href="#HDFS读操作" class="headerlink" title="HDFS读操作"></a>HDFS读操作</h2><h3 id="《HDFS权威指南》图解HDFS读过程"><a href="#《HDFS权威指南》图解HDFS读过程" class="headerlink" title="《HDFS权威指南》图解HDFS读过程"></a>《HDFS权威指南》图解HDFS读过程</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180313104157141-1682640973.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180313104237694-682511475.png" alt="img"></p>
+<h3 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h3><p>1、客户端调用FileSystem 实例的open 方法，获得这个文件对应的输入流InputStream。</p>
+<p>2、通过RPC 远程调用NameNode ，获得NameNode 中此文件对应的数据块保存位置，包括这个文件的副本的保存位置( 主要是各DataNode的地址) 。</p>
+<p>3、获得输入流之后，客户端调用read 方法读取数据。选择最近的DataNode 建立连接并读取数据。</p>
+<p>4、如果客户端和其中一个DataNode 位于同一机器(比如MapReduce 过程中的mapper 和reducer)，那么就会直接从本地读取数据。</p>
+<p>5、到达数据块末端，关闭与这个DataNode 的连接，然后重新查找下一个数据块。</p>
+<p>6、不断执行第2 - 5 步直到数据全部读完。</p>
+<p>7、客户端调用close ，关闭输入流DF S InputStream。</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-12-Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色.html" class="pre-post btn btn-default" title='Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色</span>
+    </a>
+    
+    
+    <a href="/2018-04-10-Hadoop学习之路（十）HDFS API的使用.html" class="next-post btn btn-default" title='Hadoop学习之路（十）HDFS API的使用'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（十）HDFS API的使用</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS的写操作"><span class="toc-text">HDFS的写操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#《HDFS权威指南》图解HDFS写过程"><span class="toc-text">《HDFS权威指南》图解HDFS写过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#详细文字说明（术语）"><span class="toc-text">详细文字说明（术语）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#详细文字说明（口语）"><span class="toc-text">详细文字说明（口语）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS读操作"><span class="toc-text">HDFS读操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#《HDFS权威指南》图解HDFS读过程"><span class="toc-text">《HDFS权威指南》图解HDFS读过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据读取"><span class="toc-text">数据读取</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（十三）MapReduce的初识：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（十三）MapReduce...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（十三）MapReduce的初识 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（十三）MapReduce的初识">
+            
+            Hadoop学习之路（十三）MapReduce的初识
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/13</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（十三）MapReduce的初识：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（十三）MapReduce的初识</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="MapReduce是什么"><a href="#MapReduce是什么" class="headerlink" title="MapReduce是什么"></a>MapReduce是什么</h2><p>首先让我们来重温一下 hadoop 的四大组件：</p>
+<p>HDFS：分布式存储系统</p>
+<p>MapReduce：分布式计算系统</p>
+<p>YARN：hadoop 的资源调度系统</p>
+<p>Common：以上三大组件的底层支撑组件，主要提供基础工具包和 RPC 框架等</p>
+<p>MapReduce 是一个分布式运算程序的编程框架，是用户开发“基于 Hadoop 的数据分析应用” 的核心框架</p>
+<p>MapReduce 核心功能是将用户编写的业务逻辑代码和自带默认组件整合成一个完整的分布 式运算程序，并发运行在一个 Hadoop 集群上</p>
+<h2 id="为什么需要-MapReduce"><a href="#为什么需要-MapReduce" class="headerlink" title="为什么需要 MapReduce"></a>为什么需要 MapReduce</h2><p>1、海量数据在单机上处理因为硬件资源限制，无法胜任</p>
+<p>2、而一旦将单机版程序扩展到集群来分布式运行，将极大增加程序的复杂度和开发难度</p>
+<p>3、引入 MapReduce 框架后，开发人员可以将绝大部分工作集中在业务逻辑的开发上，而将 分布式计算中的复杂性交由框架来处理</p>
+<p>设想一个海量数据场景下的数据计算需求：</p>
+<table>
+<thead>
+<tr>
+<th>单机版：磁盘受限，内存受限，计算能力受限</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分布式版：1、 数据存储的问题，hadoop 提供了 hdfs 解决了数据存储这个问题2、 运算逻辑至少要分为两个阶段，先并发计算（map），然后汇总（reduce）结果3、 这两个阶段的计算如何启动？如何协调？4、 运算程序到底怎么执行？数据找程序还是程序找数据？5、 如何分配两个阶段的多个运算任务？6、 如何管理任务的执行过程中间状态，如何容错？7、 如何监控？8、 出错如何处理？抛异常？重试？</td>
+</tr>
+</tbody></table>
+<p>　　可见在程序由单机版扩成分布式版时，会引入大量的复杂工作。为了提高开发效率，可以将 分布式程序中的公共功能封装成框架，让开发人员可以将精力集中于业务逻辑。</p>
+<p>　　Hadoop 当中的 MapReduce 就是这样的一个分布式程序运算框架，它把大量分布式程序都会 涉及的到的内容都封装进了，让用户只用专注自己的业务逻辑代码的开发。它对应以上问题 的整体结构如下：</p>
+<blockquote>
+<p>MRAppMaster：MapReduce Application Master，分配任务，协调任务的运行</p>
+<p>MapTask：阶段并发任，负责 mapper 阶段的任务处理 YARNChild</p>
+<p>ReduceTask：阶段汇总任务，负责 reducer 阶段的任务处理 YARNChild</p>
+</blockquote>
+<h2 id="MapReduce做什么"><a href="#MapReduce做什么" class="headerlink" title="MapReduce做什么"></a>MapReduce做什么</h2><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315125705908-67959108.png" alt="img"></p>
+<p>简单地讲，MapReduce可以做<strong>大数据处理</strong>。所谓大数据处理，即以价值为导向，对大数据加工、挖掘和优化等各种处理。</p>
+<p>　　MapReduce擅长处理大数据，它为什么具有这种能力呢？这可由MapReduce的设计思想发觉。MapReduce的思想就是“<strong>分而治之</strong>”。</p>
+<p>　　（1）Mapper负责“分”，即把复杂的任务分解为若干个“简单的任务”来处理。“简单的任务”包含三层含义：一是数据或计算的规模相对原任务要大大缩小；二是就近计算原则，即任务会分配到存放着所需数据的节点上进行计算；三是这些小任务可以并行计算，彼此间几乎没有依赖关系。</p>
+<p>　　（2）Reducer负责对map阶段的结果进行汇总。至于需要多少个Reducer，用户可以根据具体问题，通过在mapred-site.xml配置文件里设置参数mapred.reduce.tasks的值，缺省值为1。</p>
+<h2 id="MapReduce-程序运行演示"><a href="#MapReduce-程序运行演示" class="headerlink" title="MapReduce 程序运行演示"></a>MapReduce 程序运行演示</h2><p>　　在 MapReduce 组件里，官方给我们提供了一些样例程序，其中非常有名的就是 wordcount 和 pi 程序。这些 MapReduce 程序的代码都在 hadoop-mapreduce-examples-2.7.5.jar 包里，这 个 jar 包在 hadoop 安装目录下的/share/hadoop/mapreduce/目录里 下面我们使用 hadoop 命令来试跑例子程序，看看运行效果</p>
+<h3 id="MapReduce-示例-pi-的程序"><a href="#MapReduce-示例-pi-的程序" class="headerlink" title="MapReduce 示例 pi 的程序"></a>MapReduce 示例 pi 的程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/hadoop-2.7.5/share/hadoop/mapreduce/</span><br><span class="line">[hadoop@hadoop1 mapreduce]$ pwd</span><br><span class="line">/home/hadoop/apps/hadoop-2.7.5/share/hadoop/mapreduce</span><br><span class="line">[hadoop@hadoop1 mapreduce]$ hadoop jar hadoop-mapreduce-examples-2.7.5.jar pi 5 5</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315130928333-983517942.png" alt="img"></p>
+<h3 id="MapReduce-示例-wordcount-的程序"><a href="#MapReduce-示例-wordcount-的程序" class="headerlink" title="MapReduce 示例 wordcount 的程序"></a>MapReduce 示例 wordcount 的程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 mapreduce]$ hadoop jar hadoop-mapreduce-examples-2.7.5.jar wordcount /wc/input1/ /wc/output1/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315131431517-1980546434.png" alt="img"></p>
+<p>查看结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 mapreduce]$ hadoop fs -cat /wc/output1/part-r-00000</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315131549019-1405984561.png" alt="img"></p>
+<h3 id="其他程序"><a href="#其他程序" class="headerlink" title="其他程序"></a>其他程序</h3><p>那除了这两个程序以外，还有没有官方提供的其他程序呢，还有就是它们的源码在哪里呢？</p>
+<p>我们打开 mapreduce 的源码工程，里面有一个 hadoop-mapreduce-project 项目：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315131829785-945137720.png" alt="img"></p>
+<p>里面有一个例子程序的子项目：hadoop-mapreduce-examples</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315131715303-2103985696.png" alt="img"></p>
+<p>其中 src 是例子程序源码目录，pom.xml 是该项目的 maven 管理配置文件，我们打开该文件， 找到第 127 行，它告诉了我们例子程序的主程序入口：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315131920701-1056138712.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315132010964-1802898037.png" alt="img"></p>
+<p>找到src\main\java\org\apache\hadoop\examples目录</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315132128490-2142579900.png" alt="img"></p>
+<p>打开主入口程序，看源代码：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180315132241257-1833275242.png" alt="img"></p>
+<p>找到这一步，我们就能知道其实 wordcount 程序的实际程序就是 WordCount.class，这就是我 们想要找的例子程序的源码。</p>
+<h3 id="WordCount-java源码"><a href="#WordCount-java源码" class="headerlink" title="WordCount.java源码"></a>WordCount.java源码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">1 /**</span><br><span class="line"> 2  * Licensed to the Apache Software Foundation (ASF) under one</span><br><span class="line"> 3  * or more contributor license agreements.  See the NOTICE file</span><br><span class="line"> 4  * distributed with this work for additional information</span><br><span class="line"> 5  * regarding copyright ownership.  The ASF licenses this file</span><br><span class="line"> 6  * to you under the Apache License, Version 2.0 (the</span><br><span class="line"> 7  * &quot;License&quot;); you may not use this file except in compliance</span><br><span class="line"> 8  * with the License.  You may obtain a copy of the License at</span><br><span class="line"> 9  *</span><br><span class="line">10  *     http://www.apache.org/licenses/LICENSE-2.0</span><br><span class="line">11  *</span><br><span class="line">12  * Unless required by applicable law or agreed to in writing, software</span><br><span class="line">13  * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span><br><span class="line">14  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span><br><span class="line">15  * See the License for the specific language governing permissions and</span><br><span class="line">16  * limitations under the License.</span><br><span class="line">17  */</span><br><span class="line">18 package org.apache.hadoop.examples;</span><br><span class="line">19 </span><br><span class="line">20 import java.io.IOException;</span><br><span class="line">21 import java.util.StringTokenizer;</span><br><span class="line">22 </span><br><span class="line">23 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">24 import org.apache.hadoop.fs.Path;</span><br><span class="line">25 import org.apache.hadoop.io.IntWritable;</span><br><span class="line">26 import org.apache.hadoop.io.Text;</span><br><span class="line">27 import org.apache.hadoop.mapreduce.Job;</span><br><span class="line">28 import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line">29 import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line">30 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line">31 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line">32 import org.apache.hadoop.util.GenericOptionsParser;</span><br><span class="line">33 </span><br><span class="line">34 public class WordCount &#123;</span><br><span class="line">35 </span><br><span class="line">36   public static class TokenizerMapper </span><br><span class="line">37        extends Mapper&lt;Object, Text, Text, IntWritable&gt;&#123;</span><br><span class="line">38     </span><br><span class="line">39     private final static IntWritable one = new IntWritable(1);</span><br><span class="line">40     private Text word = new Text();</span><br><span class="line">41       </span><br><span class="line">42     public void map(Object key, Text value, Context context</span><br><span class="line">43                     ) throws IOException, InterruptedException &#123;</span><br><span class="line">44       StringTokenizer itr = new StringTokenizer(value.toString());</span><br><span class="line">45       while (itr.hasMoreTokens()) &#123;</span><br><span class="line">46         word.set(itr.nextToken());</span><br><span class="line">47         context.write(word, one);</span><br><span class="line">48       &#125;</span><br><span class="line">49     &#125;</span><br><span class="line">50   &#125;</span><br><span class="line">51   </span><br><span class="line">52   public static class IntSumReducer </span><br><span class="line">53        extends Reducer&lt;Text,IntWritable,Text,IntWritable&gt; &#123;</span><br><span class="line">54     private IntWritable result = new IntWritable();</span><br><span class="line">55 </span><br><span class="line">56     public void reduce(Text key, Iterable&lt;IntWritable&gt; values, </span><br><span class="line">57                        Context context</span><br><span class="line">58                        ) throws IOException, InterruptedException &#123;</span><br><span class="line">59       int sum = 0;</span><br><span class="line">60       for (IntWritable val : values) &#123;</span><br><span class="line">61         sum += val.get();</span><br><span class="line">62       &#125;</span><br><span class="line">63       result.set(sum);</span><br><span class="line">64       context.write(key, result);</span><br><span class="line">65     &#125;</span><br><span class="line">66   &#125;</span><br><span class="line">67 </span><br><span class="line">68   public static void main(String[] args) throws Exception &#123;</span><br><span class="line">69     Configuration conf = new Configuration();</span><br><span class="line">70     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();</span><br><span class="line">71     if (otherArgs.length &lt; 2) &#123;</span><br><span class="line">72       System.err.println(&quot;Usage: wordcount &lt;in&gt; [&lt;in&gt;...] &lt;out&gt;&quot;);</span><br><span class="line">73       System.exit(2);</span><br><span class="line">74     &#125;</span><br><span class="line">75     Job job = Job.getInstance(conf, &quot;word count&quot;);</span><br><span class="line">76     job.setJarByClass(WordCount.class);</span><br><span class="line">77     job.setMapperClass(TokenizerMapper.class);</span><br><span class="line">78     job.setCombinerClass(IntSumReducer.class);</span><br><span class="line">79     job.setReducerClass(IntSumReducer.class);</span><br><span class="line">80     job.setOutputKeyClass(Text.class);</span><br><span class="line">81     job.setOutputValueClass(IntWritable.class);</span><br><span class="line">82     for (int i = 0; i &lt; otherArgs.length - 1; ++i) &#123;</span><br><span class="line">83       FileInputFormat.addInputPath(job, new Path(otherArgs[i]));</span><br><span class="line">84     &#125;</span><br><span class="line">85     FileOutputFormat.setOutputPath(job,</span><br><span class="line">86       new Path(otherArgs[otherArgs.length - 1]));</span><br><span class="line">87     System.exit(job.waitForCompletion(true) ? 0 : 1);</span><br><span class="line">88   &#125;</span><br><span class="line">89 &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MapReduce-示例程序编写及编码规范"><a href="#MapReduce-示例程序编写及编码规范" class="headerlink" title="MapReduce 示例程序编写及编码规范"></a>MapReduce 示例程序编写及编码规范</h2><p>上一步，我们查看了 WordCount 这个 MapReduce 程序的源码编写，可以得出几点结论：</p>
+<p>1、 该程序有一个 main 方法，来启动任务的运行，其中 job 对象就存储了该程序运行的必要 信息，比如指定 Mapper 类和 Reducer 类 job.setMapperClass(TokenizerMapper.class); job.setReducerClass(IntSumReducer.class);</p>
+<p>2、 该程序中的 TokenizerMapper 类继承了 Mapper 类</p>
+<p>3、 该程序中的 IntSumReducer 类继承了 Reducer 类</p>
+<p><strong>总结：MapReduce 程序的业务编码分为两个大部分，一部分配置程序的运行信息，一部分 编写该 MapReduce 程序的业务逻辑，并且业务逻辑的 map 阶段和 reduce 阶段的代码分别继 承 Mapper 类和 Reducer 类</strong></p>
+<h3 id="编写自己的-Wordcount-程序"><a href="#编写自己的-Wordcount-程序" class="headerlink" title="编写自己的 Wordcount 程序"></a>编写自己的 Wordcount 程序</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><span class="line">  1 package com.ghgj.mapreduce.wc.demo;</span><br><span class="line">  2 </span><br><span class="line">  3 import java.io.IOException;</span><br><span class="line">  4 </span><br><span class="line">  5 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">  6 import org.apache.hadoop.fs.FileSystem;</span><br><span class="line">  7 import org.apache.hadoop.fs.Path;</span><br><span class="line">  8 import org.apache.hadoop.io.IntWritable;</span><br><span class="line">  9 import org.apache.hadoop.io.LongWritable;</span><br><span class="line"> 10 import org.apache.hadoop.io.Text;</span><br><span class="line"> 11 import org.apache.hadoop.mapreduce.Job;</span><br><span class="line"> 12 import org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"> 13 import org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"> 14 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"> 15 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"> 16 </span><br><span class="line"> 17 /**</span><br><span class="line"> 18  * </span><br><span class="line"> 19  * 描述: MapReduce出入门：WordCount例子程序 </span><br><span class="line"> 20  */</span><br><span class="line"> 21 public class WordCountMR &#123;</span><br><span class="line"> 22 </span><br><span class="line"> 23     /**</span><br><span class="line"> 24      * 该main方法是该mapreduce程序运行的入口，其中用一个Job类对象来管理程序运行时所需要的很多参数：</span><br><span class="line"> 25      * 比如，指定用哪个组件作为数据读取器、数据结果输出器 指定用哪个类作为map阶段的业务逻辑类，哪个类作为reduce阶段的业务逻辑类</span><br><span class="line"> 26      * 指定wordcount job程序的jar包所在路径 .... 以及其他各种需要的参数</span><br><span class="line"> 27      */</span><br><span class="line"> 28     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 29         // 指定hdfs相关的参数</span><br><span class="line"> 30         Configuration conf = new Configuration();</span><br><span class="line"> 31 //         conf.set(&quot;fs.defaultFS&quot;, &quot;hdfs://hadoop02:9000&quot;);</span><br><span class="line"> 32         System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line"> 33 </span><br><span class="line"> 34         // 这是高可用的集群的配置文件。如果不是高可用集群，请自行替换配置文件</span><br><span class="line"> 35 //        conf.addResource(&quot;hdfs_config/core-site.xml&quot;);</span><br><span class="line"> 36 //        conf.addResource(&quot;hdfs_config/hdfs-site.xml&quot;);</span><br><span class="line"> 37 </span><br><span class="line"> 38         // conf.set(&quot;mapreduce.framework.name&quot;, &quot;yarn&quot;);</span><br><span class="line"> 39         // conf.set(&quot;yarn.resourcemanager.hostname&quot;, &quot;hadoop04&quot;);</span><br><span class="line"> 40 </span><br><span class="line"> 41         // 通过Configuration对象获取Job对象，该job对象会组织所有的该MapReduce程序所有的各种组件</span><br><span class="line"> 42         Job job = Job.getInstance(conf);</span><br><span class="line"> 43 </span><br><span class="line"> 44         // 设置jar包所在路径</span><br><span class="line"> 45         job.setJarByClass(WordCountMR.class);</span><br><span class="line"> 46 </span><br><span class="line"> 47         // 指定mapper类和reducer类</span><br><span class="line"> 48         job.setMapperClass(WordCountMapper.class);</span><br><span class="line"> 49         job.setReducerClass(WordCountReducer.class);</span><br><span class="line"> 50 </span><br><span class="line"> 51         // Mapper的输入key-value类型，由MapReduce框架决定</span><br><span class="line"> 52         // 指定maptask的输出类型</span><br><span class="line"> 53         job.setMapOutputKeyClass(Text.class);</span><br><span class="line"> 54         job.setMapOutputValueClass(IntWritable.class);</span><br><span class="line"> 55         // 假如 mapTask的输出key-value类型，跟reduceTask的输出key-value类型一致，那么，以上两句代码可以不用设置</span><br><span class="line"> 56 </span><br><span class="line"> 57         // reduceTask的输入key-value类型 就是 mapTask的输出key-value类型。所以不需要指定</span><br><span class="line"> 58         // 指定reducetask的输出类型</span><br><span class="line"> 59         job.setOutputKeyClass(Text.class);</span><br><span class="line"> 60         job.setOutputValueClass(IntWritable.class);</span><br><span class="line"> 61 </span><br><span class="line"> 62         // 为job指定输入数据的组件和输出数据的组件，以下两个参数是默认的，所以不指定也是OK的</span><br><span class="line"> 63         // job.setInputFormatClass(TextInputFormat.class);</span><br><span class="line"> 64         // job.setOutputFormatClass(TextOutputFormat.class);</span><br><span class="line"> 65 </span><br><span class="line"> 66         // 为该mapreduce程序制定默认的数据分区组件。默认是 HashPartitioner.class</span><br><span class="line"> 67         // job.setPartitionerClass(HashPartitioner.class);</span><br><span class="line"> 68 </span><br><span class="line"> 69         // 如果MapReduce程序在Eclipse中，运行，也可以读取Windows系统本地的文件系统中的数据</span><br><span class="line"> 70          Path inputPath = new Path(&quot;D:\\bigdata\\wordcount\\input&quot;);</span><br><span class="line"> 71          Path outputPath = new Path(&quot;D:\\bigdata\\wordcount\\output33&quot;);</span><br><span class="line"> 72 </span><br><span class="line"> 73         // 设置该MapReduce程序的ReduceTask的个数</span><br><span class="line"> 74         // job.setNumReduceTasks(3);</span><br><span class="line"> 75 </span><br><span class="line"> 76         // 指定该mapreduce程序数据的输入和输出路径</span><br><span class="line"> 77 //        Path inputPath = new Path(&quot;/wordcount/input&quot;);</span><br><span class="line"> 78 //        Path outputPath = new Path(&quot;/wordcount/output&quot;);</span><br><span class="line"> 79         // 该段代码是用来判断输出路径存在不存在，存在就删除，虽然方便操作，但请谨慎</span><br><span class="line"> 80         FileSystem fs = FileSystem.get(conf);</span><br><span class="line"> 81         if (fs.exists(outputPath)) &#123;</span><br><span class="line"> 82             fs.delete(outputPath, true);</span><br><span class="line"> 83         &#125;</span><br><span class="line"> 84 </span><br><span class="line"> 85         // 设置wordcount程序的输入路径</span><br><span class="line"> 86         FileInputFormat.setInputPaths(job, inputPath);</span><br><span class="line"> 87         // 设置wordcount程序的输出路径</span><br><span class="line"> 88         FileOutputFormat.setOutputPath(job, outputPath);</span><br><span class="line"> 89 </span><br><span class="line"> 90         // job.submit();</span><br><span class="line"> 91         // 最后提交任务(verbose布尔值 决定要不要将运行进度信息输出给用户)</span><br><span class="line"> 92         boolean waitForCompletion = job.waitForCompletion(true);</span><br><span class="line"> 93         System.exit(waitForCompletion ? 0 : 1);</span><br><span class="line"> 94     &#125;</span><br><span class="line"> 95 </span><br><span class="line"> 96     /**</span><br><span class="line"> 97      * Mapper&lt;KEYIN, VALUEIN, KEYOUT, VALUEOUT&gt;</span><br><span class="line"> 98      * </span><br><span class="line"> 99      * KEYIN 是指框架读取到的数据的key的类型，在默认的InputFormat下，读到的key是一行文本的起始偏移量，所以key的类型是Long</span><br><span class="line">100      * VALUEIN 是指框架读取到的数据的value的类型,在默认的InputFormat下，读到的value是一行文本的内容，所以value的类型是String</span><br><span class="line">101      * KEYOUT 是指用户自定义逻辑方法返回的数据中key的类型，由用户业务逻辑决定，在此wordcount程序中，我们输出的key是单词，所以是String</span><br><span class="line">102      * VALUEOUT 是指用户自定义逻辑方法返回的数据中value的类型，由用户业务逻辑决定,在此wordcount程序中，我们输出的value是单词的数量，所以是Integer</span><br><span class="line">103      * </span><br><span class="line">104      * 但是，String ，Long等jdk中自带的数据类型，在序列化时，效率比较低，hadoop为了提高序列化效率，自定义了一套序列化框架</span><br><span class="line">105      * 所以，在hadoop的程序中，如果该数据需要进行序列化（写磁盘，或者网络传输），就一定要用实现了hadoop序列化框架的数据类型</span><br><span class="line">106      * </span><br><span class="line">107      * Long ----&gt; LongWritable </span><br><span class="line">108      * String ----&gt; Text </span><br><span class="line">109      * Integer ----&gt; IntWritable </span><br><span class="line">110      * Null ----&gt; NullWritable</span><br><span class="line">111      */</span><br><span class="line">112     static class WordCountMapper extends Mapper&lt;LongWritable, Text, Text, IntWritable&gt; &#123;</span><br><span class="line">113 </span><br><span class="line">114         /**</span><br><span class="line">115          * LongWritable key : 该key就是value该行文本的在文件当中的起始偏移量</span><br><span class="line">116          * Text value ： 就是MapReduce框架默认的数据读取组件TextInputFormat读取文件当中的一行文本</span><br><span class="line">117          */</span><br><span class="line">118         @Override</span><br><span class="line">119         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">120 </span><br><span class="line">121             // 切分单词</span><br><span class="line">122             String[] words = value.toString().split(&quot; &quot;);</span><br><span class="line">123             for (String word : words) &#123;</span><br><span class="line">124                 // 每个单词计数一次，也就是把单词组织成&lt;hello,1&gt;这样的key-value对往外写出</span><br><span class="line">125                 context.write(new Text(word), new IntWritable(1));</span><br><span class="line">126             &#125;</span><br><span class="line">127         &#125;</span><br><span class="line">128     &#125;</span><br><span class="line">129 </span><br><span class="line">130     /**</span><br><span class="line">131      * 首先，和前面一样，Reducer类也有输入和输出，输入就是Map阶段的处理结果，输出就是Reduce最后的输出</span><br><span class="line">132      * reducetask在调我们写的reduce方法,reducetask应该收到了前一阶段（map阶段）中所有maptask输出的数据中的一部分</span><br><span class="line">133      * （数据的key.hashcode%reducetask数==本reductask号），所以reducetaks的输入类型必须和maptask的输出类型一样</span><br><span class="line">134      * </span><br><span class="line">135      * reducetask将这些收到kv数据拿来处理时，是这样调用我们的reduce方法的： 先将自己收到的所有的kv对按照k分组（根据k是否相同）</span><br><span class="line">136      * 将某一组kv中的第一个kv中的k传给reduce方法的key变量，把这一组kv中所有的v用一个迭代器传给reduce方法的变量values</span><br><span class="line">137      */</span><br><span class="line">138     static class WordCountReducer extends Reducer&lt;Text, IntWritable, Text, IntWritable&gt; &#123;</span><br><span class="line">139 </span><br><span class="line">140         /**</span><br><span class="line">141          * Text key : mapTask输出的key值</span><br><span class="line">142          * Iterable&lt;IntWritable&gt; values ： key对应的value的集合（该key只是相同的一个key）</span><br><span class="line">143          * </span><br><span class="line">144          * reduce方法接收key值相同的一组key-value进行汇总计算</span><br><span class="line">145          */</span><br><span class="line">146         @Override</span><br><span class="line">147         protected void reduce(Text key, Iterable&lt;IntWritable&gt; values, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">148 </span><br><span class="line">149             // 结果汇总</span><br><span class="line">150             int sum = 0;</span><br><span class="line">151             for (IntWritable v : values) &#123;</span><br><span class="line">152                 sum += v.get();</span><br><span class="line">153             &#125;</span><br><span class="line">154             // 汇总的结果往外输出</span><br><span class="line">155             context.write(key, new IntWritable(sum));</span><br><span class="line">156         &#125;</span><br><span class="line">157     &#125;</span><br><span class="line">158 &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MapReduce-程序编写规范"><a href="#MapReduce-程序编写规范" class="headerlink" title="MapReduce 程序编写规范"></a>MapReduce 程序编写规范</h2><p>1、用户编写的程序分成三个部分：Mapper，Reducer，Driver(提交运行 MR 程序的客户端)</p>
+<p>2、Mapper 的输入数据是 KV 对的形式（KV 的类型可自定义）</p>
+<p>3、Mapper 的输出数据是 KV 对的形式（KV 的类型可自定义）</p>
+<p>4、Mapper 中的业务逻辑写在 map()方法中</p>
+<p>5、map()方法（maptask 进程）对每一个&lt;k,v&gt;调用一次</p>
+<p>6、Reducer 的输入数据类型对应 Mapper 的输出数据类型，也是 KV 对的形式</p>
+<p>7、Reducer 的业务逻辑写在 reduce()方法中</p>
+<p>8、Reducetask 进程对每一组相同 k 的&lt;k,v&gt;组调用一次 reduce()方法</p>
+<p>9、用户自定义的 Mapper 和 Reducer 都要继承各自的父类</p>
+<p>10、整个程序需要一个 Drvier 来进行提交，提交的是一个描述了各种必要信息的 job 对象</p>
+<h3 id="WordCount-的业务逻辑"><a href="#WordCount-的业务逻辑" class="headerlink" title="WordCount 的业务逻辑"></a>WordCount 的业务逻辑</h3><p>1、 maptask 阶段处理每个数据分块的单词统计分析，思路是每遇到一个单词则把其转换成 一个 key-value 对，比如单词 hello，就转换成&lt;’hello’,1&gt;发送给 reducetask 去汇总</p>
+<p>2、 reducetask 阶段将接受 maptask 的结果，来做汇总计数</p>
+<h2 id="MapReduce-运行方式及-Debug"><a href="#MapReduce-运行方式及-Debug" class="headerlink" title="MapReduce 运行方式及 Debug"></a>MapReduce 运行方式及 Debug</h2><h3 id="集群运行模式"><a href="#集群运行模式" class="headerlink" title="集群运行模式"></a>集群运行模式</h3><p>打 jar 包，提交任务到集群运行，适用：生产环境，不适用：测试，调试，开发</p>
+<blockquote>
+<p>要点一：首先要把代码打成 jar 上传到 linux 服务器</p>
+<p>要点二：用 hadoop jar 的命令去提交代码到 yarn 集群运行</p>
+<p>要点三：处理的数据和输出结果应该位于 hdfs 文件系统</p>
+<p>要点四：如果需要在 windows 中的 eclipse 当中直接提交 job 到集群，则需要修改 YarnRunner 类，这个比较复杂，不建议使用</p>
+</blockquote>
+<h3 id="本地运行模式"><a href="#本地运行模式" class="headerlink" title="本地运行模式"></a>本地运行模式</h3><p>Eclipse 开发环境下本地运行，好处是方便调试和测试</p>
+<p>直接在IDE环境中进行环境 ： eclipse</p>
+<blockquote>
+<p>1、直接运行在本地，读取本地数据</p>
+<p>2、直接运行在本地，读取远程的文件系统的数据</p>
+<p>3、直接在IDE中提交任务给YARN集群运行</p>
+</blockquote>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-14-Hadoop学习之路（十四）MapReduce的核心运行机制.html" class="pre-post btn btn-default" title='Hadoop学习之路（十四）MapReduce的核心运行机制'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（十四）MapReduce的核心运行机制</span>
+    </a>
+    
+    
+    <a href="/2018-04-12-Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色.html" class="next-post btn btn-default" title='Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（十二）分布式集群中HDFS系统的各种角色</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce是什么"><span class="toc-text">MapReduce是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么需要-MapReduce"><span class="toc-text">为什么需要 MapReduce</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce做什么"><span class="toc-text">MapReduce做什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-程序运行演示"><span class="toc-text">MapReduce 程序运行演示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#MapReduce-示例-pi-的程序"><span class="toc-text">MapReduce 示例 pi 的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MapReduce-示例-wordcount-的程序"><span class="toc-text">MapReduce 示例 wordcount 的程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他程序"><span class="toc-text">其他程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WordCount-java源码"><span class="toc-text">WordCount.java源码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-示例程序编写及编码规范"><span class="toc-text">MapReduce 示例程序编写及编码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#编写自己的-Wordcount-程序"><span class="toc-text">编写自己的 Wordcount 程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-程序编写规范"><span class="toc-text">MapReduce 程序编写规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WordCount-的业务逻辑"><span class="toc-text">WordCount 的业务逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MapReduce-运行方式及-Debug"><span class="toc-text">MapReduce 运行方式及 Debug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#集群运行模式"><span class="toc-text">集群运行模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#本地运行模式"><span class="toc-text">本地运行模式</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

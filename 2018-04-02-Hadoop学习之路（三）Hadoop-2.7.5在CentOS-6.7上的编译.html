@@ -1,0 +1,427 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译">
+            
+            Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/03</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="下载Hadoop源码"><a href="#下载Hadoop源码" class="headerlink" title="下载Hadoop源码"></a>下载Hadoop源码</h2><h3 id="1、登录官网"><a href="#1、登录官网" class="headerlink" title="1、登录官网"></a>1、登录官网</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302192813605-2005710468.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302193152655-1055111483.png" alt="img"></p>
+<h3 id="2、确定你要安装的软件的版本"><a href="#2、确定你要安装的软件的版本" class="headerlink" title="2、确定你要安装的软件的版本"></a>2、确定你要安装的软件的版本</h3><p>一个选取原则： 不新不旧的稳定版本</p>
+<p>几个标准：</p>
+<p>　　1）一般来说，刚刚发布的大版本都是有很多问题</p>
+<p>　　2）应该选择某个大版本中的最后一个小版本</p>
+<h2 id="阅读编译文档"><a href="#阅读编译文档" class="headerlink" title="阅读编译文档"></a>阅读编译文档</h2><p>1、准备一个hadoop源码包，我选择的hadoop的版本是：hadoop-2.7.5-src.tar.gz，在hadoop-2.7.5-src.tar.gz的源码包根目录下有一个文档叫做BUINDING.txt，这其中说明了编译hadoop所需要的一些编译环境相关的东西。不同的hadoop版本的要求都不一样。对应的版本参照BUINDING.txt。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Requirements:</span><br><span class="line"></span><br><span class="line">* Unix System</span><br><span class="line">* JDK 1.7+</span><br><span class="line">* Maven 3.0 or later</span><br><span class="line">* Findbugs 1.3.9 (if running findbugs)</span><br><span class="line">* ProtocolBuffer 2.5.0</span><br><span class="line">* CMake 2.6 or newer (if compiling native code), must be 3.0 or newer on Mac</span><br><span class="line">* Zlib devel (if compiling native code)</span><br><span class="line">* openssl devel ( if compiling native hadoop-pipes and to get the best HDFS encryption performance )</span><br><span class="line">* Linux FUSE (Filesystem in Userspace) version 2.6 or above ( if compiling fuse_dfs )</span><br><span class="line">* Internet connection for first build (to fetch all Maven and Hadoop dependencies)</span><br></pre></td></tr></table></figure>
+
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><p>对应以上需求，我们准备好所要求版本的这些软件。</p>
+<h3 id="JDK的安装"><a href="#JDK的安装" class="headerlink" title="JDK的安装"></a>JDK的安装</h3><p>选择版本：jdk1.8.0_73</p>
+<h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><p>根据编译指导文件BUILDING.txt，安装相关依赖程序包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master soft]# yum -y install gcc-c++ build-essential autoconf automake libtool cmake zlib1g-dev pkg-config libssl-devua svn openssl-devel ncurses-devel</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303140816784-127230994.png" alt="img"></p>
+<h3 id="安装Maven"><a href="#安装Maven" class="headerlink" title="安装Maven"></a>安装Maven</h3><p>编译要求：Maven 3.0 or later<br>安装软件：apache-maven-3.0.5-bin.tar.gz</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`[root@hadoop1 soft]# ls``apache-maven-3.3.9-bin.tar.gz``[root@hadoop1 soft]# chmod 755 apache-maven-3.3.9-bin.tar.gz``[root@hadoop1 soft]# tar -zxvf apache-maven-3.3.9-bin.tar.gz &lt;br&gt;。。。&lt;br&gt;[root@hadoop1 soft]# mv apache-maven-3.3.9 /opt/&lt;br&gt;[root@hadoop1 soft]# vi /etc/profile`</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302195254383-1359802075.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302195527196-640953091.png" alt="img"></p>
+<p>配置mvn的环境变量</p>
+<p>export M2_HOME=/opt/apache-maven-3.3.<br>export PATH=$PATH:$M2_HOME/bin</p>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# mvn -v</span><br><span class="line">Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T00:41:47+08:00)</span><br><span class="line">Maven home: /opt/apache-maven-3.3.9</span><br><span class="line">Java version: 1.8.0_73, vendor: Oracle Corporation</span><br><span class="line">Java home: /usr/local/jdk1.8.0_73/jre</span><br><span class="line">Default locale: zh_CN, platform encoding: UTF-8</span><br><span class="line">OS name: &quot;linux&quot;, version: &quot;2.6.32-573.el6.x86_64&quot;, arch: &quot;amd64&quot;, family: &quot;unix&quot;</span><br><span class="line">[root@hadoop1 soft]#</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302195804401-1802492587.png" alt="img"></p>
+<h3 id="安装Findbugs"><a href="#安装Findbugs" class="headerlink" title="安装Findbugs"></a>安装Findbugs</h3><p>编译要求：Findbugs 1.3.9<br>安装软件：findbugs-3.0.1.tar.gz</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# ls</span><br><span class="line">findbugs-3.0.1.tar.gz</span><br><span class="line">[root@hadoop1 soft]# chmod 755 findbugs-3.0.1.tar.gz </span><br><span class="line">[root@hadoop1 soft]# tar -zxvf findbugs-3.0.1.tar.gz -C /opt</span><br></pre></td></tr></table></figure>
+
+<p> 配置Findbugs环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# vi /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>export FINDBUGS_HOME=/opt/findbugs-3.0.1<br>export PATH=$PATH:$FINDBUGS_HOME/bin</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302200617709-2078177175.png" alt="img"></p>
+<p>测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# findbugs -version</span><br><span class="line">3.0.1</span><br><span class="line">[root@hadoop1 soft]#</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302200720858-324428380.png" alt="img"></p>
+<h3 id="安装ProtocolBuffer"><a href="#安装ProtocolBuffer" class="headerlink" title="安装ProtocolBuffer"></a>安装ProtocolBuffer</h3><p>编译要求：ProtocolBuffer 2.5.0<br>安装软件：protobuf-2.5.0.tar.gz，不建议用其它版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# ls</span><br><span class="line">protobuf-2.5.0.tar.gz</span><br><span class="line">[root@hadoop1 soft]# chmod 755 protobuf-2.5.0.tar.gz </span><br><span class="line">[root@hadoop1 soft]# tar -zxvf protobuf-2.5.0.tar.gz -C /opt[root@hadoop1 soft]# cd /opt/protobuf-2.5.0/[root@hadoop1 protobuf-2.5.0]# ./configure [root@hadoop1 protobuf-2.5.0]# make[root@hadoop1 protobuf-2.5.0]# make install</span><br></pre></td></tr></table></figure>
+
+<p>测试</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 protobuf-2.5.0]# protoc --version</span><br><span class="line">libprotoc 2.5.0</span><br><span class="line">[root@hadoop1 protobuf-2.5.0]#</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180302202301280-1196746479.png" alt="img"></p>
+<h3 id="修改maven的配置文件，添加maven的下载源"><a href="#修改maven的配置文件，添加maven的下载源" class="headerlink" title="修改maven的配置文件，添加maven的下载源"></a>修改maven的配置文件，添加maven的下载源</h3><p>[root@hadoop1 protobuf-2.5.0]# cd /opt/apache-maven-3.3.9/conf/<br>[root@hadoop1 conf]# vi settings.xml</p>
+<p>在mirrors中添加alimaven的下载源</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirrors</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- mirror</span></span><br><span class="line"><span class="comment">     | Specifies a repository mirror site to use instead of a given repository. The repository that</span></span><br><span class="line"><span class="comment">     | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used</span></span><br><span class="line"><span class="comment">     | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.</span></span><br><span class="line"><span class="comment">     |</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">        &lt;mirror&gt;</span></span><br><span class="line"><span class="comment">        &lt;id&gt;alimaven&lt;/id&gt;</span></span><br><span class="line"><span class="comment">        &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;</span></span><br><span class="line"><span class="comment">         &lt;name&gt;aliyun maven&lt;/name&gt;</span></span><br><span class="line"><span class="comment">        &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public/&lt;/url&gt;</span></span><br><span class="line"><span class="comment">        &lt;/mirror&gt;</span></span><br><span class="line"><span class="comment">        &lt;mirror&gt;</span></span><br><span class="line"><span class="comment">        &lt;id&gt;mirrorId&lt;/id&gt;</span></span><br><span class="line"><span class="comment">        &lt;mirrorOf&gt;repositoryId&lt;/mirrorOf&gt;</span></span><br><span class="line"><span class="comment">        &lt;name&gt;Human Readable Name for this Mirror.&lt;/name&gt;</span></span><br><span class="line"><span class="comment">        &lt;url&gt;http://my.repository.com/repo/path&lt;/url&gt;</span></span><br><span class="line"><span class="comment">        &lt;/mirror&gt;</span></span><br><span class="line"><span class="comment">     --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirrors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装Ant"><a href="#安装Ant" class="headerlink" title="安装Ant"></a>安装Ant</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# ls</span><br><span class="line">apache-ant-1.9.4-bin.tar.gz  hadoop-2.7.5-src</span><br><span class="line">[root@hadoop1 soft]# tar -zxvf apache-ant-1.9.4-bin.tar.gz -C /opt/</span><br></pre></td></tr></table></figure>
+
+<p>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 apache-ant-1.9.4]# vi /etc/profile</span><br><span class="line">#Ant</span><br><span class="line">export ANT_HOME=/opt/apache-ant-1.9.4</span><br><span class="line">export PATH=$PATH:$ANT_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>检测</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 apache-ant-1.9.4]# ant -version</span><br><span class="line">Apache Ant(TM) version 1.9.4 compiled on April 29 2014</span><br><span class="line">[root@hadoop1 apache-ant-1.9.4]#</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303094806773-1281893074.png" alt="img"></p>
+<h3 id="安装Snappy"><a href="#安装Snappy" class="headerlink" title="安装Snappy"></a>安装Snappy</h3><p>解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# ls</span><br><span class="line">hadoop-2.7.5-src  snappy-1.1.1.tar.gz</span><br><span class="line">[root@hadoop1 soft]# tar -zxvf snappy-1.1.1.tar.gz -C /opt/</span><br></pre></td></tr></table></figure>
+
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# cd /opt/snappy-1.1.1/</span><br><span class="line">[root@hadoop1 snappy-1.1.1]# ./configure </span><br><span class="line">[root@hadoop1 snappy-1.1.1]# make </span><br><span class="line">[root@hadoop1 snappy-1.1.1]# make install</span><br></pre></td></tr></table></figure>
+
+<p>查看snappy文件库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 snappy-1.1.1]# ls -lh /usr/local/lib | grep snappy</span><br><span class="line">-rw-r--r--  1 root root 228K 3月   3 09:51 libsnappy.a</span><br><span class="line">-rwxr-xr-x  1 root root  953 3月   3 09:51 libsnappy.la</span><br><span class="line">lrwxrwxrwx  1 root root   18 3月   3 09:51 libsnappy.so -&gt; libsnappy.so.1.2.0</span><br><span class="line">lrwxrwxrwx  1 root root   18 3月   3 09:51 libsnappy.so.1 -&gt; libsnappy.so.1.2.0</span><br><span class="line">-rwxr-xr-x  1 root root 145K 3月   3 09:51 libsnappy.so.1.2.0</span><br><span class="line">[root@hadoop1 snappy-1.1.1]#</span><br></pre></td></tr></table></figure>
+
+<h2 id="开始编译hadoop"><a href="#开始编译hadoop" class="headerlink" title="开始编译hadoop"></a>开始编译hadoop</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 soft]# ls</span><br><span class="line">[root@hadoop1 soft]# tar -zxvf hadoop-2.7.5-src.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>在编译之前防止java.lang.OutOfMemoryError:Java heap space堆栈问题，在centos系统中执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 snappy-1.1.1]# export MAVEN_OPTS=&quot;-Xms256m -Xmx512m&quot;</span><br></pre></td></tr></table></figure>
+
+<p>进入源码包下，执行命令进行编译</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@hadoop1 snappy-1.1.1]# cd /soft/hadoop-2.7.5-src/</span><br><span class="line">[root@hadoop1 hadoop-2.7.5-src]# mvn package -Pdist,native,docs -DskipTests -Dtar</span><br></pre></td></tr></table></figure>
+
+<p> 如果中途编译失败，并且不要文档的话，请使用这个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]# mvn clear package -Pdist,native -DskipTests -Dtar -Dsnappy.lib=/usr/local/lib -Dbundle.snappy -Drequire.openssl</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303191804648-376409087.png" alt="img"></p>
+<p>编译成功之后，hadoop-2.7.5.tar.gz位于/soft/hadoop-2.7.5-src/hadoop-dist/target目录下，这是编译后文件夹的状态</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303192135977-329404593.png" alt="img"></p>
+<p>至此，大功告成！！！</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-04-Hadoop学习之路（四）Hadoop集群搭建和简单应用.html" class="pre-post btn btn-default" title='Hadoop学习之路（四）Hadoop集群搭建和简单应用'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（四）Hadoop集群搭建和简单应用</span>
+    </a>
+    
+    
+    <a href="/2018-04-01-Hadoop学习之路（二）Hadoop发展背景.html" class="next-post btn btn-default" title='Hadoop学习之路（二）Hadoop发展背景'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二）Hadoop发展背景</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#下载Hadoop源码"><span class="toc-text">下载Hadoop源码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、登录官网"><span class="toc-text">1、登录官网</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、确定你要安装的软件的版本"><span class="toc-text">2、确定你要安装的软件的版本</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#阅读编译文档"><span class="toc-text">阅读编译文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#软件安装"><span class="toc-text">软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK的安装"><span class="toc-text">JDK的安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装依赖包"><span class="toc-text">安装依赖包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Maven"><span class="toc-text">安装Maven</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Findbugs"><span class="toc-text">安装Findbugs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装ProtocolBuffer"><span class="toc-text">安装ProtocolBuffer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改maven的配置文件，添加maven的下载源"><span class="toc-text">修改maven的配置文件，添加maven的下载源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Ant"><span class="toc-text">安装Ant</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装Snappy"><span class="toc-text">安装Snappy</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始编译hadoop"><span class="toc-text">开始编译hadoop</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

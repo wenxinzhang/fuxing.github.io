@@ -1,0 +1,395 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Flume">
+
+
+<meta name="description" content="** Flume学习之路 （二）Flume的Source类型：** &lt;Excerpt in index | 首页摘要&gt;
+​        Flume学习之路 （二）Flume的Sou...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Flume学习之路 （二）Flume的Source类型 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Flume学习之路 （二）Flume的Source类型">
+            
+            Flume学习之路 （二）Flume的Source类型
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Flume/">Flume</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/05/02</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Flume学习之路 （二）Flume的Source类型：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Flume学习之路 （二）Flume的Source类型</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、概述"><a href="#一、概述" class="headerlink" title="一、概述"></a>一、概述</h2><p>官方文档介绍：<a href="http://flume.apache.org/FlumeUserGuide.html#flume-sources" target="_blank" rel="noopener">http://flume.apache.org/FlumeUserGuide.html#flume-sources</a></p>
+<h2 id="二、Flume-Sources-描述"><a href="#二、Flume-Sources-描述" class="headerlink" title="二、Flume Sources 描述"></a>二、Flume Sources 描述</h2><h3 id="2-1-Avro-Source"><a href="#2-1-Avro-Source" class="headerlink" title="2.1　Avro Source"></a>2.1　Avro Source</h3><h4 id="2-1-1-介绍"><a href="#2-1-1-介绍" class="headerlink" title="2.1.1　介绍"></a>2.1.1　介绍</h4><p>监听Avro端口，从Avro client streams接收events。当与另一个（前一跳）Flume agent内置的Avro Sink配对时，它可以创建分层收集拓扑。<strong>字体加粗的属性必须进行设置</strong>。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505184843030-1971765582.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506141436097-274079212.png" alt="img"></p>
+<h4 id="2-1-2-示例"><a href="#2-1-2-示例" class="headerlink" title="2.1.2　示例"></a>2.1.2　示例</h4><p>示例一：示例请参考官方文档</p>
+<p>示例二：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#配置一个agent，agent的名称可以自定义（如a1）</span><br><span class="line">#指定agent的sources（如s1）、sinks（如k1）、channels（如c1）</span><br><span class="line">#分别指定agent的sources，sinks,channels的名称 名称可以自定义</span><br><span class="line">a1.sources = s1</span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line">#配置source</span><br><span class="line">a1.sources.s1.channels = c1</span><br><span class="line">a1.sources.s1.type = avro</span><br><span class="line">a1.sources.s1.bind = 192.168.123.102</span><br><span class="line">a1.sources.s1.port = 6666</span><br><span class="line"></span><br><span class="line">#配置channels</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line"></span><br><span class="line">#配置sinks</span><br><span class="line">a1.sinks.k1.channel = c1</span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line"></span><br><span class="line">#为sources和sinks绑定channels</span><br><span class="line">a1.sources.s1.channels = c1</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+
+<p>启动flume</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng agent --conf conf --conf-file ~/apps/flume/examples/single_avro.properties --name a1 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506145745861-959604080.png" alt="img"></p>
+<p>通过flume提供的avro客户端向指定机器指定端口发送日志信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng avro-client -c ~/apps/flume/conf -H 192.168.123.102 -p 6666 -F 666.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506145952465-49933213.png" alt="img"></p>
+<p>接收到的信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506150037233-1093975937.png" alt="img"></p>
+<h3 id="2-2-Thrift-Source"><a href="#2-2-Thrift-Source" class="headerlink" title="2.2　Thrift Source"></a>2.2　Thrift Source</h3><h4 id="2-2-1-介绍"><a href="#2-2-1-介绍" class="headerlink" title="2.2.1　介绍"></a>2.2.1　介绍</h4><p>ThriftSource 与Avro Source 基本一致。只要把source的类型改成thrift即可，例如a1.sources.r1.type = thrift，比较简单，不做赘述。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506150242469-1712924280.png" alt="img"></p>
+<h3 id="2-3-Exec-Source"><a href="#2-3-Exec-Source" class="headerlink" title="2.3　Exec Source"></a>2.3　Exec Source</h3><h4 id="2-3-1-介绍"><a href="#2-3-1-介绍" class="headerlink" title="2.3.1　介绍"></a>2.3.1　介绍</h4><p>ExecSource的配置就是设定一个Unix(linux)命令，然后通过这个命令不断输出数据。如果进程退出，Exec Source也一起退出，不会产生进一步的数据。</p>
+<p>下面是官网给出的source的配置，加粗的参数是必选，描述就不解释了。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506150910809-733881050.png" alt="img"></p>
+<h4 id="2-3-2-示例"><a href="#2-3-2-示例" class="headerlink" title="2.3.2　示例"></a>2.3.2　示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#配置文件</span><br><span class="line">#Name the components on this agent  </span><br><span class="line">a1.sources= s1  </span><br><span class="line">a1.sinks= k1  </span><br><span class="line">a1.channels= c1  </span><br><span class="line">   </span><br><span class="line">#配置sources</span><br><span class="line">a1.sources.s1.type = exec  </span><br><span class="line">a1.sources.s1.command = tail -F /home/hadoop/logs/test.log  </span><br><span class="line">a1.sources.s1.channels = c1  </span><br><span class="line">   </span><br><span class="line">#配置sinks </span><br><span class="line">a1.sinks.k1.type= logger  </span><br><span class="line">a1.sinks.k1.channel= c1  </span><br><span class="line">   </span><br><span class="line">#配置channel</span><br><span class="line">a1.channels.c1.type= memory</span><br></pre></td></tr></table></figure>
+
+<p>启动命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_exec.properties --name a1 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506152209264-144025853.png" alt="img"></p>
+<p>继续往日志里添加数据</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506152321240-2131595143.png" alt="img"></p>
+<p>接收到的信息</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506152357088-2003036234.png" alt="img"></p>
+<h3 id="2-4-JMS-Source"><a href="#2-4-JMS-Source" class="headerlink" title="2.4　JMS Source"></a>2.4　JMS Source</h3><h4 id="2-4-1-介绍"><a href="#2-4-1-介绍" class="headerlink" title="2.4.1　介绍"></a>2.4.1　介绍</h4><p>从JMS系统（消息、主题）中读取数据，ActiveMQ已经测试过</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506152618649-1113553854.png" alt="img"></p>
+<h4 id="2-4-2-官网示例"><a href="#2-4-2-官网示例" class="headerlink" title="2.4.2　官网示例"></a>2.4.2　官网示例</h4><p> <img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506152721617-417195784.png" alt="img"></p>
+<h3 id="2-5-Spooling-Directory-Source"><a href="#2-5-Spooling-Directory-Source" class="headerlink" title="2.5　Spooling Directory Source"></a>2.5　Spooling Directory Source</h3><h4 id="2-5-1-介绍"><a href="#2-5-1-介绍" class="headerlink" title="2.5.1　介绍"></a>2.5.1　介绍</h4><p>Spooling Directory Source监测配置的目录下新增的文件，并将文件中的数据读取出来。其中，Spool Source有2个注意地方，<strong>第一个是拷贝到spool目录下的文件不可以再打开编辑，第二个是spool目录下不可包含相应的子目录。这个主要用途作为对日志的准实时监控</strong>。</p>
+<p>下面是官网给出的source的配置，加粗的参数是必选。可选项太多，这边就介绍一个<strong>fileSuffix</strong>，即文件读取后添加的后缀名，这个是可以更改。</p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506153121836-501580850.png" alt="img"></p>
+<h4 id="2-5-2-示例"><a href="#2-5-2-示例" class="headerlink" title="2.5.2　示例"></a>2.5.2　示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = s1  </span><br><span class="line">a1.sinks = k1  </span><br><span class="line">a1.channels = c1  </span><br><span class="line">   </span><br><span class="line"># Describe/configure the source  </span><br><span class="line">a1.sources.s1.type =spooldir  </span><br><span class="line">a1.sources.s1.spoolDir =/home/hadoop/logs  </span><br><span class="line">a1.sources.s1.fileHeader= true  </span><br><span class="line">a1.sources.s1.channels =c1  </span><br><span class="line">   </span><br><span class="line"># Describe the sink  </span><br><span class="line">a1.sinks.k1.type = logger  </span><br><span class="line">a1.sinks.k1.channel = c1  </span><br><span class="line">   </span><br><span class="line"># Use a channel which buffers events inmemory  </span><br><span class="line">a1.channels.c1.type = memory</span><br></pre></td></tr></table></figure>
+
+<p>启动命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng agent --conf conf --conf-file /home/hadoop/apps/flume/examples/case_spool.properties --name a1 -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506154727697-1088669530.png" alt="img"></p>
+<p>讲123.log移动到logs目录</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506154936448-1678686443.png" alt="img"></p>
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506154905986-1159084596.png" alt="img"></p>
+<h3 id="2-6-其他"><a href="#2-6-其他" class="headerlink" title="2.6　其他"></a>2.6　其他</h3><p>参考<a href="https://blog.csdn.net/looklook5/article/details/40400885" target="_blank" rel="noopener">https://blog.csdn.net/looklook5/article/details/40400885</a></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-05-03-Flume学习之路 （三）Flume的配置方式.html" class="pre-post btn btn-default" title='Flume学习之路 （三）Flume的配置方式'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Flume学习之路 （三）Flume的配置方式</span>
+    </a>
+    
+    
+    <a href="/2018-05-01-Flume学习之路 （一）Flume的基础介绍.html" class="next-post btn btn-default" title='Flume学习之路 （一）Flume的基础介绍'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Flume学习之路 （一）Flume的基础介绍</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、概述"><span class="toc-text">一、概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、Flume-Sources-描述"><span class="toc-text">二、Flume Sources 描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Avro-Source"><span class="toc-text">2.1　Avro Source</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-1-介绍"><span class="toc-text">2.1.1　介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-2-示例"><span class="toc-text">2.1.2　示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Thrift-Source"><span class="toc-text">2.2　Thrift Source</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-1-介绍"><span class="toc-text">2.2.1　介绍</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Exec-Source"><span class="toc-text">2.3　Exec Source</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-介绍"><span class="toc-text">2.3.1　介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-示例"><span class="toc-text">2.3.2　示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-JMS-Source"><span class="toc-text">2.4　JMS Source</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-1-介绍"><span class="toc-text">2.4.1　介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-2-官网示例"><span class="toc-text">2.4.2　官网示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-Spooling-Directory-Source"><span class="toc-text">2.5　Spooling Directory Source</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-1-介绍"><span class="toc-text">2.5.1　介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-2-示例"><span class="toc-text">2.5.2　示例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-其他"><span class="toc-text">2.6　其他</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

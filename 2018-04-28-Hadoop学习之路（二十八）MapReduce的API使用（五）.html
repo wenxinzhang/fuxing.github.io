@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（二十八）MapReduce的API使用（五）：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（二十八）M...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（二十八）MapReduce的API使用（五） |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（二十八）MapReduce的API使用（五）">
+            
+            Hadoop学习之路（二十八）MapReduce的API使用（五）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/28</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（二十八）MapReduce的API使用（五）：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（二十八）MapReduce的API使用（五）</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>求所有两两用户之间的共同好友</p>
+<p>数据格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">A:B,C,D,F,E,O</span><br><span class="line">B:A,C,E,K</span><br><span class="line">C:F,A,D,I</span><br><span class="line">D:A,E,F,L</span><br><span class="line">E:B,C,D,M,L</span><br><span class="line">F:A,B,C,D,E,O,M</span><br><span class="line">G:A,C,D,E,F</span><br><span class="line">H:A,C,D,E,O</span><br><span class="line">I:A,O</span><br><span class="line">J:B,O</span><br><span class="line">K:A,C,D</span><br><span class="line">L:D,E,F</span><br><span class="line">M:E,F,G</span><br><span class="line">O:A,H,I,J,K</span><br></pre></td></tr></table></figure>
+
+<p>以上是数据：<br>A:B,C,D,F,E,O<br>表示：B,C,D,E,F,O是A用户的好友。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line">  1 public class SharedFriend &#123;</span><br><span class="line">  2     /*</span><br><span class="line">  3      第一阶段的map函数主要完成以下任务</span><br><span class="line">  4      1.遍历原始文件中每行&lt;所有朋友&gt;信息</span><br><span class="line">  5      2.遍历“朋友”集合，以每个“朋友”为键，原来的“人”为值  即输出&lt;朋友,人&gt;</span><br><span class="line">  6      */</span><br><span class="line">  7     static class SharedFriendMapper01 extends Mapper&lt;LongWritable, Text, Text, Text&gt;&#123;</span><br><span class="line">  8         @Override</span><br><span class="line">  9         protected void map(LongWritable key, Text value,Context context)</span><br><span class="line"> 10                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 11             String line = value.toString();</span><br><span class="line"> 12             String[] person_friends = line.split(&quot;:&quot;);</span><br><span class="line"> 13             String person = person_friends[0];</span><br><span class="line"> 14             String[] friends = person_friends[1].split(&quot;,&quot;);</span><br><span class="line"> 15             </span><br><span class="line"> 16             for(String friend : friends)&#123;</span><br><span class="line"> 17                 context.write(new Text(friend), new Text(person));</span><br><span class="line"> 18             &#125;</span><br><span class="line"> 19         &#125;</span><br><span class="line"> 20     &#125;</span><br><span class="line"> 21     </span><br><span class="line"> 22     /*</span><br><span class="line"> 23       第一阶段的reduce函数主要完成以下任务</span><br><span class="line"> 24       1.对所有传过来的&lt;朋友，list(人)&gt;进行拼接，输出&lt;朋友,拥有这名朋友的所有人&gt;</span><br><span class="line"> 25      */</span><br><span class="line"> 26     static class SharedFriendReducer01 extends Reducer&lt;Text, Text, Text, Text&gt;&#123;</span><br><span class="line"> 27         @Override</span><br><span class="line"> 28         protected void reduce(Text key, Iterable&lt;Text&gt; values,Context context)</span><br><span class="line"> 29                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 30             StringBuffer sb = new StringBuffer();</span><br><span class="line"> 31             for(Text friend : values)&#123;</span><br><span class="line"> 32                 sb.append(friend.toString()).append(&quot;,&quot;);</span><br><span class="line"> 33             &#125;</span><br><span class="line"> 34             sb.deleteCharAt(sb.length()-1);</span><br><span class="line"> 35             context.write(key, new Text(sb.toString()));</span><br><span class="line"> 36         &#125;</span><br><span class="line"> 37     &#125;</span><br><span class="line"> 38     </span><br><span class="line"> 39     /*</span><br><span class="line"> 40     第二阶段的map函数主要完成以下任务</span><br><span class="line"> 41     1.将上一阶段reduce输出的&lt;朋友,拥有这名朋友的所有人&gt;信息中的 “拥有这名朋友的所有人”进行排序 ，以防出现B-C C-B这样的重复</span><br><span class="line"> 42     2.将 “拥有这名朋友的所有人”进行两两配对，并将配对后的字符串当做键，“朋友”当做值输出，即输出&lt;人-人，共同朋友&gt;</span><br><span class="line"> 43      */</span><br><span class="line"> 44     static class SharedFriendMapper02 extends Mapper&lt;LongWritable, Text, Text, Text&gt;&#123;</span><br><span class="line"> 45         @Override</span><br><span class="line"> 46         protected void map(LongWritable key, Text value,Context context)</span><br><span class="line"> 47                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 48             String line = value.toString();</span><br><span class="line"> 49             String[] friend_persons = line.split(&quot;\t&quot;);</span><br><span class="line"> 50             String friend = friend_persons[0];</span><br><span class="line"> 51             String[] persons = friend_persons[1].split(&quot;,&quot;);</span><br><span class="line"> 52             Arrays.sort(persons); //排序</span><br><span class="line"> 53             </span><br><span class="line"> 54             //两两配对</span><br><span class="line"> 55             for(int i=0;i&lt;persons.length-1;i++)&#123;</span><br><span class="line"> 56                 for(int j=i+1;j&lt;persons.length;j++)&#123;</span><br><span class="line"> 57                     context.write(new Text(persons[i]+&quot;-&quot;+persons[j]+&quot;:&quot;), new Text(friend));</span><br><span class="line"> 58                 &#125;</span><br><span class="line"> 59             &#125;</span><br><span class="line"> 60         &#125;</span><br><span class="line"> 61     &#125;</span><br><span class="line"> 62     </span><br><span class="line"> 63     /*</span><br><span class="line"> 64     第二阶段的reduce函数主要完成以下任务</span><br><span class="line"> 65     1.&lt;人-人，list(共同朋友)&gt; 中的“共同好友”进行拼接 最后输出&lt;人-人，两人的所有共同好友&gt;</span><br><span class="line"> 66      */</span><br><span class="line"> 67     static class SharedFriendReducer02 extends Reducer&lt;Text, Text, Text, Text&gt;&#123;</span><br><span class="line"> 68         @Override</span><br><span class="line"> 69         protected void reduce(Text key, Iterable&lt;Text&gt; values,Context context)</span><br><span class="line"> 70                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 71             StringBuffer sb = new StringBuffer();</span><br><span class="line"> 72             Set&lt;String&gt; set = new HashSet&lt;String&gt;();</span><br><span class="line"> 73             for(Text friend : values)&#123;</span><br><span class="line"> 74                 if(!set.contains(friend.toString()))</span><br><span class="line"> 75                     set.add(friend.toString());</span><br><span class="line"> 76             &#125;</span><br><span class="line"> 77             for(String friend : set)&#123;</span><br><span class="line"> 78                 sb.append(friend.toString()).append(&quot;,&quot;);</span><br><span class="line"> 79             &#125;</span><br><span class="line"> 80             sb.deleteCharAt(sb.length()-1);</span><br><span class="line"> 81             </span><br><span class="line"> 82             context.write(key, new Text(sb.toString()));</span><br><span class="line"> 83         &#125;</span><br><span class="line"> 84     &#125;</span><br><span class="line"> 85     </span><br><span class="line"> 86     public static void main(String[] args)throws Exception &#123;</span><br><span class="line"> 87         Configuration conf = new Configuration();</span><br><span class="line"> 88 </span><br><span class="line"> 89         //第一阶段</span><br><span class="line"> 90         Job job1 = Job.getInstance(conf);</span><br><span class="line"> 91         job1.setJarByClass(SharedFriend.class);</span><br><span class="line"> 92         job1.setMapperClass(SharedFriendMapper01.class);</span><br><span class="line"> 93         job1.setReducerClass(SharedFriendReducer01.class);</span><br><span class="line"> 94         </span><br><span class="line"> 95         job1.setOutputKeyClass(Text.class);</span><br><span class="line"> 96         job1.setOutputValueClass(Text.class);</span><br><span class="line"> 97         </span><br><span class="line"> 98         FileInputFormat.setInputPaths(job1, new Path(&quot;H:/大数据/mapreduce/sharedfriend/input&quot;));</span><br><span class="line"> 99         FileOutputFormat.setOutputPath(job1, new Path(&quot;H:/大数据/mapreduce/sharedfriend/output&quot;));</span><br><span class="line">100         </span><br><span class="line">101         boolean res1 = job1.waitForCompletion(true);</span><br><span class="line">102         </span><br><span class="line">103         //第二阶段</span><br><span class="line">104         Job job2 = Job.getInstance(conf);</span><br><span class="line">105         job2.setJarByClass(SharedFriend.class);</span><br><span class="line">106         job2.setMapperClass(SharedFriendMapper02.class);</span><br><span class="line">107         job2.setReducerClass(SharedFriendReducer02.class);</span><br><span class="line">108         </span><br><span class="line">109         job2.setOutputKeyClass(Text.class);</span><br><span class="line">110         job2.setOutputValueClass(Text.class);</span><br><span class="line">111         </span><br><span class="line">112         FileInputFormat.setInputPaths(job2, new Path(&quot;H:/大数据/mapreduce/sharedfriend/output&quot;));</span><br><span class="line">113         FileOutputFormat.setOutputPath(job2, new Path(&quot;H:/大数据/mapreduce/sharedfriend/output01&quot;));</span><br><span class="line">114         </span><br><span class="line">115         boolean res2 = job2.waitForCompletion(true);</span><br><span class="line">116         </span><br><span class="line">117         System.exit(res1?0:1);</span><br><span class="line">118     &#125;</span><br><span class="line">119 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一阶段输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> 1 A    F,I,O,K,G,D,C,H,B</span><br><span class="line"> 2 B    E,J,F,A</span><br><span class="line"> 3 C    B,E,K,A,H,G,F</span><br><span class="line"> 4 D    H,C,G,F,E,A,K,L</span><br><span class="line"> 5 E    A,B,L,G,M,F,D,H</span><br><span class="line"> 6 F    C,M,L,A,D,G</span><br><span class="line"> 7 G    M</span><br><span class="line"> 8 H    O</span><br><span class="line"> 9 I    O,C</span><br><span class="line">10 J    O</span><br><span class="line">11 K    O,B</span><br><span class="line">12 L    D,E</span><br><span class="line">13 M    E,F</span><br><span class="line">14 O    A,H,I,J,F</span><br></pre></td></tr></table></figure>
+
+<p>第二阶段输出结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"> 1 A-B    C,E</span><br><span class="line"> 2 A-C    D,F</span><br><span class="line"> 3 A-D    E,F</span><br><span class="line"> 4 A-E    C,B,D</span><br><span class="line"> 5 A-F    E,O,C,D,B</span><br><span class="line"> 6 A-G    F,C,E,D</span><br><span class="line"> 7 A-H    D,O,C,E</span><br><span class="line"> 8 A-I    O</span><br><span class="line"> 9 A-J    B,O</span><br><span class="line">10 A-K    C,D</span><br><span class="line">11 A-L    D,E,F</span><br><span class="line">12 A-M    E,F</span><br><span class="line">13 B-C    A</span><br><span class="line">14 B-D    A,E</span><br><span class="line">15 B-E    C</span><br><span class="line">16 B-F    A,C,E</span><br><span class="line">17 B-G    E,C,A</span><br><span class="line">18 B-H    A,E,C</span><br><span class="line">19 B-I    A</span><br><span class="line">20 B-K    A,C</span><br><span class="line">21 B-L    E</span><br><span class="line">22 B-M    E</span><br><span class="line">23 B-O    K,A</span><br><span class="line">24 C-D    F,A</span><br><span class="line">25 C-E    D</span><br><span class="line">26 C-F    D,A</span><br><span class="line">27 C-G    D,F,A</span><br><span class="line">28 C-H    D,A</span><br><span class="line">29 C-I    A</span><br><span class="line">30 C-K    A,D</span><br><span class="line">31 C-L    D,F</span><br><span class="line">32 C-M    F</span><br><span class="line">33 C-O    I,A</span><br><span class="line">34 D-E    L</span><br><span class="line">35 D-F    A,E</span><br><span class="line">36 D-G    F,A,E</span><br><span class="line">37 D-H    A,E</span><br><span class="line">38 D-I    A</span><br><span class="line">39 D-K    A</span><br><span class="line">40 D-L    F,E</span><br><span class="line">41 D-M    F,E</span><br><span class="line">42 D-O    A</span><br><span class="line">43 E-F    C,D,M,B</span><br><span class="line">44 E-G    C,D</span><br><span class="line">45 E-H    C,D</span><br><span class="line">46 E-J    B</span><br><span class="line">47 E-K    D,C</span><br><span class="line">48 E-L    D</span><br><span class="line">49 F-G    C,E,D,A</span><br><span class="line">50 F-H    D,O,A,E,C</span><br><span class="line">51 F-I    A,O</span><br><span class="line">52 F-J    O,B</span><br><span class="line">53 F-K    D,C,A</span><br><span class="line">54 F-L    D,E</span><br><span class="line">55 F-M    E</span><br><span class="line">56 F-O    A</span><br><span class="line">57 G-H    E,C,D,A</span><br><span class="line">58 G-I    A</span><br><span class="line">59 G-K    D,A,C</span><br><span class="line">60 G-L    F,E,D</span><br><span class="line">61 G-M    E,F</span><br><span class="line">62 G-O    A</span><br><span class="line">63 H-I    A,O</span><br><span class="line">64 H-J    O</span><br><span class="line">65 H-K    C,D,A</span><br><span class="line">66 H-L    D,E</span><br><span class="line">67 H-M    E</span><br><span class="line">68 H-O    A</span><br><span class="line">69 I-J    O</span><br><span class="line">70 I-K    A</span><br><span class="line">71 I-O    A</span><br><span class="line">72 K-L    D</span><br><span class="line">73 K-O    A</span><br><span class="line">74 L-M    F,E</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-06-04-HBase学习之路 （四）HBase的API操作.html" class="pre-post btn btn-default" title='HBase学习之路 （四）HBase的API操作'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （四）HBase的API操作</span>
+    </a>
+    
+    
+    <a href="/2018-04-27-Hadoop学习之路（二十七）MapReduce的API使用（四）.html" class="next-post btn btn-default" title='Hadoop学习之路（二十七）MapReduce的API使用（四）'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十七）MapReduce的API使用（四）</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <p>暂无目录</p>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

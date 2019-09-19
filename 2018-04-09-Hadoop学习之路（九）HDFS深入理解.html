@@ -1,0 +1,492 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（九）HDFS深入理解：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（九）HDFS深入理解
+
+&lt;T...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（九）HDFS深入理解 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（九）HDFS深入理解">
+            
+            Hadoop学习之路（九）HDFS深入理解
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/09</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（九）HDFS深入理解：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（九）HDFS深入理解</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="HDFS的优点和缺点"><a href="#HDFS的优点和缺点" class="headerlink" title="HDFS的优点和缺点"></a>HDFS的优点和缺点</h2><h3 id="HDFS的优点"><a href="#HDFS的优点" class="headerlink" title="HDFS的优点"></a>HDFS的优点</h3><p>1、可构建在廉价机器上</p>
+<p>　　　　通过多副本提高可靠性，提供了容错和恢复机制</p>
+<p>　　　　服务器节点的宕机是常态   必须理性对象 </p>
+<p>2、高容错性</p>
+<p>　　　　数据自动保存多个副本，副本丢失后，自动恢复</p>
+<p>　　　　<strong>HDFS的核心设计思想：  分散均匀存储 + 备份冗余存储</strong></p>
+<p>3、适合批处理</p>
+<p>　　　　移动计算而非数据，数据位置暴露给计算框架</p>
+<p>　　　　海量数据的计算 任务 最终是一定要被切分成很多的小任务进行</p>
+<p>4、适合大数据处理</p>
+<p>　　　　GB、TB、甚至 PB 级数据，百万规模以上的文件数量，10K+节点规模</p>
+<p>5、流式文件访问</p>
+<p>　　　　 一次性写入，多次读取，保证数据一致性</p>
+<h3 id="HDFS的缺点"><a href="#HDFS的缺点" class="headerlink" title="HDFS的缺点"></a>HDFS的缺点</h3><h4 id="不适合以下操作"><a href="#不适合以下操作" class="headerlink" title="不适合以下操作"></a>不适合以下操作</h4><p>1、低延迟数据访问</p>
+<p>　　　　比如毫秒级 低延迟与高吞吐率</p>
+<p>2、小文件存取</p>
+<p>　　　　占用 NameNode 大量内存 150b* 1000W = 15E,1.5G 寻道时间超过读取时间</p>
+<p>3、并发写入、文件随机修改</p>
+<p>　　　　一个文件只能有一个写者 仅支持 append</p>
+<h4 id="抛出问题：HDFS文件系统为什么不适用于存储小文件？"><a href="#抛出问题：HDFS文件系统为什么不适用于存储小文件？" class="headerlink" title="抛出问题：HDFS文件系统为什么不适用于存储小文件？"></a>抛出问题：HDFS文件系统为什么不适用于存储小文件？</h4><p>这是和HDFS系统底层设计实现有关系的，HDFS本身的设计就是用来解决海量大文件数据的存储.，他天生喜欢大数据的处理，大文件存储在HDFS中，会被切分成很多的小数据块，任何一个文件不管有多小，都是一个独立的数据块，而这些数据块的信息则是保存在元数据中的，在之前的博客HDFS基础里面介绍过在HDFS集群的namenode中会存储元数据的信息，这里再说一下，元数据的信息主要包括以下3部分：</p>
+<p>　　1）抽象目录树</p>
+<p>　　2）文件和数据块的映射关系，一个数据块的元数据大小大约是150byte</p>
+<p>　　3）数据块的多个副本存储地</p>
+<p>而元数据的存储在磁盘（1和2）和内存中（1、2和3），而服务器中的内存是有上限的，举个例子：</p>
+<p>有100个1M的文件存储进入HDFS系统，那么数据块的个数就是100个，元数据的大小就是100*150byte，消耗了15000byte的内存，但是只存储了100M的数据。</p>
+<p>有1个100M的文件存储进入HDFS系统，那么数据块的个数就是1个，元数据的大小就是150byte，消耗量150byte的内存，存储量100M的数据。</p>
+<p>所以说HDFS文件系统不适用于存储小文件。</p>
+<h2 id="HDFS的辅助功能"><a href="#HDFS的辅助功能" class="headerlink" title="HDFS的辅助功能"></a>HDFS的辅助功能</h2><p>HDFS作为一个文件系统。有两个最主要的功能：<strong>上传和下载</strong>。而为了保障这两个功能的完美和高效实现，HDFS提供了很多的辅助功能</p>
+<h3 id="1-心跳机制"><a href="#1-心跳机制" class="headerlink" title="1.心跳机制"></a>1.心跳机制</h3><h4 id="普通话讲解"><a href="#普通话讲解" class="headerlink" title="普通话讲解"></a>普通话讲解</h4><p>1、 Hadoop 是 Master/Slave 结构，Master 中有 NameNode 和 ResourceManager，Slave 中有 Datanode 和 NodeManager </p>
+<p>2、 Master 启动的时候会启动一个 IPC（Inter-Process Comunication，进程间通信）server 服 务，等待 slave 的链接</p>
+<p>3、 Slave 启动时，会主动链接 master 的 ipc server 服务，并且每隔 3 秒链接一次 master，这 个间隔时间是可以调整的，参数为 dfs.heartbeat.interval，这个每隔一段时间去连接一次 的机制，我们形象的称为心跳。Slave 通过心跳汇报自己的信息给 master，master 也通 过心跳给 slave 下达命令，</p>
+<p>4、 NameNode 通过心跳得知 Datanode 的状态 ，ResourceManager 通过心跳得知 NodeManager 的状态</p>
+<p>5、 如果 master 长时间都没有收到 slave 的心跳，就认为该 slave 挂掉了。！！！！！</p>
+<h4 id="大白话讲解"><a href="#大白话讲解" class="headerlink" title="大白话讲解"></a>大白话讲解</h4><p>1、DataNode启动的时候会向NameNode汇报信息，就像钉钉上班打卡一样，你打卡之后，你领导才知道你今天来上班了，同样的道理，DataNode也需要向NameNode进行汇报，只不过每次汇报的时间间隔有点短而已，默认是3秒中，<strong>DataNode向NameNode汇报的信息有2点，一个是自身DataNode的状态信息，另一个是自身DataNode所持有的所有的数据块的信息。</strong>而DataNode是不会知道他保存的所有的数据块副本到底是属于哪个文件，这些都是存储在NameNode的元数据中。</p>
+<p>2、按照规定，每个DataNode都是需要向NameNode进行汇报。那么如果从某个时刻开始，某个DataNode再也不向NameNode进行汇报了。 有可能宕机了。因为只要通过网络传输数据，就一定存在一种可能： 丢失 或者 延迟。</p>
+<p>3、HDFS的标准： NameNode如果连续10次没有收到DataNode的汇报。 那么NameNode就会认为该DataNode存在宕机的可能。</p>
+<p>4、DataNode启动好了之后，会专门启动一个线程，去负责给NameNode发送心跳数据包，如果说整个DataNode没有任何问题，但是仅仅只是当前负责发送信条数据包的线程挂了。NameNode会发送命令向这个DataNode进行确认。查看这个发送心跳数据包的服务是否还能正常运行，而为了保险起见，NameNode会向DataNode确认2遍，每5分钟确认一次。如果2次都没有返回 结果，那么NameNode就会认为DataNode已经GameOver了！！！</p>
+<p><strong>最终NameNode判断一个DataNode死亡的时间计算公式：</strong></p>
+<p><strong>timeout = 10 * 心跳间隔时间  + 2 * 检查一次消耗的时间</strong></p>
+<p> 心跳间隔时间：dfs.heartbeat.interval 心跳时间：3s<br>检查一次消耗的时间：heartbeat.recheck.interval checktime : 5min</p>
+<p>最终结果默认是630s。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309200331518-737230339.png" alt="img"></p>
+<h3 id="2-安全模式"><a href="#2-安全模式" class="headerlink" title="2.安全模式"></a>2.安全模式</h3><p>1、HDFS的启动和关闭都是先启动NameNode，在启动DataNode，最后在启动secondarynamenode。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309200650648-965578498.png" alt="img"></p>
+<p>2、决定HDFS集群的启动时长会有两个因素：</p>
+<p>　　1）磁盘元数据的大小</p>
+<p>　　2）datanode的节点个数</p>
+<p> 当元数据很大，或者 节点个数很多的时候，那么HDFS的启动，需要一段很长的时间，那么在还没有完全启动的时候HDFS能否对外提供服务？</p>
+<p>在HDFS的启动命令start-dfs.sh执行的时候，HDFS会自动进入安全模式</p>
+<p>为了确保用户的操作是可以高效的执行成功的，在HDFS发现自身不完整的时候，会进入安全模式。保护自己。</p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309201610593-1303464002.png" alt="img"></p>
+<p>在正常启动之后，如果HDFS发现所有的数据都是齐全的，那么HDFS会启动的退出安全模式</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309201716199-1209493841.png" alt="img"></p>
+<p>3、对安全模式进行测试</p>
+<p>安全模式常用操作命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hdfs dfsadmin -safemode leave //强制 NameNode 退出安全模式</span><br><span class="line"></span><br><span class="line">hdfs dfsadmin -safemode enter //进入安全模式</span><br><span class="line"></span><br><span class="line">hdfs dfsadmin -safemode get //查看安全模式状态</span><br><span class="line"></span><br><span class="line">hdfs dfsadmin -safemode wait //等待，一直到安全模式结束</span><br></pre></td></tr></table></figure>
+
+<p>手工进入安全模式进行测试</p>
+<p>1、测试创建文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hdfs dfsadmin -safemode enter</span><br><span class="line">Safe mode is ON</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mkdir -p /xx/yy/zz</span><br><span class="line">mkdir: Cannot create directory /xx/yy/zz. Name node is in safe mode.</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309202244027-371942508.png" alt="img"></p>
+<p>2、测试下载文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">apps  data</span><br><span class="line">[hadoop@hadoop1 ~]$ hdfs dfsadmin -safemode get</span><br><span class="line">Safe mode is ON</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -get /aa/1.txt ~/1.txt</span><br><span class="line">[hadoop@hadoop1 ~]$ ls</span><br><span class="line">1.txt  apps  data</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309202543275-2048560291.png" alt="img"></p>
+<p>3、测试上传</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -put 1.txt /a/xx.txt</span><br><span class="line">put: Cannot create file/a/xx.txt._COPYING_. Name node is in safe mode.</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309202633279-1165284600.png" alt="img"></p>
+<p>4、得出结论，在安全模式下：</p>
+<p>如果一个操作涉及到元数据的修改的话。都不能进行操作</p>
+<p>如果一个操作仅仅只是查询。那是被允许的。</p>
+<p>所谓的安全模式，仅仅只是保护namenode，而不是保护datanode</p>
+<h3 id="3-副本存放策略"><a href="#3-副本存放策略" class="headerlink" title="3.副本存放策略"></a>3.副本存放策略</h3><p>第一副本：放置在上传文件的DataNode上；如果是集群外提交，则随机挑选一台磁盘不太慢、CPU不太忙的节点上；<br>第二副本：放置在于第一个副本不同的机架的节点上；<br>第三副本：与第二个副本相同机架的不同节点上；<br>如果还有更多的副本：随机放在节点中；</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309202954396-121440380.png" alt="img"></p>
+<h3 id="4-负载均衡"><a href="#4-负载均衡" class="headerlink" title="4.负载均衡"></a>4.负载均衡</h3><p>负载均衡理想状态：节点均衡、机架均衡和磁盘均衡。</p>
+<p>Hadoop的HDFS集群非常容易出现机器与机器之间磁盘利用率不平衡的情况，例如：当集群内新增、删除节点，或者某个节点机器内硬盘存储达到饱和值。当数据不平衡时，Map任务可能会分配到没有存储数据的机器，这将导致网络带宽的消耗，也无法很好的进行本地计算。<br>当HDFS负载不均衡时，需要对HDFS进行数据的负载均衡调整，即对各节点机器上数据的存储分布进行调整。从而，让数据均匀的分布在各个DataNode上，均衡IO性能，防止热点的发生。进行数据的负载均衡调整，必须要满足如下原则：</p>
+<ul>
+<li><ul>
+<li>数据平衡不能导致数据块减少，数据块备份丢失</li>
+<li>管理员可以中止数据平衡进程</li>
+<li>每次移动的数据量以及占用的网络资源，必须是可控的</li>
+<li>数据均衡过程，不能影响namenode的正常工作</li>
+</ul>
+</li>
+</ul>
+<h4 id="负载均衡的原理"><a href="#负载均衡的原理" class="headerlink" title="负载均衡的原理"></a>负载均衡的原理</h4><p>数据均衡过程的核心是一个数据均衡算法，该数据均衡算法将不断迭代数据均衡逻辑，直至集群内数据均衡为止。该数据均衡算法每次迭代的逻辑如下：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309203437807-414611294.png" alt="img"></p>
+<p>步骤分析如下：</p>
+<ol>
+<li>数据均衡服务（Rebalancing Server）首先要求 NameNode 生成 DataNode 数据分布分析报告,获取每个DataNode磁盘使用情况</li>
+<li>Rebalancing Server汇总需要移动的数据分布情况，计算具体数据块迁移路线图。数据块迁移路线图，确保网络内最短路径</li>
+<li>开始数据块迁移任务，Proxy Source Data Node复制一块需要移动数据块</li>
+<li>将复制的数据块复制到目标DataNode上</li>
+<li>删除原始数据块</li>
+<li>目标DataNode向Proxy Source Data Node确认该数据块迁移完成</li>
+<li>Proxy Source Data Node向Rebalancing Server确认本次数据块迁移完成。然后继续执行这个过程，直至集群达到数据均衡标准</li>
+</ol>
+<h4 id="DataNode分组"><a href="#DataNode分组" class="headerlink" title="DataNode分组"></a><strong>DataNode分组</strong></h4><p>在第2步中，HDFS会把当前的DataNode节点,根据阈值的设定情况划分到Over、Above、Below、Under四个组中。在移动数据块的时候，Over组、Above组中的块向Below组、Under组移动。四个组定义如下：</p>
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180309203541810-527363557.png" alt="img"></p>
+<ul>
+<li><strong>Over组</strong>：此组中的DataNode的均满足</li>
+</ul>
+<blockquote>
+<p>DataNode_usedSpace_percent <strong>&gt;</strong> Cluster_usedSpace_percent + threshold</p>
+</blockquote>
+<ul>
+<li><strong>Above组</strong>：此组中的DataNode的均满足</li>
+</ul>
+<blockquote>
+<p>Cluster_usedSpace_percent + threshold <strong>&gt;</strong> DataNode_ usedSpace _percent <strong>&gt;</strong>Cluster_usedSpace_percent</p>
+</blockquote>
+<ul>
+<li><strong>Below组</strong>：此组中的DataNode的均满足</li>
+</ul>
+<blockquote>
+<p>Cluster_usedSpace_percent <strong>&gt;</strong> DataNode_ usedSpace_percent <strong>&gt;</strong> Cluster_ usedSpace_percent – threshold</p>
+</blockquote>
+<ul>
+<li><strong>Under组</strong>：此组中的DataNode的均满足</li>
+</ul>
+<blockquote>
+<p>Cluster_usedSpace_percent – threshold <strong>&gt;</strong> DataNode_usedSpace_percent</p>
+</blockquote>
+<h4 id="Hadoop-HDFS-数据自动平衡脚本使用方法"><a href="#Hadoop-HDFS-数据自动平衡脚本使用方法" class="headerlink" title="Hadoop HDFS 数据自动平衡脚本使用方法"></a>Hadoop HDFS 数据自动平衡脚本使用方法</h4><p>在Hadoop中，包含一个start-balancer.sh脚本，通过运行这个工具，启动HDFS数据均衡服务。该工具可以做到热插拔，即无须重启计算机和 Hadoop 服务。HadoopHome/bin目录下的start−balancer.sh脚本就是该任务的启动脚本。启动命令为：‘HadoopHome/bin目录下的start−balancer.sh脚本就是该任务的启动脚本。启动命令为：‘Hadoop_home/bin/start-balancer.sh –threshold`</p>
+<p><strong>影响Balancer的几个参数：</strong></p>
+<ul>
+<li>-threshold<ul>
+<li>默认设置：10，参数取值范围：0-100</li>
+<li>参数含义：判断集群是否平衡的阈值。理论上，该参数设置的越小，整个集群就越平衡</li>
+</ul>
+</li>
+<li>dfs.balance.bandwidthPerSec<ul>
+<li>默认设置：1048576（1M/S）</li>
+<li>参数含义：Balancer运行时允许占用的带宽</li>
+</ul>
+</li>
+</ul>
+<p>示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#启动数据均衡，默认阈值为 10%</span><br><span class="line">$Hadoop_home/bin/start-balancer.sh</span><br><span class="line"></span><br><span class="line">#启动数据均衡，阈值 5%</span><br><span class="line">bin/start-balancer.sh –threshold 5</span><br><span class="line"></span><br><span class="line">#停止数据均衡</span><br><span class="line">$Hadoop_home/bin/stop-balancer.sh</span><br></pre></td></tr></table></figure>
+
+<p>在hdfs-site.xml文件中可以设置数据均衡占用的网络带宽限制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;dfs.balance.bandwidthPerSec&lt;/name&gt;</span><br><span class="line">&lt;value&gt;1048576&lt;/value&gt;</span><br><span class="line">&lt;description&gt; Specifies the maximum bandwidth that each datanode can utilize for the balancing purpose in term of the number of bytes per second. &lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-10-Hadoop学习之路（十）HDFS API的使用.html" class="pre-post btn btn-default" title='Hadoop学习之路（十）HDFS API的使用'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（十）HDFS API的使用</span>
+    </a>
+    
+    
+    <a href="/2018-04-08-Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境.html" class="next-post btn btn-default" title='Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS的优点和缺点"><span class="toc-text">HDFS的优点和缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HDFS的优点"><span class="toc-text">HDFS的优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HDFS的缺点"><span class="toc-text">HDFS的缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#不适合以下操作"><span class="toc-text">不适合以下操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#抛出问题：HDFS文件系统为什么不适用于存储小文件？"><span class="toc-text">抛出问题：HDFS文件系统为什么不适用于存储小文件？</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS的辅助功能"><span class="toc-text">HDFS的辅助功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-心跳机制"><span class="toc-text">1.心跳机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#普通话讲解"><span class="toc-text">普通话讲解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#大白话讲解"><span class="toc-text">大白话讲解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安全模式"><span class="toc-text">2.安全模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-副本存放策略"><span class="toc-text">3.副本存放策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-负载均衡"><span class="toc-text">4.负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#负载均衡的原理"><span class="toc-text">负载均衡的原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#DataNode分组"><span class="toc-text">DataNode分组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Hadoop-HDFS-数据自动平衡脚本使用方法"><span class="toc-text">Hadoop HDFS 数据自动平衡脚本使用方法</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节：** &lt;Excerpt in index | 首页摘要&gt;
+​        Spark学习之路 （一）Sp...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节">
+            
+            Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/23</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Spark学习之路 （一）Spark初识</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>Hadoop有提供一些脚本命令，以便于我们对HDFS进行管理，可以通过命令hadoop fs进行查看： </p>
+<p>通过以上使用说明可以发现，里面提供了大多数和我们在本地操作文件系统相类似的命令，例如，cat查看文件内容，chgrp改变用户群组权限，chmod改变用户权限，chown改变用户拥有者权限，还有创建目录，查看目录，移动文件，重命名等等。</p>
+<p>hadoop fs -ls<br>这里，我们来看看命令hadoop fs -ls： </p>
+<p>这个命令大家肯定非常熟悉，在Linux下使用超级频繁，功能就是列出指定目录下的文件及文件夹。那接下来，我们来看看它是怎样查找到此目录下的文件及文件夹的。</p>
+<p>在运行hadoop fs -ls /命令之后，真正的命令只是hadoop，后面只是参数，那么，这个hadoop命令到底是哪呢？如果说集群是自己手动搭配的话，那大家肯定知道，这个命令就在${HADOOP_HOME}/bin目录下，但如果集群是自动化部署的时候，你可能一下子找不到这个命令在哪，此时，可以使用以下命令查找： </p>
+<p>可以看到，这个命令应该是在目录/usr/bin/之下，使用vim /usr/bin/hadoop查看命令详细：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">export HADOOP_HOME=$&#123;HADOOP_HOME:-/usr/hdp/2.5.0.0-1245/hadoop&#125;</span><br><span class="line">export HADOOP_MAPRED_HOME=$&#123;HADOOP_MAPRED_HOME:-/usr/hdp/2.5.0.0-1245/hadoop-mapreduce&#125;</span><br><span class="line">export HADOOP_YARN_HOME=$&#123;HADOOP_YARN_HOME:-/usr/hdp/2.5.0.0-1245/hadoop-yarn&#125;</span><br><span class="line">export HADOOP_LIBEXEC_DIR=$&#123;HADOOP_HOME&#125;/libexec</span><br><span class="line">export HDP_VERSION=$&#123;HDP_VERSION:-2.5.0.0-1245&#125;</span><br><span class="line">export HADOOP_OPTS="$&#123;HADOOP_OPTS&#125; -Dhdp.version=$&#123;HDP_VERSION&#125;"</span><br><span class="line"></span><br><span class="line">exec /usr/hdp/2.5.0.0-1245//hadoop/bin/hadoop.distro "$@"</span><br></pre></td></tr></table></figure>
+
+<p>这个脚本做了两件事，一是export了一些环境变量，使得之后运行的子程序都可以共享这些变量的值；二是执行了命令hadoop.distro命令，并传上了所有参数。</p>
+<p>现在，我们来看下命令hadoop.distro做了哪些事，由于代码有点小多，我就不全部贴了，只贴与执行命令hadoop fs -ls /相关的代码。</p>
+<p>命令hadoop.distro做的事情是：根据之前传入的参数，然后做一些判断，确定一些变量的值，最后执行的是以下命令：</p>
+<p>exec “$JAVA” $JAVA_HEAP_MAX $HADOOP_OPTS $CLASS “$@”<br>1<br>这里，我们看到了一堆变量，其中<br>$JAVA：java<br>$JAVA_HEAP_MAX：<br>$HADOOP_OPTS：</p>
+<pre><code># Always respect HADOOP_OPTS and HADOOP_CLIENT_OPTS
+HADOOP_OPTS=&quot;$HADOOP_OPTS $HADOOP_CLIENT_OPTS&quot;
+
+#make sure security appender is turned off
+HADOOP_OPTS=&quot;$HADOOP_OPTS -Dhadoop.security.logger=${HADOOP_SECURITY_LOGGER:-INFO,NullAppender}&quot;</code></pre><p>$CLASS：org.apache.hadoop.fs.FsShell<br>$@ ： -ls / 注意：这里已经没有参数fs了</p>
+<p>因此，命令hadoop.distro也就转换成执行一个JAVA类了，然后继续带上参数。</p>
+<p>打开hadoop的源代码，找到类org.apache.hadoop.fs.FsShell，它的main方法如下：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String argv[]) throws Exception &#123;</span><br><span class="line">     FsShell shell = newShellInstance(); //创建FsShell实例</span><br><span class="line">    Configuration conf = new Configuration();  //配置类，</span><br><span class="line">    conf.setQuietMode(false); //设置成“非安静模式”，默认为“安静模式”，在安静模式下，error和information的信息不会被记录。</span><br><span class="line"></span><br><span class="line">    shell.setConf(conf);</span><br><span class="line">    int res;</span><br><span class="line">    try &#123;</span><br><span class="line">      res = ToolRunner.run(shell, argv); //ToolRunner就是一个工具类，用于执行实现了接口Tool的类</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">      shell.close();</span><br><span class="line">    &#125;</span><br><span class="line">    System.exit(res);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>ToolRunner类结合GenericOptionsParser类来解析命令行参数，<br>在运行上述ToolRunner.run(shell, argv)代码之后，经过一番解释之后，最后真正执行的仍然是类FsShell的run方法，而且对其参数进行了解析，run方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">  @Override</span><br><span class="line">  public int run(String argv[]) throws Exception &#123;</span><br><span class="line">    // initialize FsShell 包括注册命令类</span><br><span class="line">    init();</span><br><span class="line">int exitCode = -1;</span><br><span class="line">if (argv.length &lt; 1) &#123;</span><br><span class="line">  printUsage(System.err); //打印使用方法</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  String cmd = argv[0]; //取到第一个参数，即 ls</span><br><span class="line">  Command instance = null;</span><br><span class="line">  try &#123;</span><br><span class="line">    // 取得实现了该命令（ls）的命令实例,并且此类已经通过类CommandFactory的addClass方法进行了注册</span><br><span class="line">    instance = commandFactory.getInstance(cmd);</span><br><span class="line">    if (instance == null) &#123;</span><br><span class="line">      throw new UnknownCommandException();</span><br><span class="line">    &#125;</span><br><span class="line">    exitCode = instance.run(Arrays.copyOfRange(argv, 1, argv.length));</span><br><span class="line">  &#125; catch (IllegalArgumentException e) &#123;</span><br><span class="line">    displayError(cmd, e.getLocalizedMessage());</span><br><span class="line">    if (instance != null) &#123;</span><br><span class="line">      printInstanceUsage(System.err, instance);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; catch (Exception e) &#123;</span><br><span class="line">    // instance.run catches IOE, so something is REALLY wrong if here</span><br><span class="line">    LOG.debug(&quot;Error&quot;, e);</span><br><span class="line">    displayError(cmd, &quot;Fatal internal error&quot;);</span><br><span class="line">    e.printStackTrace(System.err);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">return exitCode;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：通过查看类Ls的代码，我们可以发现，它有一个静态方法registerCommands，这个方法就是对类Ls进行注册，但是，这只是一个静态方法，那么，到底是在哪进行了此方法的调用呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Ls extends FsCommand &#123;</span><br><span class="line">  public static void registerCommands(CommandFactory factory) &#123;</span><br><span class="line">    factory.addClass(Ls.class, &quot;-ls&quot;);</span><br><span class="line">    factory.addClass(Lsr.class, &quot;-lsr&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>细心的朋友可能已经发现，就在类FsShell的run方法中，调用了一个init方法，而就在此方法中，有一行注册命令的代码，如下：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">protected void init() throws IOException &#123;</span><br><span class="line">    getConf().setQuietMode(true);</span><br><span class="line">    if (commandFactory == null) &#123;</span><br><span class="line">      commandFactory = new CommandFactory(getConf());</span><br><span class="line">      commandFactory.addObject(new Help(), &quot;-help&quot;);</span><br><span class="line">      commandFactory.addObject(new Usage(), &quot;-usage&quot;);</span><br><span class="line">      // 注册，调用registerCommands方法</span><br><span class="line">      registerCommands(commandFactory);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  protected void registerCommands(CommandFactory factory) &#123;</span><br><span class="line">    // TODO: DFSAdmin subclasses FsShell so need to protect the command</span><br><span class="line">    // registration.  This class should morph into a base class for</span><br><span class="line">    // commands, and then this method can be abstract</span><br><span class="line">    if (this.getClass().equals(FsShell.class)) &#123;</span><br><span class="line">      // 调用CommandFactory类的registerCommands方法</span><br><span class="line">      // 注意，这里传的参数是类FsCommand</span><br><span class="line">      factory.registerCommands(FsCommand.class);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>CommandFactory类的registerCommands方法如下：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void registerCommands(Class&lt;?&gt; registrarClass) &#123;</span><br><span class="line">    try &#123;</span><br><span class="line">      // 这里触发的是类CommandFactory的registerCommands方法</span><br><span class="line">      registrarClass.getMethod(</span><br><span class="line">          &quot;registerCommands&quot;, CommandFactory.class</span><br><span class="line">      ).invoke(null, this);</span><br><span class="line">    &#125; catch (Exception e) &#123;</span><br><span class="line">      throw new RuntimeException(StringUtils.stringifyException(e));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我拉看看类CommandFactory的registerCommands方法，代码如下：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public static void registerCommands(CommandFactory factory) &#123;</span><br><span class="line">   factory.registerCommands(AclCommands.class);</span><br><span class="line">   factory.registerCommands(CopyCommands.class);</span><br><span class="line">   factory.registerCommands(Count.class);</span><br><span class="line">   factory.registerCommands(Delete.class);</span><br><span class="line">   factory.registerCommands(Display.class);</span><br><span class="line">   factory.registerCommands(Find.class);</span><br><span class="line">   factory.registerCommands(FsShellPermissions.class);</span><br><span class="line">   factory.registerCommands(FsUsage.class);</span><br><span class="line">   // 我们会用到的就是这个类Ls</span><br><span class="line">   factory.registerCommands(Ls.class);</span><br><span class="line">   factory.registerCommands(Mkdir.class);</span><br><span class="line">   factory.registerCommands(MoveCommands.class);</span><br><span class="line">   factory.registerCommands(SetReplication.class);</span><br><span class="line">   factory.registerCommands(Stat.class);</span><br><span class="line">   factory.registerCommands(Tail.class);</span><br><span class="line">   factory.registerCommands(Test.class);</span><br><span class="line">   factory.registerCommands(Touch.class);</span><br><span class="line">   factory.registerCommands(Truncate.class);</span><br><span class="line">   factory.registerCommands(SnapshotCommands.class);</span><br><span class="line">   factory.registerCommands(XAttrCommands.class);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们再来看看Ls类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Ls extends FsCommand &#123;</span><br><span class="line">  public static void registerCommands(CommandFactory factory) &#123;</span><br><span class="line">    factory.addClass(Ls.class, &quot;-ls&quot;);</span><br><span class="line">    factory.addClass(Lsr.class, &quot;-lsr&quot;);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>也就是，在调用init方法的时候，对这些命令类进行了注册。<br>因此，上面的那个instance，在这里的话，其实就是类Ls的实例。类Ls继承类FsCommand，而类FsCommand是继承类Command,前面instance调用的run方法其实是父类Command的run方法，此方法主要做了两件事，一是处理配置选项，如-d,-R,-h，二是处理参数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public int run(String...argv) &#123;</span><br><span class="line">    LinkedList&lt;String&gt; args = new LinkedList&lt;String&gt;(Arrays.asList(argv));</span><br><span class="line">    try &#123;</span><br><span class="line">      if (isDeprecated()) &#123;</span><br><span class="line">        displayWarning(</span><br><span class="line">            &quot;DEPRECATED: Please use &apos;&quot;+ getReplacementCommand() + &quot;&apos; instead.&quot;);</span><br><span class="line">      &#125;</span><br><span class="line">      processOptions(args);</span><br><span class="line">      processRawArguments(args);</span><br><span class="line">    &#125; catch (IOException e) &#123;</span><br><span class="line">      displayError(e);</span><br><span class="line">    &#125;</span><br><span class="line">return (numErrors == 0) ? exitCode : exitCodeForError();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>方法processRawArguments的调用层次关系如下：</p>
+<pre><code>\-&gt; processRawArguments(LinkedList)
+     |-&gt; expandArguments(LinkedList)
+     |   \-&gt; expandArgument(String)*
+     \-&gt; processArguments(LinkedList)
+         |-&gt; processArgument(PathData)*
+         |   |-&gt; processPathArgument(PathData)
+         |   \-&gt; processPaths(PathData, PathData...)
+         |        \-&gt; processPath(PathData)*
+         \-&gt; processNonexistentPath(PathData)</code></pre><p>从这个层次关系中可以看出，整个方法是先进行展开参数，传入的参数是LinkedList<string>，展开后的参数是LinkedList<pathdata>，PathData类中包含了Path，FileStatus，FileSystem。其实，当程序运行到这里的时候，命令ls的结果就已经可以通过类PathData中的相关方法获取了。</pathdata></string></p>
+<p>展开参数后，开始进行处理参数，此时的参数就是LinkedList<pathdata>,然后循环处理此List，先是判断目录是否存在，是否需要递归查找，是否只是列出本目录（就是看有没有-R和-d参数），我们来看一下到底是如何输出结果的：</pathdata></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void processPaths(PathData parent, PathData ... items)</span><br><span class="line">  throws IOException &#123;</span><br><span class="line">    if (parent != null &amp;&amp; !isRecursive() &amp;&amp; items.length != 0) &#123;</span><br><span class="line">      out.println(&quot;Found &quot; + items.length + &quot; items&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    adjustColumnWidths(items); // 计算列宽，重新构建格式字符串</span><br><span class="line">    super.processPaths(parent, items);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到这里，大家是不是觉得很面熟？没想起来？我们上个图： </p>
+<p>这下看到了吧，最是输出结果的第一行，找到11项。</p>
+<p>接下来重新调整了一下列宽，最后调用了父类的processPaths方法，我们继续来看父类的这个方法，它做了哪些事：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">protected void processPaths(PathData parent, PathData ... items)</span><br><span class="line">  throws IOException &#123;</span><br><span class="line">    // TODO: this really should be iterative</span><br><span class="line">    for (PathData item : items) &#123;</span><br><span class="line">      try &#123;</span><br><span class="line">        processPath(item); // 真正处理每一项，然后打印出来</span><br><span class="line">        if (recursive &amp;&amp; isPathRecursable(item)) &#123;</span><br><span class="line">          recursePath(item); // 如果有指定参数 -R，则需要进行递归</span><br><span class="line">        &#125;</span><br><span class="line">        postProcessPath(item); // 这个没理解，DFS还有后序DFS么？有知情者，请告知，谢谢。</span><br><span class="line">      &#125; catch (IOException e) &#123;</span><br><span class="line">        displayError(e);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们来看一下打印具体每行信息的代码：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected void processPath(PathData item) throws IOException &#123;</span><br><span class="line">    FileStatus stat = item.stat;</span><br><span class="line">    String line = String.format(lineFormat,</span><br><span class="line">        (stat.isDirectory() ? &quot;d&quot; : &quot;-&quot;),  // 文件夹显示d，文件显示-</span><br><span class="line">        stat.getPermission() + (stat.getPermission().getAclBit() ? &quot;+&quot; : &quot; &quot;), // 获取权限</span><br><span class="line">        (stat.isFile() ? stat.getReplication() : &quot;-&quot;),</span><br><span class="line">        stat.getOwner(), // 获取拥有者</span><br><span class="line">        stat.getGroup(),  // 获取组</span><br><span class="line">        formatSize(stat.getLen()),  // 获取大小</span><br><span class="line">        dateFormat.format(new  Date(stat.getModificationTime())),  // 日期</span><br><span class="line">        item  // 项，即路径</span><br><span class="line">    );</span><br><span class="line">    out.println(line); // 打印行</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里，命令hadoop fs -ls /的执行过程基本已经结束(关于文件系统内部细节，后续再讲），这就是整个命令执行的过程。最后，我们来总结一下：</p>
+<p>执行shell。执行命令hadoop fs -ls /，首先执行的是shell命令，然后转换成执行Java类。<br>执行Java。在执行Java类的时候，使用工具类对其进行配置项解析，并使用反射机制对命令进行了转换，于是后面变成了调用类Ls的run方法。<br>调用类Ls的相关方法。类Ls负责处理路径，并打印详情。</p>
+<p>原文链接：<a href="https://blog.csdn.net/strongyoung88/article/details/68952248" target="_blank" rel="noopener">https://blog.csdn.net/strongyoung88/article/details/68952248</a></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-25-Hadoop学习之路（二十五）MapReduce的API使用（二）.html" class="pre-post btn btn-default" title='Hadoop学习之路（二十五）MapReduce的API使用（二）'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十五）MapReduce的API使用（二）</span>
+    </a>
+    
+    
+    <a href="/2018-04-23-Hadoop学习之路（二十三）MapReduce中的shuffle详解.html" class="next-post btn btn-default" title='Hadoop学习之路（二十三）MapReduce中的shuffle详解'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十三）MapReduce中的shuffle详解</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <p>暂无目录</p>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

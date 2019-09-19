@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hbase">
+
+
+<meta name="description" content="** HBase学习之路 （四）HBase的API操作：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （四）HBase的API操作
+...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （四）HBase的API操作 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （四）HBase的API操作">
+            
+            HBase学习之路 （四）HBase的API操作
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hbase/">Hbase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/05/01</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （四）HBase的API操作：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （四）HBase的API操作</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="Eclipse环境搭建"><a href="#Eclipse环境搭建" class="headerlink" title="Eclipse环境搭建"></a>Eclipse环境搭建</h2><p>具体的jar的引入方式可以参考<a href="http://www.cnblogs.com/qingyunzong/p/8623309.html" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8623309.html</a></p>
+<h2 id="HBase-API操作表和数据"><a href="#HBase-API操作表和数据" class="headerlink" title="HBase API操作表和数据"></a>HBase API操作表和数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br></pre></td><td class="code"><pre><span class="line">  1 import java.io.IOException;</span><br><span class="line">  2 import java.util.Date;</span><br><span class="line">  3 </span><br><span class="line">  4 import org.apache.hadoop.conf.Configuration;</span><br><span class="line">  5 import org.apache.hadoop.hbase.HBaseConfiguration;</span><br><span class="line">  6 import org.apache.hadoop.hbase.HColumnDescriptor;</span><br><span class="line">  7 import org.apache.hadoop.hbase.HTableDescriptor;</span><br><span class="line">  8 import org.apache.hadoop.hbase.TableName;</span><br><span class="line">  9 import org.apache.hadoop.hbase.client.Admin;</span><br><span class="line"> 10 import org.apache.hadoop.hbase.client.Connection;</span><br><span class="line"> 11 import org.apache.hadoop.hbase.client.ConnectionFactory;</span><br><span class="line"> 12 import org.apache.hadoop.hbase.client.Delete;</span><br><span class="line"> 13 import org.apache.hadoop.hbase.client.Get;</span><br><span class="line"> 14 import org.apache.hadoop.hbase.client.Put;</span><br><span class="line"> 15 import org.apache.hadoop.hbase.client.Result;</span><br><span class="line"> 16 import org.apache.hadoop.hbase.client.ResultScanner;</span><br><span class="line"> 17 import org.apache.hadoop.hbase.client.Scan;</span><br><span class="line"> 18 import org.apache.hadoop.hbase.client.Table;</span><br><span class="line"> 19 </span><br><span class="line"> 20 import com.study.hbase.service.HBaseUtils;</span><br><span class="line"> 21 </span><br><span class="line"> 22 public class HBaseUtilsImpl implements HBaseUtils &#123;</span><br><span class="line"> 23 </span><br><span class="line"> 24     private static final String ZK_CONNECT_KEY = &quot;hbase.zookeeper.quorum&quot;;</span><br><span class="line"> 25     private static final String ZK_CONNECT_VALUE = &quot;hadoop1:2181,hadoop2:2181,hadoop3:2181&quot;;</span><br><span class="line"> 26 </span><br><span class="line"> 27     private static Connection conn = null;</span><br><span class="line"> 28     private static Admin admin = null;</span><br><span class="line"> 29 </span><br><span class="line"> 30     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 31         </span><br><span class="line"> 32         getConnection();</span><br><span class="line"> 33         getAdmin();</span><br><span class="line"> 34         </span><br><span class="line"> 35         HBaseUtilsImpl hbu = new HBaseUtilsImpl();</span><br><span class="line"> 36         </span><br><span class="line"> 37         </span><br><span class="line"> 38         //hbu.getAllTables();</span><br><span class="line"> 39         </span><br><span class="line"> 40         //hbu.descTable(&quot;people&quot;);</span><br><span class="line"> 41         </span><br><span class="line"> 42         //String[] infos = &#123;&quot;info&quot;,&quot;family&quot;&#125;;</span><br><span class="line"> 43         //hbu.createTable(&quot;people&quot;, infos);</span><br><span class="line"> 44         </span><br><span class="line"> 45         //String[] add = &#123;&quot;cs1&quot;,&quot;cs2&quot;&#125;;</span><br><span class="line"> 46         //String[] remove = &#123;&quot;cf1&quot;,&quot;cf2&quot;&#125;;</span><br><span class="line"> 47         </span><br><span class="line"> 48         //HColumnDescriptor hc = new HColumnDescriptor(&quot;sixsixsix&quot;);</span><br><span class="line"> 49         </span><br><span class="line"> 50         //hbu.modifyTable(&quot;stu&quot;,hc);</span><br><span class="line"> 51         //hbu.getAllTables();</span><br><span class="line"> 52 </span><br><span class="line"> 53         </span><br><span class="line"> 54         hbu.putData(&quot;huoying&quot;, &quot;rk001&quot;, &quot;cs2&quot;, &quot;name&quot;, &quot;aobama&quot;,new Date().getTime());</span><br><span class="line"> 55         hbu.getAllTables();</span><br><span class="line"> 56         </span><br><span class="line"> 57         conn.close();</span><br><span class="line"> 58     &#125;</span><br><span class="line"> 59 </span><br><span class="line"> 60     // 获取连接</span><br><span class="line"> 61     public static Connection getConnection() &#123;</span><br><span class="line"> 62         // 创建一个可以用来管理hbase配置信息的conf对象</span><br><span class="line"> 63         Configuration conf = HBaseConfiguration.create();</span><br><span class="line"> 64         // 设置当前的程序去寻找的hbase在哪里</span><br><span class="line"> 65         conf.set(ZK_CONNECT_KEY, ZK_CONNECT_VALUE);</span><br><span class="line"> 66         try &#123;</span><br><span class="line"> 67             conn = ConnectionFactory.createConnection(conf);</span><br><span class="line"> 68         &#125; catch (IOException e) &#123;</span><br><span class="line"> 69             e.printStackTrace();</span><br><span class="line"> 70         &#125;</span><br><span class="line"> 71         return conn;</span><br><span class="line"> 72     &#125;</span><br><span class="line"> 73 </span><br><span class="line"> 74     // 获取管理员对象</span><br><span class="line"> 75     public static Admin getAdmin() &#123;</span><br><span class="line"> 76         try &#123;</span><br><span class="line"> 77             admin = conn.getAdmin();</span><br><span class="line"> 78         &#125; catch (IOException e) &#123;</span><br><span class="line"> 79             e.printStackTrace();</span><br><span class="line"> 80         &#125;</span><br><span class="line"> 81         return admin;</span><br><span class="line"> 82     &#125;</span><br><span class="line"> 83 </span><br><span class="line"> 84     // 查询所有表</span><br><span class="line"> 85     @Override</span><br><span class="line"> 86     public void getAllTables() throws Exception &#123;</span><br><span class="line"> 87         //获取列簇的描述信息</span><br><span class="line"> 88         HTableDescriptor[] listTables = admin.listTables();</span><br><span class="line"> 89         for (HTableDescriptor listTable : listTables) &#123;</span><br><span class="line"> 90             //转化为表名</span><br><span class="line"> 91             String tbName = listTable.getNameAsString();</span><br><span class="line"> 92             //获取列的描述信息</span><br><span class="line"> 93             HColumnDescriptor[] columnFamilies = listTable.getColumnFamilies();</span><br><span class="line"> 94             System.out.println(&quot;tableName:&quot;+tbName);</span><br><span class="line"> 95             for(HColumnDescriptor columnFamilie : columnFamilies) &#123;</span><br><span class="line"> 96                 //获取列簇的名字</span><br><span class="line"> 97                 String columnFamilyName = columnFamilie.getNameAsString();</span><br><span class="line"> 98                 System.out.print(&quot;\t&quot;+&quot;columnFamilyName:&quot;+columnFamilyName);</span><br><span class="line"> 99             &#125;</span><br><span class="line">100             System.out.println();</span><br><span class="line">101         &#125;</span><br><span class="line">102 </span><br><span class="line">103     &#125;</span><br><span class="line">104 </span><br><span class="line">105     // 创建表，传参，表名和列簇的名字</span><br><span class="line">106     @Override</span><br><span class="line">107     public void createTable(String tableName, String[] family) throws Exception &#123;</span><br><span class="line">108         </span><br><span class="line">109         TableName name = TableName.valueOf(tableName);</span><br><span class="line">110         //判断表是否存在</span><br><span class="line">111         if(admin.tableExists(name)) &#123;</span><br><span class="line">112             System.out.println(&quot;table已经存在！&quot;);</span><br><span class="line">113         &#125;else &#123;</span><br><span class="line">114             //表的列簇示例</span><br><span class="line">115             HTableDescriptor htd = new HTableDescriptor(name);</span><br><span class="line">116             //向列簇中添加列的信息</span><br><span class="line">117             for(String str : family) &#123;</span><br><span class="line">118                 HColumnDescriptor hcd = new HColumnDescriptor(str);</span><br><span class="line">119                 htd.addFamily(hcd);</span><br><span class="line">120             &#125;</span><br><span class="line">121             //创建表</span><br><span class="line">122             admin.createTable(htd);</span><br><span class="line">123             //判断表是否创建成功</span><br><span class="line">124             if(admin.tableExists(name)) &#123;</span><br><span class="line">125                 System.out.println(&quot;table创建成功&quot;);</span><br><span class="line">126             &#125;else &#123;</span><br><span class="line">127                 System.out.println(&quot;table创建失败&quot;);</span><br><span class="line">128             &#125;</span><br><span class="line">129         &#125;    </span><br><span class="line">130         </span><br><span class="line">131     &#125;</span><br><span class="line">132 </span><br><span class="line">133     // 创建表，传参:封装好的多个列簇</span><br><span class="line">134     @Override</span><br><span class="line">135     public void createTable(HTableDescriptor htds) throws Exception &#123;</span><br><span class="line">136         //获得表的名字</span><br><span class="line">137         String tbName = htds.getNameAsString();</span><br><span class="line">138         </span><br><span class="line">139         admin.createTable(htds);</span><br><span class="line">140     &#125;</span><br><span class="line">141 </span><br><span class="line">142     // 创建表，传参，表名和封装好的多个列簇</span><br><span class="line">143     @Override</span><br><span class="line">144     public void createTable(String tableName, HTableDescriptor htds) throws Exception &#123;</span><br><span class="line">145 </span><br><span class="line">146         TableName name = TableName.valueOf(tableName);</span><br><span class="line">147         </span><br><span class="line">148         if(admin.tableExists(name)) &#123;</span><br><span class="line">149             System.out.println(&quot;table已经存在！&quot;);</span><br><span class="line">150         &#125;else &#123;</span><br><span class="line">151             admin.createTable(htds);</span><br><span class="line">152             boolean flag = admin.tableExists(name);</span><br><span class="line">153             System.out.println(flag ? &quot;创建成功&quot; : &quot;创建失败&quot;);</span><br><span class="line">154         &#125;</span><br><span class="line">155         </span><br><span class="line">156     &#125;</span><br><span class="line">157 </span><br><span class="line">158     </span><br><span class="line">159     // 查看表的列簇属性</span><br><span class="line">160     @Override</span><br><span class="line">161     public void descTable(String tableName) throws Exception &#123;</span><br><span class="line">162         //转化为表名</span><br><span class="line">163         TableName name = TableName.valueOf(tableName);</span><br><span class="line">164         //判断表是否存在</span><br><span class="line">165         if(admin.tableExists(name)) &#123;</span><br><span class="line">166             //获取表中列簇的描述信息</span><br><span class="line">167             HTableDescriptor tableDescriptor = admin.getTableDescriptor(name);</span><br><span class="line">168             //获取列簇中列的信息</span><br><span class="line">169             HColumnDescriptor[] columnFamilies = tableDescriptor.getColumnFamilies();</span><br><span class="line">170             for(HColumnDescriptor columnFamily : columnFamilies) &#123;</span><br><span class="line">171                 System.out.println(columnFamily);</span><br><span class="line">172             &#125;</span><br><span class="line">173             </span><br><span class="line">174         &#125;else &#123;</span><br><span class="line">175             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">176         &#125;</span><br><span class="line">177         </span><br><span class="line">178     &#125;</span><br><span class="line">179 </span><br><span class="line">180     // 判断表存在不存在</span><br><span class="line">181     @Override</span><br><span class="line">182     public boolean existTable(String tableName) throws Exception &#123;</span><br><span class="line">183         TableName name = TableName.valueOf(tableName);</span><br><span class="line">184         return admin.tableExists(name);</span><br><span class="line">185     &#125;</span><br><span class="line">186 </span><br><span class="line">187     // disable表</span><br><span class="line">188     @Override</span><br><span class="line">189     public void disableTable(String tableName) throws Exception &#123;</span><br><span class="line">190         </span><br><span class="line">191         TableName name = TableName.valueOf(tableName);</span><br><span class="line">192         </span><br><span class="line">193         if(admin.tableExists(name)) &#123;</span><br><span class="line">194             if(admin.isTableEnabled(name)) &#123;</span><br><span class="line">195                 admin.disableTable(name);</span><br><span class="line">196             &#125;else &#123;</span><br><span class="line">197                 System.out.println(&quot;table不是活动状态&quot;);</span><br><span class="line">198             &#125;</span><br><span class="line">199         &#125;else &#123;</span><br><span class="line">200             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">201         &#125;</span><br><span class="line">202             </span><br><span class="line">203     &#125;</span><br><span class="line">204 </span><br><span class="line">205     // drop表</span><br><span class="line">206     @Override</span><br><span class="line">207     public void dropTable(String tableName) throws Exception &#123;</span><br><span class="line">208         //转化为表名</span><br><span class="line">209         TableName name = TableName.valueOf(tableName);</span><br><span class="line">210         //判断表是否存在</span><br><span class="line">211         if(admin.tableExists(name)) &#123;</span><br><span class="line">212             //判断表是否处于可用状态</span><br><span class="line">213             boolean tableEnabled = admin.isTableEnabled(name);</span><br><span class="line">214             </span><br><span class="line">215             if(tableEnabled) &#123;</span><br><span class="line">216                 //使表变成不可用状态</span><br><span class="line">217                 admin.disableTable(name);</span><br><span class="line">218             &#125;</span><br><span class="line">219             //删除表</span><br><span class="line">220             admin.deleteTable(name);</span><br><span class="line">221             //判断表是否存在</span><br><span class="line">222             if(admin.tableExists(name)) &#123;</span><br><span class="line">223                 System.out.println(&quot;删除失败&quot;);</span><br><span class="line">224             &#125;else &#123;</span><br><span class="line">225                 System.out.println(&quot;删除成功&quot;);</span><br><span class="line">226             &#125;</span><br><span class="line">227             </span><br><span class="line">228         &#125;else &#123;</span><br><span class="line">229             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">230         &#125; </span><br><span class="line">231         </span><br><span class="line">232         </span><br><span class="line">233     &#125;</span><br><span class="line">234     </span><br><span class="line">235     // 修改表(增加和删除)</span><br><span class="line">236     @Override</span><br><span class="line">237     public void modifyTable(String tableName) throws Exception &#123;</span><br><span class="line">238         //转化为表名</span><br><span class="line">239         TableName name = TableName.valueOf(tableName);</span><br><span class="line">240         //判断表是否存在</span><br><span class="line">241         if(admin.tableExists(name)) &#123;</span><br><span class="line">242             //判断表是否可用状态</span><br><span class="line">243             boolean tableEnabled = admin.isTableEnabled(name);</span><br><span class="line">244             </span><br><span class="line">245             if(tableEnabled) &#123;</span><br><span class="line">246                 //使表变成不可用</span><br><span class="line">247                 admin.disableTable(name);</span><br><span class="line">248             &#125;</span><br><span class="line">249             //根据表名得到表</span><br><span class="line">250             HTableDescriptor tableDescriptor = admin.getTableDescriptor(name);</span><br><span class="line">251             //创建列簇结构对象</span><br><span class="line">252             HColumnDescriptor columnFamily1 = new HColumnDescriptor(&quot;cf1&quot;.getBytes());</span><br><span class="line">253             HColumnDescriptor columnFamily2 = new HColumnDescriptor(&quot;cf2&quot;.getBytes());</span><br><span class="line">254             </span><br><span class="line">255             tableDescriptor.addFamily(columnFamily1);</span><br><span class="line">256             tableDescriptor.addFamily(columnFamily2);</span><br><span class="line">257             //替换该表所有的列簇</span><br><span class="line">258             admin.modifyTable(name, tableDescriptor);</span><br><span class="line">259             </span><br><span class="line">260         &#125;else &#123;</span><br><span class="line">261             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">262         &#125; </span><br><span class="line">263     &#125;</span><br><span class="line">264 </span><br><span class="line">265     // 修改表(增加和删除)</span><br><span class="line">266     @Override</span><br><span class="line">267     public void modifyTable(String tableName, String[] addColumn, String[] removeColumn) throws Exception &#123;</span><br><span class="line">268         //转化为表名</span><br><span class="line">269         TableName name = TableName.valueOf(tableName);</span><br><span class="line">270         //判断表是否存在</span><br><span class="line">271         if(admin.tableExists(name)) &#123;</span><br><span class="line">272             //判断表是否可用状态</span><br><span class="line">273             boolean tableEnabled = admin.isTableEnabled(name);</span><br><span class="line">274             </span><br><span class="line">275             if(tableEnabled) &#123;</span><br><span class="line">276                 //使表变成不可用</span><br><span class="line">277                 admin.disableTable(name);</span><br><span class="line">278             &#125;</span><br><span class="line">279             //根据表名得到表</span><br><span class="line">280             HTableDescriptor tableDescriptor = admin.getTableDescriptor(name);</span><br><span class="line">281             //创建列簇结构对象，添加列</span><br><span class="line">282             for(String add : addColumn) &#123;</span><br><span class="line">283                 HColumnDescriptor addColumnDescriptor = new HColumnDescriptor(add);</span><br><span class="line">284                 tableDescriptor.addFamily(addColumnDescriptor);</span><br><span class="line">285             &#125;</span><br><span class="line">286             //创建列簇结构对象，删除列</span><br><span class="line">287             for(String remove : removeColumn) &#123;</span><br><span class="line">288                 HColumnDescriptor removeColumnDescriptor = new HColumnDescriptor(remove);</span><br><span class="line">289                 tableDescriptor.removeFamily(removeColumnDescriptor.getName());</span><br><span class="line">290             &#125;</span><br><span class="line">291             </span><br><span class="line">292             admin.modifyTable(name, tableDescriptor);</span><br><span class="line">293             </span><br><span class="line">294             </span><br><span class="line">295         &#125;else &#123;</span><br><span class="line">296             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">297         &#125; </span><br><span class="line">298         </span><br><span class="line">299     &#125;</span><br><span class="line">300 </span><br><span class="line">301     @Override</span><br><span class="line">302     public void modifyTable(String tableName, HColumnDescriptor hcds) throws Exception &#123;</span><br><span class="line">303         //转化为表名</span><br><span class="line">304         TableName name = TableName.valueOf(tableName);</span><br><span class="line">305         //根据表名得到表</span><br><span class="line">306         HTableDescriptor tableDescriptor = admin.getTableDescriptor(name);</span><br><span class="line">307         //获取表中所有的列簇信息</span><br><span class="line">308         HColumnDescriptor[] columnFamilies = tableDescriptor.getColumnFamilies();</span><br><span class="line">309         </span><br><span class="line">310         boolean flag = false;</span><br><span class="line">311         //判断参数中传入的列簇是否已经在表中存在</span><br><span class="line">312         for(HColumnDescriptor columnFamily : columnFamilies) &#123;</span><br><span class="line">313             if(columnFamily.equals(hcds)) &#123;</span><br><span class="line">314                 flag = true;</span><br><span class="line">315             &#125;</span><br><span class="line">316         &#125;    </span><br><span class="line">317         //存在提示，不存在直接添加该列簇信息</span><br><span class="line">318         if(flag) &#123;</span><br><span class="line">319             System.out.println(&quot;该列簇已经存在&quot;);</span><br><span class="line">320         &#125;else &#123;</span><br><span class="line">321             tableDescriptor.addFamily(hcds);</span><br><span class="line">322             admin.modifyTable(name, tableDescriptor);</span><br><span class="line">323         &#125;</span><br><span class="line">324         </span><br><span class="line">325     &#125;</span><br><span class="line">326 </span><br><span class="line">327     </span><br><span class="line">328     /**添加数据</span><br><span class="line">329     *tableName:    表明</span><br><span class="line">330     *rowKey:    行键</span><br><span class="line">331     *familyName:列簇</span><br><span class="line">332     *columnName:列名</span><br><span class="line">333     *value:        值</span><br><span class="line">334     */</span><br><span class="line">335     @Override</span><br><span class="line">336     public void putData(String tableName, String rowKey, String familyName, String columnName, String value)</span><br><span class="line">337             throws Exception &#123;</span><br><span class="line">338         //转化为表名</span><br><span class="line">339         TableName name = TableName.valueOf(tableName);</span><br><span class="line">340         //添加数据之前先判断表是否存在，不存在的话先创建表</span><br><span class="line">341         if(admin.tableExists(name)) &#123;</span><br><span class="line">342         </span><br><span class="line">343         &#125;else &#123;</span><br><span class="line">344             //根据表明创建表结构</span><br><span class="line">345             HTableDescriptor tableDescriptor = new HTableDescriptor(name);</span><br><span class="line">346             //定义列簇的名字</span><br><span class="line">347             HColumnDescriptor columnFamilyName = new HColumnDescriptor(familyName);</span><br><span class="line">348             tableDescriptor.addFamily(columnFamilyName);</span><br><span class="line">349             admin.createTable(tableDescriptor);</span><br><span class="line">350         </span><br><span class="line">351         &#125;</span><br><span class="line">352 </span><br><span class="line">353         Table table = conn.getTable(name);</span><br><span class="line">354         Put put = new Put(rowKey.getBytes());</span><br><span class="line">355         </span><br><span class="line">356         put.addColumn(familyName.getBytes(), columnName.getBytes(), value.getBytes());</span><br><span class="line">357         table.put(put);</span><br><span class="line">358 </span><br><span class="line">359     &#125;</span><br><span class="line">360 </span><br><span class="line">361     @Override</span><br><span class="line">362     public void putData(String tableName, String rowKey, String familyName, String columnName, String value,</span><br><span class="line">363             long timestamp) throws Exception &#123;</span><br><span class="line">364 </span><br><span class="line">365         // 转化为表名</span><br><span class="line">366         TableName name = TableName.valueOf(tableName);</span><br><span class="line">367         // 添加数据之前先判断表是否存在，不存在的话先创建表</span><br><span class="line">368         if (admin.tableExists(name)) &#123;</span><br><span class="line">369 </span><br><span class="line">370         &#125; else &#123;</span><br><span class="line">371             // 根据表明创建表结构</span><br><span class="line">372             HTableDescriptor tableDescriptor = new HTableDescriptor(name);</span><br><span class="line">373             // 定义列簇的名字</span><br><span class="line">374             HColumnDescriptor columnFamilyName = new HColumnDescriptor(familyName);</span><br><span class="line">375             tableDescriptor.addFamily(columnFamilyName);</span><br><span class="line">376             admin.createTable(tableDescriptor);</span><br><span class="line">377 </span><br><span class="line">378         &#125;</span><br><span class="line">379 </span><br><span class="line">380         Table table = conn.getTable(name);</span><br><span class="line">381         Put put = new Put(rowKey.getBytes());</span><br><span class="line">382 </span><br><span class="line">383         //put.addColumn(familyName.getBytes(), columnName.getBytes(), value.getBytes());</span><br><span class="line">384         put.addImmutable(familyName.getBytes(), columnName.getBytes(), timestamp, value.getBytes());</span><br><span class="line">385         table.put(put);</span><br><span class="line">386 </span><br><span class="line">387     &#125;</span><br><span class="line">388 </span><br><span class="line">389 </span><br><span class="line">390     // 根据rowkey查询数据</span><br><span class="line">391     @Override</span><br><span class="line">392     public Result getResult(String tableName, String rowKey) throws Exception &#123;</span><br><span class="line">393         </span><br><span class="line">394         Result result;</span><br><span class="line">395         TableName name = TableName.valueOf(tableName);</span><br><span class="line">396         if(admin.tableExists(name)) &#123;</span><br><span class="line">397             Table table = conn.getTable(name);</span><br><span class="line">398             Get get = new Get(rowKey.getBytes());</span><br><span class="line">399             result = table.get(get);</span><br><span class="line">400             </span><br><span class="line">401         &#125;else &#123;</span><br><span class="line">402             result = null;</span><br><span class="line">403         &#125;</span><br><span class="line">404         </span><br><span class="line">405         return result;</span><br><span class="line">406     &#125;</span><br><span class="line">407 </span><br><span class="line">408     // 根据rowkey查询数据</span><br><span class="line">409     @Override</span><br><span class="line">410     public Result getResult(String tableName, String rowKey, String familyName) throws Exception &#123;</span><br><span class="line">411         Result result;</span><br><span class="line">412         TableName name = TableName.valueOf(tableName);</span><br><span class="line">413         if(admin.tableExists(name)) &#123;</span><br><span class="line">414             Table table = conn.getTable(name);</span><br><span class="line">415             Get get = new Get(rowKey.getBytes());</span><br><span class="line">416             get.addFamily(familyName.getBytes());</span><br><span class="line">417             result = table.get(get);</span><br><span class="line">418             </span><br><span class="line">419         &#125;else &#123;</span><br><span class="line">420             result = null;</span><br><span class="line">421         &#125;</span><br><span class="line">422         </span><br><span class="line">423         return result;</span><br><span class="line">424     &#125;</span><br><span class="line">425 </span><br><span class="line">426     // 根据rowkey查询数据</span><br><span class="line">427     @Override</span><br><span class="line">428     public Result getResult(String tableName, String rowKey, String familyName, String columnName) throws Exception &#123;</span><br><span class="line">429         </span><br><span class="line">430         Result result;</span><br><span class="line">431         TableName name = TableName.valueOf(tableName);</span><br><span class="line">432         if(admin.tableExists(name)) &#123;</span><br><span class="line">433             Table table = conn.getTable(name);</span><br><span class="line">434             Get get = new Get(rowKey.getBytes());</span><br><span class="line">435             get.addColumn(familyName.getBytes(), columnName.getBytes());</span><br><span class="line">436             result = table.get(get);</span><br><span class="line">437             </span><br><span class="line">438         &#125;else &#123;</span><br><span class="line">439             result = null;</span><br><span class="line">440         &#125;</span><br><span class="line">441         </span><br><span class="line">442         return result;</span><br><span class="line">443     &#125;</span><br><span class="line">444 </span><br><span class="line">445     // 查询指定version</span><br><span class="line">446     @Override</span><br><span class="line">447     public Result getResultByVersion(String tableName, String rowKey, String familyName, String columnName,</span><br><span class="line">448             int versions) throws Exception &#123;</span><br><span class="line">449         </span><br><span class="line">450         Result result;</span><br><span class="line">451         TableName name = TableName.valueOf(tableName);</span><br><span class="line">452         if(admin.tableExists(name)) &#123;</span><br><span class="line">453             Table table = conn.getTable(name);</span><br><span class="line">454             Get get = new Get(rowKey.getBytes());</span><br><span class="line">455             get.addColumn(familyName.getBytes(), columnName.getBytes());</span><br><span class="line">456             get.setMaxVersions(versions);</span><br><span class="line">457             result = table.get(get);</span><br><span class="line">458             </span><br><span class="line">459         &#125;else &#123;</span><br><span class="line">460             result = null;</span><br><span class="line">461         &#125;</span><br><span class="line">462         </span><br><span class="line">463         return result;</span><br><span class="line">464     &#125;</span><br><span class="line">465 </span><br><span class="line">466     // scan全表数据</span><br><span class="line">467     @Override</span><br><span class="line">468     public ResultScanner getResultScann(String tableName) throws Exception &#123;</span><br><span class="line">469         </span><br><span class="line">470         ResultScanner result;</span><br><span class="line">471         TableName name = TableName.valueOf(tableName);</span><br><span class="line">472         if(admin.tableExists(name)) &#123;</span><br><span class="line">473             Table table = conn.getTable(name);</span><br><span class="line">474             Scan scan = new Scan();</span><br><span class="line">475             result = table.getScanner(scan);</span><br><span class="line">476             </span><br><span class="line">477         &#125;else &#123;</span><br><span class="line">478             result = null;</span><br><span class="line">479         &#125;</span><br><span class="line">480         </span><br><span class="line">481         return result;</span><br><span class="line">482     &#125;</span><br><span class="line">483 </span><br><span class="line">484     // scan全表数据</span><br><span class="line">485     @Override</span><br><span class="line">486     public ResultScanner getResultScann(String tableName, Scan scan) throws Exception &#123;</span><br><span class="line">487         </span><br><span class="line">488         ResultScanner result;</span><br><span class="line">489         TableName name = TableName.valueOf(tableName);</span><br><span class="line">490         if(admin.tableExists(name)) &#123;</span><br><span class="line">491             Table table = conn.getTable(name);</span><br><span class="line">492             result = table.getScanner(scan);</span><br><span class="line">493             </span><br><span class="line">494         &#125;else &#123;</span><br><span class="line">495             result = null;</span><br><span class="line">496         &#125;</span><br><span class="line">497         </span><br><span class="line">498         return result;</span><br><span class="line">499     &#125;</span><br><span class="line">500 </span><br><span class="line">501     // 删除数据（指定的列）</span><br><span class="line">502     @Override</span><br><span class="line">503     public void deleteColumn(String tableName, String rowKey) throws Exception &#123;</span><br><span class="line">504         </span><br><span class="line">505         TableName name = TableName.valueOf(tableName);</span><br><span class="line">506         if(admin.tableExists(name)) &#123;</span><br><span class="line">507             Table table = conn.getTable(name);</span><br><span class="line">508             Delete delete = new Delete(rowKey.getBytes());</span><br><span class="line">509             table.delete(delete);</span><br><span class="line">510         </span><br><span class="line">511         &#125;else &#123;</span><br><span class="line">512             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">513         &#125;</span><br><span class="line">514         </span><br><span class="line">515         </span><br><span class="line">516     &#125;</span><br><span class="line">517 </span><br><span class="line">518     // 删除数据（指定的列）</span><br><span class="line">519     @Override</span><br><span class="line">520     public void deleteColumn(String tableName, String rowKey, String falilyName) throws Exception &#123;</span><br><span class="line">521         </span><br><span class="line">522         TableName name = TableName.valueOf(tableName);</span><br><span class="line">523         if(admin.tableExists(name)) &#123;</span><br><span class="line">524             Table table = conn.getTable(name);</span><br><span class="line">525             Delete delete = new Delete(rowKey.getBytes());</span><br><span class="line">526             delete.addFamily(falilyName.getBytes());</span><br><span class="line">527             table.delete(delete);</span><br><span class="line">528         </span><br><span class="line">529         &#125;else &#123;</span><br><span class="line">530             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">531         &#125;</span><br><span class="line">532         </span><br><span class="line">533     &#125;</span><br><span class="line">534 </span><br><span class="line">535     // 删除数据（指定的列）</span><br><span class="line">536     @Override</span><br><span class="line">537     public void deleteColumn(String tableName, String rowKey, String falilyName, String columnName) throws Exception &#123;</span><br><span class="line">538         TableName name = TableName.valueOf(tableName);</span><br><span class="line">539         if(admin.tableExists(name)) &#123;</span><br><span class="line">540             Table table = conn.getTable(name);</span><br><span class="line">541             Delete delete = new Delete(rowKey.getBytes());</span><br><span class="line">542             delete.addColumn(falilyName.getBytes(), columnName.getBytes());</span><br><span class="line">543             table.delete(delete);</span><br><span class="line">544         </span><br><span class="line">545         &#125;else &#123;</span><br><span class="line">546             System.out.println(&quot;table不存在&quot;);</span><br><span class="line">547         &#125;</span><br><span class="line">548     &#125;</span><br><span class="line">549 </span><br><span class="line">550 &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-05-01-Flume学习之路 （一）Flume的基础介绍.html" class="pre-post btn btn-default" title='Flume学习之路 （一）Flume的基础介绍'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Flume学习之路 （一）Flume的基础介绍</span>
+    </a>
+    
+    
+    <a href="/2018-04-28-Hadoop学习之路（二十八）MapReduce的API使用（五）.html" class="next-post btn btn-default" title='Hadoop学习之路（二十八）MapReduce的API使用（五）'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十八）MapReduce的API使用（五）</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Eclipse环境搭建"><span class="toc-text">Eclipse环境搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase-API操作表和数据"><span class="toc-text">HBase API操作表和数据</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

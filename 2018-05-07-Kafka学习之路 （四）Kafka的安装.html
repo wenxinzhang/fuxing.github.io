@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Flume">
+
+
+<meta name="description" content="** Kafka学习之路 （四）Kafka的安装：** &lt;Excerpt in index | 首页摘要&gt;
+​        Kafka学习之路 （四）Kafka的安装
+
+&lt;T...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Kafka学习之路 （四）Kafka的安装 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Kafka学习之路 （四）Kafka的安装">
+            
+            Kafka学习之路 （四）Kafka的安装
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Flume/">Flume</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/05/07</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Kafka学习之路 （四）Kafka的安装：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Kafka学习之路 （四）Kafka的安装</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、下载"><a href="#一、下载" class="headerlink" title="一、下载"></a>一、下载</h2><p>下载地址：</p>
+<p><a href="http://kafka.apache.org/downloads.html" target="_blank" rel="noopener">http://kafka.apache.org/downloads.html</a></p>
+<p><a href="http://mirrors.hust.edu.cn/apache/" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/apache/</a></p>
+<h2 id="二、安装前提（zookeeper安装）"><a href="#二、安装前提（zookeeper安装）" class="headerlink" title="二、安装前提（zookeeper安装）"></a>二、安装前提（zookeeper安装）</h2><p>参考<a href="http://www.cnblogs.com/qingyunzong/p/8634335.html#_label4_0" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8634335.html#_label4_0</a></p>
+<h2 id="三、安装"><a href="#三、安装" class="headerlink" title="三、安装"></a>三、安装</h2><p>此处使用版本为kafka_2.11-0.8.2.0.tgz</p>
+<h3 id="2-1-上传解压缩"><a href="#2-1-上传解压缩" class="headerlink" title="2.1　上传解压缩"></a>2.1　上传解压缩</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ tar -zxvf kafka_2.11-0.8.2.0.tgz -C apps</span><br><span class="line">[hadoop@hadoop1 ~]$ cd apps/</span><br><span class="line">[hadoop@hadoop1 apps]$ ln -s kafka_2.11-0.8.2.0/ kafka</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-修改配置文件"><a href="#2-2-修改配置文件" class="headerlink" title="2.2　修改配置文件"></a>2.2　修改配置文件</h3><p>进入kafka的安装配置目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ cd apps/kafka/config/</span><br></pre></td></tr></table></figure>
+
+<p>主要关注：<strong>server.properties</strong> 这个文件即可，我们可以发现在目录下：</p>
+<p>有很多文件，这里可以发现有Zookeeper文件，我们可以根据Kafka内带的zk集群来启动，但是建议使用独立的zk集群</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180507205256986-826023478.png" alt="img"></p>
+<p>server.properties（<strong>broker.id和host.name每个节点都不相同</strong>）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">//当前机器在集群中的唯一标识，和zookeeper的myid性质一样</span><br><span class="line">broker.id=0</span><br><span class="line">//当前kafka对外提供服务的端口默认是9092</span><br><span class="line">port=9092</span><br><span class="line">//这个参数默认是关闭的，在0.8.1有个bug，DNS解析问题，失败率的问题。</span><br><span class="line">host.name=hadoop1</span><br><span class="line">//这个是borker进行网络处理的线程数</span><br><span class="line">num.network.threads=3</span><br><span class="line">//这个是borker进行I/O处理的线程数</span><br><span class="line">num.io.threads=8</span><br><span class="line">//发送缓冲区buffer大小，数据不是一下子就发送的，先回存储到缓冲区了到达一定的大小后在发送，能提高性能</span><br><span class="line">socket.send.buffer.bytes=102400</span><br><span class="line">//kafka接收缓冲区大小，当数据到达一定大小后在序列化到磁盘</span><br><span class="line">socket.receive.buffer.bytes=102400</span><br><span class="line">//这个参数是向kafka请求消息或者向kafka发送消息的请请求的最大数，这个值不能超过java的堆栈大小</span><br><span class="line">socket.request.max.bytes=104857600</span><br><span class="line">//消息存放的目录，这个目录可以配置为“，”逗号分割的表达式，上面的num.io.threads要大于这个目录的个数这个目录，</span><br><span class="line">//如果配置多个目录，新创建的topic他把消息持久化的地方是，当前以逗号分割的目录中，那个分区数最少就放那一个</span><br><span class="line">log.dirs=/home/hadoop/log/kafka-logs</span><br><span class="line">//默认的分区数，一个topic默认1个分区数</span><br><span class="line">num.partitions=1</span><br><span class="line">//每个数据目录用来日志恢复的线程数目</span><br><span class="line">num.recovery.threads.per.data.dir=1</span><br><span class="line">//默认消息的最大持久化时间，168小时，7天</span><br><span class="line">log.retention.hours=168</span><br><span class="line">//这个参数是：因为kafka的消息是以追加的形式落地到文件，当超过这个值的时候，kafka会新起一个文件</span><br><span class="line">log.segment.bytes=1073741824</span><br><span class="line">//每隔300000毫秒去检查上面配置的log失效时间</span><br><span class="line">log.retention.check.interval.ms=300000</span><br><span class="line">//是否启用log压缩，一般不用启用，启用的话可以提高性能</span><br><span class="line">log.cleaner.enable=false</span><br><span class="line">//设置zookeeper的连接端口</span><br><span class="line">zookeeper.connect=192.168.123.102:2181,192.168.123.103:2181,192.168.123.104:2181</span><br><span class="line">//设置zookeeper的连接超时时间</span><br><span class="line">zookeeper.connection.timeout.ms=6000</span><br></pre></td></tr></table></figure>
+
+<p>producer.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">metadata.broker.list=192.168.123.102:9092,192.168.123.103:9092,192.168.123.104:9092</span><br></pre></td></tr></table></figure>
+
+<p>consumer.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper.connect=192.168.123.102:2181,192.168.123.103:2181,192.168.123.104:2181</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-将kafka的安装包分发到其他节点"><a href="#2-3-将kafka的安装包分发到其他节点" class="headerlink" title="2.3　将kafka的安装包分发到其他节点"></a>2.3　将kafka的安装包分发到其他节点</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ scp -r kafka_2.11-0.8.2.0/ hadoop2:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r kafka_2.11-0.8.2.0/ hadoop3:$PWD</span><br><span class="line">[hadoop@hadoop1 apps]$ scp -r kafka_2.11-0.8.2.0/ hadoop4:$PWD</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-创建软连接"><a href="#2-4-创建软连接" class="headerlink" title="2.4　创建软连接"></a>2.4　创建软连接</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ ln -s kafka_2.11-0.8.2.0/ kafka</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-修改环境变量"><a href="#2-5-修改环境变量" class="headerlink" title="2.5　修改环境变量"></a>2.5　修改环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ vi .bashrc </span><br><span class="line">#Kafka</span><br><span class="line">export KAFKA_HOME=/home/hadoop/apps/kafka</span><br><span class="line">export PATH=$PATH:$KAFKA_HOME/bin</span><br></pre></td></tr></table></figure>
+
+<p>保存使其立即生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h2 id="三、启动"><a href="#三、启动" class="headerlink" title="三、启动"></a>三、启动</h2><h3 id="3-1-首先启动zookeeper集群"><a href="#3-1-首先启动zookeeper集群" class="headerlink" title="3.1　首先启动zookeeper集群"></a>3.1　首先启动zookeeper集群</h3><p>所有zookeeper节点都需要执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ zkServer.sh start</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-启动Kafka集群服务"><a href="#3-2-启动Kafka集群服务" class="headerlink" title="3.2　启动Kafka集群服务"></a>3.2　启动Kafka集群服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 kafka]$ bin/kafka-server-start.sh config/server.properties</span><br></pre></td></tr></table></figure>
+
+<p>hadoop1</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508091330478-1618680698.png" alt="img"></p>
+<p>Hadoop2</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508091357167-630027883.png" alt="img"></p>
+<p>hadoop3</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508091419194-1962654932.png" alt="img"></p>
+<p>hadoop4</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508091439631-71784584.png" alt="img"></p>
+<h3 id="3-3-创建的topic"><a href="#3-3-创建的topic" class="headerlink" title="3.3　创建的topic"></a>3.3　创建的topic</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 kafka]$ bin/kafka-topics.sh --create --zookeeper hadoop1:2181 --replication-factor 3 --partitions 3 --topic topic2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508093450833-853043206.png" alt="img"></p>
+<h3 id="3-4-查看topic副本信息"><a href="#3-4-查看topic副本信息" class="headerlink" title="3.4　查看topic副本信息"></a>3.4　查看topic副本信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 kafka]$ bin/kafka-topics.sh --describe --zookeeper hadoop1:2181 --topic topic2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508093738851-372829720.png" alt="img"></p>
+<h3 id="3-5-查看已经创建的topic信息"><a href="#3-5-查看已经创建的topic信息" class="headerlink" title="3.5　查看已经创建的topic信息"></a>3.5　查看已经创建的topic信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 kafka]$ bin/kafka-topics.sh --list --zookeeper hadoop1:2181</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508094000763-519973668.png" alt="img"></p>
+<h3 id="3-6-生产者发送消息"><a href="#3-6-生产者发送消息" class="headerlink" title="3.6　生产者发送消息"></a>3.6　生产者发送消息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 kafka]$ bin/kafka-console-producer.sh --broker-list hadoop1:9092 --topic topic2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508094536515-251235516.png" alt="img"></p>
+<p>hadoop1显示接收到消息</p>
+<h3 id="3-7-消费者消费消息"><a href="#3-7-消费者消费消息" class="headerlink" title="3.7　消费者消费消息"></a>3.7　消费者消费消息</h3><p>在hadoop2上消费消息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop2 kafka]$ bin/kafka-console-consumer.sh --zookeeper hadoop1:2181 --from-beginning --topic topic2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180508094916762-1544456891.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-05-08-Kafka学习之路 （五）Kafka在zookeeper中的存储.html" class="pre-post btn btn-default" title='Kafka学习之路 （五）Kafka在zookeeper中的存储'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Kafka学习之路 （五）Kafka在zookeeper中的存储</span>
+    </a>
+    
+    
+    <a href="/2018-05-06-Kafka学习之路 （三）Kafka的高可用.html" class="next-post btn btn-default" title='Kafka学习之路 （三）Kafka的高可用'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Kafka学习之路 （三）Kafka的高可用</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、下载"><span class="toc-text">一、下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、安装前提（zookeeper安装）"><span class="toc-text">二、安装前提（zookeeper安装）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、安装"><span class="toc-text">三、安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-上传解压缩"><span class="toc-text">2.1　上传解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-修改配置文件"><span class="toc-text">2.2　修改配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-将kafka的安装包分发到其他节点"><span class="toc-text">2.3　将kafka的安装包分发到其他节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-创建软连接"><span class="toc-text">2.4　创建软连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-修改环境变量"><span class="toc-text">2.5　修改环境变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、启动"><span class="toc-text">三、启动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-首先启动zookeeper集群"><span class="toc-text">3.1　首先启动zookeeper集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-启动Kafka集群服务"><span class="toc-text">3.2　启动Kafka集群服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-创建的topic"><span class="toc-text">3.3　创建的topic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-查看topic副本信息"><span class="toc-text">3.4　查看topic副本信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-查看已经创建的topic信息"><span class="toc-text">3.5　查看已经创建的topic信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-生产者发送消息"><span class="toc-text">3.6　生产者发送消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-消费者消费消息"><span class="toc-text">3.7　消费者消费消息</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

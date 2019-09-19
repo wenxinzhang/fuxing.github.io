@@ -1,0 +1,514 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（四）Hadoop集群搭建和简单应用：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（四）Hadoop集群...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（四）Hadoop集群搭建和简单应用 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（四）Hadoop集群搭建和简单应用">
+            
+            Hadoop学习之路（四）Hadoop集群搭建和简单应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/04</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（四）Hadoop集群搭建和简单应用：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（四）Hadoop集群搭建和简单应用</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="概念了解"><a href="#概念了解" class="headerlink" title="概念了解"></a>概念了解</h2><p>主从结构：在一个集群中，会有部分节点充当主服务器的角色，其他服务器都是从服务器的角色，当前这种架构模式叫做主从结构。</p>
+<p>主从结构分类：</p>
+<p>1、一主多从</p>
+<p>2、多主多从</p>
+<p>Hadoop中的HDFS和YARN都是主从结构，主从结构中的主节点和从节点有多重概念方式：</p>
+<p>1、主节点　　从节点</p>
+<p>2、master　　slave</p>
+<p>3、管理者　　工作者</p>
+<p>4、leader　　follower</p>
+<p>Hadoop集群中各个角色的名称：</p>
+<table>
+<thead>
+<tr>
+<th>服务</th>
+<th>主节点</th>
+<th>从节点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>HDFS</td>
+<td>NameNode</td>
+<td>DataNode</td>
+</tr>
+<tr>
+<td>YARN</td>
+<td>ResourceManager</td>
+<td>NodeManager</td>
+</tr>
+</tbody></table>
+<h2 id="集群服务器规划"><a href="#集群服务器规划" class="headerlink" title="集群服务器规划"></a>集群服务器规划</h2><p>使用4台CentOS-6.7虚拟机进行集群搭建</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303115310907-1555873629.png" alt="img"></p>
+<h2 id="软件安装步骤概述"><a href="#软件安装步骤概述" class="headerlink" title="软件安装步骤概述"></a>软件安装步骤概述</h2><p>1、获取安装包</p>
+<p>2、解压缩和安装</p>
+<p>3、修改配置文件</p>
+<p>4、初始化，配置环境变量，启动，验证</p>
+<h2 id="Hadoop安装"><a href="#Hadoop安装" class="headerlink" title="Hadoop安装"></a>Hadoop安装</h2><h3 id="1、规划"><a href="#1、规划" class="headerlink" title="1、规划"></a>1、规划</h3><p>规划安装用户：hadoop</p>
+<p>规划安装目录：/home/hadoop/apps</p>
+<p>规划数据目录：/home/hadoop/data</p>
+<p>注：apps和data文件夹需要自己单独创建</p>
+<h3 id="2、上传解压缩"><a href="#2、上传解压缩" class="headerlink" title="2、上传解压缩"></a>2、上传解压缩</h3><p>注：使用hadoop用户</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 apps]$ ls</span><br><span class="line">hadoop-2.7.5-centos-6.7.tar.gz</span><br><span class="line">[hadoop@hadoop1 apps]$ tar -zxvf hadoop-2.7.5-centos-6.7.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、修改配置文件"><a href="#3、修改配置文件" class="headerlink" title="3、修改配置文件"></a>3、修改配置文件</h3><p>配置文件目录：/home/hadoop/apps/hadoop-2.7.5/etc/hadoop</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303103331419-2007341529.png" alt="img"></p>
+<h4 id="A-hadoop-env-sh"><a href="#A-hadoop-env-sh" class="headerlink" title="A.　hadoop-env.sh"></a>A.　hadoop-env.sh</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi hadoop-env.sh</span><br></pre></td></tr></table></figure>
+
+<p>修改JAVA_HOME</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_73</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303104035548-3546092.png" alt="img"></p>
+<p>B.　core-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi core-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>fs.defaultFS ： 这个属性用来指定namenode的hdfs协议的文件系统通信地址，可以指定一个主机+端口，也可以指定为一个namenode服务（这个服务内部可以有多台namenode实现ha的namenode服务</p>
+<p>hadoop.tmp.dir : hadoop集群在工作的时候存储的一些临时文件的目录</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://hadoop1:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.tmp.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303104511807-906110891.png" alt="img"></p>
+<p>C.　hdfs-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<p> dfs.namenode.name.dir：namenode数据的存放地点。也就是namenode元数据存放的地方，记录了hdfs系统中文件的元数据。</p>
+<p> dfs.datanode.data.dir： datanode数据的存放地点。也就是block块存放的目录了。</p>
+<p>dfs.replication：hdfs的副本数设置。也就是上传一个文件，其分割为block块后，每个block的冗余副本个数，默认配置是3。</p>
+<p>dfs.secondary.http.address：secondarynamenode 运行节点的信息，和 namenode 不同节点</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata/name<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">description</span>&gt;</span>为了保证元数据的安全一般配置多个不同目录<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>/home/hadoop/data/hadoopdata/data<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">description</span>&gt;</span>datanode 的数据存储目录<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>2<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">description</span>&gt;</span>HDFS 的数据块的副本存储个数, 默认是3<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.secondary.http.address<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">value</span>&gt;</span>hadoop3:50090<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">description</span>&gt;</span>secondarynamenode 运行节点的信息，和 namenode 不同节点<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303104911508-1011649393.png" alt="img"></p>
+<p>D.　mapred-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ cp mapred-site.xml.template mapred-site.xml</span><br><span class="line">[hadoop@hadoop1 hadoop]$ vi mapred-site.xml</span><br></pre></td></tr></table></figure>
+
+<p> mapreduce.framework.name：指定mr框架为yarn方式,Hadoop二代MP也基于资源管理系统Yarn来运行 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;mapreduce.framework.name&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;yarn&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303105128551-1997748350.png" alt="img"></p>
+<p>E.　yarn-site.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi yarn-site.xml</span><br></pre></td></tr></table></figure>
+
+<p> yarn.resourcemanager.hostname：yarn总管理器的IPC通讯地址</p>
+<p> yarn.nodemanager.aux-services：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- Site specific YARN configuration properties --&gt;</span><br><span class="line"></span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;yarn.resourcemanager.hostname&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;hadoop4&lt;/value&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;property&gt;</span><br><span class="line">                &lt;name&gt;yarn.nodemanager.aux-services&lt;/name&gt;</span><br><span class="line">                &lt;value&gt;mapreduce_shuffle&lt;/value&gt;</span><br><span class="line">                &lt;description&gt;YARN 集群为 MapReduce 程序提供的 shuffle 服务&lt;/description&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303105358230-1169766109.png" alt="img"></p>
+<p>F.　slaves</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ vi slaves </span><br><span class="line">hadoop1</span><br><span class="line">hadoop2</span><br><span class="line">hadoop3</span><br><span class="line">hadoop4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303105518279-1427162583.png" alt="img"></p>
+<h3 id="4、把安装包分别分发给其他的节点"><a href="#4、把安装包分别分发给其他的节点" class="headerlink" title="4、把安装包分别分发给其他的节点"></a>4、把安装包分别分发给其他的节点</h3><p>重点强调： 每台服务器中的hadoop安装包的目录必须一致， 安装包的配置信息还必须保持一致<br>重点强调： 每台服务器中的hadoop安装包的目录必须一致， 安装包的配置信息还必须保持一致<br>重点强调： 每台服务器中的hadoop安装包的目录必须一致， 安装包的配置信息还必须保持一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ scp -r ~/apps/hadoop-2.7.5/ hadoop2:~/apps/</span><br><span class="line">[hadoop@hadoop1 hadoop]$ scp -r ~/apps/hadoop-2.7.5/ hadoop3:~/apps/</span><br><span class="line">[hadoop@hadoop1 hadoop]$ scp -r ~/apps/hadoop-2.7.5/ hadoop4:~/apps/</span><br></pre></td></tr></table></figure>
+
+<p>注意：上面的命令等同于下面的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 hadoop]$ scp -r ~/apps/hadoop-2.7.5/ hadoop@hadoop2:~/apps/</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、配置Hadoop环境变量"><a href="#5、配置Hadoop环境变量" class="headerlink" title="5、配置Hadoop环境变量"></a>5、配置Hadoop环境变量</h3><p>千万注意：</p>
+<p>1、如果你使用root用户进行安装。 vi /etc/profile 即可 系统变量</p>
+<p>2、如果你使用普通用户进行安装。 vi ~/.bashrc 用户变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ vi .bashrc</span><br><span class="line">export HADOOP_HOME=/home/hadoop/apps/hadoop-2.7.5</span><br><span class="line">export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303110711007-1612467070.png" alt="img"></p>
+<p>使环境变量生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 bin]$ source ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<h3 id="6、查看hadoop版本"><a href="#6、查看hadoop版本" class="headerlink" title="6、查看hadoop版本"></a>6、查看hadoop版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 bin]$ hadoop version</span><br><span class="line">Hadoop 2.7.5</span><br><span class="line">Subversion Unknown -r Unknown</span><br><span class="line">Compiled by root on 2017-12-24T05:30Z</span><br><span class="line">Compiled with protoc 2.5.0</span><br><span class="line">From source with checksum 9f118f95f47043332d51891e37f736e9</span><br><span class="line">This command was run using /home/hadoop/apps/hadoop-2.7.5/share/hadoop/common/hadoop-common-2.7.5.jar</span><br><span class="line">[hadoop@hadoop1 bin]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303111035963-1326015903.png" alt="img"></p>
+<h3 id="7、Hadoop初始化"><a href="#7、Hadoop初始化" class="headerlink" title="7、Hadoop初始化"></a>7、Hadoop初始化</h3><p>注意：HDFS初始化只能在主节点上进行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop namenode -format</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303111431844-1654882274.png" alt="img"></p>
+<h3 id="8、启动"><a href="#8、启动" class="headerlink" title="8、启动"></a>8、启动</h3><p>A.　启动HDFS</p>
+<p>注意：不管在集群中的那个节点都可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ start-dfs.sh</span><br><span class="line">Starting namenodes on [hadoop1]</span><br><span class="line">hadoop1: starting namenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-namenode-hadoop1.out</span><br><span class="line">hadoop3: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop3.out</span><br><span class="line">hadoop2: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop2.out</span><br><span class="line">hadoop4: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop4.out</span><br><span class="line">hadoop1: starting datanode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-datanode-hadoop1.out</span><br><span class="line">Starting secondary namenodes [hadoop3]</span><br><span class="line">hadoop3: starting secondarynamenode, logging to /home/hadoop/apps/hadoop-2.7.5/logs/hadoop-hadoop-secondarynamenode-hadoop3.out</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303111708314-1318291140.png" alt="img"></p>
+<p>B.　启动YARN</p>
+<p>注意：只能在主节点中进行启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop4 ~]$ start-yarn.sh</span><br><span class="line">starting yarn daemons</span><br><span class="line">starting resourcemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-resourcemanager-hadoop4.out</span><br><span class="line">hadoop2: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop2.out</span><br><span class="line">hadoop3: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop3.out</span><br><span class="line">hadoop4: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop4.out</span><br><span class="line">hadoop1: starting nodemanager, logging to /home/hadoop/apps/hadoop-2.7.5/logs/yarn-hadoop-nodemanager-hadoop1.out</span><br><span class="line">[hadoop@hadoop4 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112021638-408158798.png" alt="img"></p>
+<h3 id="9、查看4台服务器的进程"><a href="#9、查看4台服务器的进程" class="headerlink" title="9、查看4台服务器的进程"></a>9、查看4台服务器的进程</h3><p>hadoop1</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112120800-1423701937.png" alt="img"></p>
+<p>hadoop2</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112139568-661988009.png" alt="img"></p>
+<p>hadoop3</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112211083-74589397.png" alt="img"></p>
+<p>hadoop4</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112225280-1304512419.png" alt="img"></p>
+<h3 id="10、启动HDFS和YARN的web管理界面"><a href="#10、启动HDFS和YARN的web管理界面" class="headerlink" title="10、启动HDFS和YARN的web管理界面"></a>10、启动HDFS和YARN的web管理界面</h3><p>HDFS : <a href="http://192.168.123.102:50070" target="_blank" rel="noopener">http://192.168.123.102:50070</a><br>YARN ： <a href="http://hadoop05:8088" target="_blank" rel="noopener">http://hadoop05:8088</a></p>
+<p>疑惑： fs.defaultFS = hdfs://hadoop02:9000</p>
+<p>解答：客户单访问HDFS集群所使用的URL地址</p>
+<p>同时，HDFS提供了一个web管理界面 端口：50070</p>
+<h4 id="HDFS界面"><a href="#HDFS界面" class="headerlink" title="HDFS界面"></a>HDFS界面</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112510116-894901884.png" alt="img"></p>
+<p>点击Datanodes可以查看四个节点</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112628507-1186899766.png" alt="img"></p>
+<h4 id="YARN界面"><a href="#YARN界面" class="headerlink" title="YARN界面"></a>YARN界面</h4><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112735895-1867837449.png" alt="img"></p>
+<p>点击Nodes可以查看节点</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303112833214-1809517028.png" alt="img"></p>
+<h2 id="Hadoop的简单使用"><a href="#Hadoop的简单使用" class="headerlink" title="Hadoop的简单使用"></a>Hadoop的简单使用</h2><h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><p>在HDFS上创建一个文件夹/test/input</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -mkdir -p /test/input</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看创建的文件夹"><a href="#查看创建的文件夹" class="headerlink" title="查看创建的文件夹"></a>查看创建的文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /</span><br><span class="line">Found 1 items</span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2018-03-03 11:33 /test</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /test</span><br><span class="line">Found 1 items</span><br><span class="line">drwxr-xr-x   - hadoop supergroup          0 2018-03-03 11:33 /test/input</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303113610630-1170857589.png" alt="img"></p>
+<h3 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h3><p>创建一个文件words.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ vi words.txt</span><br><span class="line">hello zhangsan</span><br><span class="line">hello lisi</span><br><span class="line">hello wangwu</span><br></pre></td></tr></table></figure>
+
+<p>上传到HDFS的/test/input文件夹中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -put ~/words.txt /test/input</span><br></pre></td></tr></table></figure>
+
+<p> 查看是否上传成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /test/input</span><br><span class="line">Found 1 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         39 2018-03-03 11:37 /test/input/words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303113847538-1539539423.png" alt="img"></p>
+<h3 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h3><p>将刚刚上传的文件下载到~/data文件夹中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -get /test/input/words.txt ~/data</span><br></pre></td></tr></table></figure>
+
+<p>查看是否下载成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ ls data</span><br><span class="line">hadoopdata  words.txt</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303114047756-345390954.png" alt="img"></p>
+<h3 id="运行一个mapreduce的例子程序：-wordcount"><a href="#运行一个mapreduce的例子程序：-wordcount" class="headerlink" title="运行一个mapreduce的例子程序： wordcount"></a>运行一个mapreduce的例子程序： wordcount</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop jar ~/apps/hadoop-2.7.5/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.5.jar wordcount /test/input /test/output</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303114406061-137199367.png" alt="img"></p>
+<p>在YARN Web界面查看</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303114707863-2058235690.png" alt="img"></p>
+<p>查看结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -ls /test/output</span><br><span class="line">Found 2 items</span><br><span class="line">-rw-r--r--   2 hadoop supergroup          0 2018-03-03 11:42 /test/output/_SUCCESS</span><br><span class="line">-rw-r--r--   2 hadoop supergroup         35 2018-03-03 11:42 /test/output/part-r-00000</span><br><span class="line">[hadoop@hadoop1 ~]$ hadoop fs -cat /test/output/part-r-00000</span><br><span class="line">hello    3</span><br><span class="line">lisi    1</span><br><span class="line">wangwu    1</span><br><span class="line">zhangsan    1</span><br><span class="line">[hadoop@hadoop1 ~]$</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180303114542861-1807717747.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-05-Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题.html" class="pre-post btn btn-default" title='Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题</span>
+    </a>
+    
+    
+    <a href="/2018-04-02-Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译.html" class="next-post btn btn-default" title='Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（三）Hadoop-2.7.5在CentOS-6.7上的编译</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念了解"><span class="toc-text">概念了解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#集群服务器规划"><span class="toc-text">集群服务器规划</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#软件安装步骤概述"><span class="toc-text">软件安装步骤概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop安装"><span class="toc-text">Hadoop安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、规划"><span class="toc-text">1、规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、上传解压缩"><span class="toc-text">2、上传解压缩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、修改配置文件"><span class="toc-text">3、修改配置文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#A-hadoop-env-sh"><span class="toc-text">A.　hadoop-env.sh</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、把安装包分别分发给其他的节点"><span class="toc-text">4、把安装包分别分发给其他的节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、配置Hadoop环境变量"><span class="toc-text">5、配置Hadoop环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、查看hadoop版本"><span class="toc-text">6、查看hadoop版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7、Hadoop初始化"><span class="toc-text">7、Hadoop初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8、启动"><span class="toc-text">8、启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9、查看4台服务器的进程"><span class="toc-text">9、查看4台服务器的进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10、启动HDFS和YARN的web管理界面"><span class="toc-text">10、启动HDFS和YARN的web管理界面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#HDFS界面"><span class="toc-text">HDFS界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#YARN界面"><span class="toc-text">YARN界面</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hadoop的简单使用"><span class="toc-text">Hadoop的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建文件夹"><span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查看创建的文件夹"><span class="toc-text">查看创建的文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上传文件"><span class="toc-text">上传文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#下载文件"><span class="toc-text">下载文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#运行一个mapreduce的例子程序：-wordcount"><span class="toc-text">运行一个mapreduce的例子程序： wordcount</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

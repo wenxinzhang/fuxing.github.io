@@ -19,13 +19,11 @@
     <link rel="dns-prefetch" href="http://zhangfuxin.cn">
     <!--SEO-->
 
-<meta name="keywords" content="Scala">
+<meta name="keywords" content="Hadoop">
 
 
-<meta name="description" content="** 模板：** &lt;Excerpt in index | 首页摘要&gt;
-​        Spark学习之路 （一）Spark初识
-
-&lt;The rest of contents ...">
+<meta name="description" content="** Hadoop学习之路（十八）MapReduce框架Combiner分区：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（十八）...">
 
 
 <meta name="robots" content="all">
@@ -36,7 +34,7 @@
 
 <title>
     
-    模板 |
+    Hadoop学习之路（十八）MapReduce框架Combiner分区 |
     
     福星
 </title>
@@ -175,16 +173,16 @@
                     <p id="process"></p>
 <article class="post">
     <div class="post-head">
-        <h1 id="模板">
+        <h1 id="Hadoop学习之路（十八）MapReduce框架Combiner分区">
             
-            模板
+            Hadoop学习之路（十八）MapReduce框架Combiner分区
             
         </h1>
         <div class="post-meta">
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a class="category-link" href="/categories/Spark/">Spark</a>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
     </span>
     
     
@@ -192,7 +190,7 @@
         <i class="fa fa-tags"></i>
         <span class="tags-meta">
             
-            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
             
         </span>
     </span>
@@ -202,7 +200,7 @@
     <span class="fa-wrap">
         <i class="fa fa-clock-o"></i>
         <span class="date-meta">
-            2019/05/04</span>
+            2018/04/18</span>
     </span>
     
     <span class="fa-wrap">
@@ -217,10 +215,29 @@
     </div>
     
     <div class="post-body post-content">
-        <p>** 模板：** &lt;Excerpt in index | 首页摘要&gt;</p>
-<p>​        Spark学习之路 （一）Spark初识</p>
+        <p>** Hadoop学习之路（十八）MapReduce框架Combiner分区：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（十八）MapReduce框架Combiner分区</p>
 <a id="more"></a>
 <p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="对combiner的理解"><a href="#对combiner的理解" class="headerlink" title="对combiner的理解"></a>对combiner的理解</h2><p>combiner其实属于优化方案，由于带宽限制，应该尽量map和reduce之间的数据传输数量。它在Map端把同一个key的键值对合并在一起并计算，计算规则与reduce一致，所以combiner也可以看作特殊的Reducer。</p>
+<p>执行combiner操作要求开发者必须在程序中设置了combiner(程序中通过job.setCombinerClass(myCombine.class)自定义combiner操作)。</p>
+<p>Combiner组件是用来做局部汇总的，就在mapTask中进行汇总；Reducer组件是用来做全局汇总的，最终的，最后一次汇总。</p>
+<h2 id="哪里使用combiner"><a href="#哪里使用combiner" class="headerlink" title="哪里使用combiner?"></a>哪里使用combiner?</h2><p>1，map输出数据根据分区排序完成后，在写入文件之前会执行一次combine操作(前提是作业中设置了这个操作);</p>
+<p>2，如果map输出比较大，溢出文件个数大于3(此值可以通过属性min.num.spills.for.combine配置)时，在merge的过程(多个spill文件合并为一个大文件)中前还会执行combiner操作;</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>不是每种作业都可以做combiner操作的，只有满足以下条件才可以：</p>
+<p>1、Combiner 只能对 一个mapTask的中间结果进行汇总</p>
+<p>2、如果想使用Reducer直接充当Combiner，那么必须满足： Reducer的输入和输出key-value类型是一致的。</p>
+<blockquote>
+<p>1）处于两个不同节点的mapTask的结果不能combiner到一起</p>
+<p>2）处于同一个节点的两个MapTask的结果不能否combiner到一起</p>
+<p>3）求最大值、求最小值、求和、去重时可直接使用Reducer充当Combiner，但是求平均值时不能直接使用Reducer充当Combiner。</p>
+<p>　　原因：对2组值求平均值</p>
+<p>　　2 3 4 5 6 == 20 / 5 == 4</p>
+<p>　　4 5 6    == 15 / 3 == 5</p>
+<p>　　<strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong><strong>***</strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></strong></p>
+<p>　　20+15 / 5+3 = 35 / 8</p>
+<p>　　4.5</p>
+</blockquote>
 
     </div>
     
@@ -239,17 +256,17 @@
 </article>
 <div class="article-nav prev-next-wrap clearfix">
     
-    <a href="/2019-05-05-Scala学习之路 （五）Scala的关键字Lazy.html" class="pre-post btn btn-default" title='Scala学习之路 （五）Scala的关键字Lazy'>
+    <a href="/2018-04-19-Hadoop学习之路（十九）MapReduce框架排序.html" class="pre-post btn btn-default" title='Hadoop学习之路（十九）MapReduce框架排序'>
         <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
         <span class="hidden-xs">
-            Scala学习之路 （五）Scala的关键字Lazy</span>
+            Hadoop学习之路（十九）MapReduce框架排序</span>
     </a>
     
     
-    <a href="/2019-05-03-Scala学习之路 （三）Scala的基本使用.html" class="next-post btn btn-default" title='Scala学习之路 （三）Scala的基本使用'>
+    <a href="/2018-04-17-Hadoop学习之路（十七）MapReduce框架Partitoner分区.html" class="next-post btn btn-default" title='Hadoop学习之路（十七）MapReduce框架Partitoner分区'>
         <span class="hidden-lg">下一篇</span>
         <span class="hidden-xs">
-            Scala学习之路 （三）Scala的基本使用</span><i class="fa fa-angle-right fa-fw"></i>
+            Hadoop学习之路（十七）MapReduce框架Partitoner分区</span><i class="fa fa-angle-right fa-fw"></i>
     </a>
     
 </div>
@@ -288,7 +305,7 @@ new Valine({
             文章目录
         </h3>
         
-        <p>暂无目录</p>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#对combiner的理解"><span class="toc-text">对combiner的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#哪里使用combiner"><span class="toc-text">哪里使用combiner?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意事项"><span class="toc-text">注意事项</span></a></li></ol>
         
     </div>
 </aside>

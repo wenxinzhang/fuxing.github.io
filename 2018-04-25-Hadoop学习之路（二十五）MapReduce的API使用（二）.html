@@ -1,0 +1,364 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（二十五）MapReduce的API使用（二）：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（二十五）M...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（二十五）MapReduce的API使用（二） |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（二十五）MapReduce的API使用（二）">
+            
+            Hadoop学习之路（二十五）MapReduce的API使用（二）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/23</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（二十五）MapReduce的API使用（二）：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（二十五）MapReduce的API使用（二）</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="学生成绩—增强版"><a href="#学生成绩—增强版" class="headerlink" title="学生成绩—增强版"></a>学生成绩—增强版</h2><h3 id="数据信息"><a href="#数据信息" class="headerlink" title="数据信息"></a>数据信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"> 1 computer,huangxiaoming,85,86,41,75,93,42,85</span><br><span class="line"> 2 computer,xuzheng,54,52,86,91,42</span><br><span class="line"> 3 computer,huangbo,85,42,96,38</span><br><span class="line"> 4 english,zhaobenshan,54,52,86,91,42,85,75</span><br><span class="line"> 5 english,liuyifei,85,41,75,21,85,96,14</span><br><span class="line"> 6 algorithm,liuyifei,75,85,62,48,54,96,15</span><br><span class="line"> 7 computer,huangjiaju,85,75,86,85,85</span><br><span class="line"> 8 english,liuyifei,76,95,86,74,68,74,48</span><br><span class="line"> 9 english,huangdatou,48,58,67,86,15,33,85</span><br><span class="line">10 algorithm,huanglei,76,95,86,74,68,74,48</span><br><span class="line">11 algorithm,huangjiaju,85,75,86,85,85,74,86</span><br><span class="line">12 computer,huangdatou,48,58,67,86,15,33,85</span><br><span class="line">13 english,zhouqi,85,86,41,75,93,42,85,75,55,47,22</span><br><span class="line">14 english,huangbo,85,42,96,38,55,47,22</span><br><span class="line">15 algorithm,liutao,85,75,85,99,66</span><br><span class="line">16 computer,huangzitao,85,86,41,75,93,42,85</span><br><span class="line">17 math,wangbaoqiang,85,86,41,75,93,42,85</span><br><span class="line">18 computer,liujialing,85,41,75,21,85,96,14,74,86</span><br><span class="line">19 computer,liuyifei,75,85,62,48,54,96,15</span><br><span class="line">20 computer,liutao,85,75,85,99,66,88,75,91</span><br><span class="line">21 computer,huanglei,76,95,86,74,68,74,48</span><br><span class="line">22 english,liujialing,75,85,62,48,54,96,15</span><br><span class="line">23 math,huanglei,76,95,86,74,68,74,48</span><br><span class="line">24 math,huangjiaju,85,75,86,85,85,74,86</span><br><span class="line">25 math,liutao,48,58,67,86,15,33,85</span><br><span class="line">26 english,huanglei,85,75,85,99,66,88,75,91</span><br><span class="line">27 math,xuzheng,54,52,86,91,42,85,75</span><br><span class="line">28 math,huangxiaoming,85,75,85,99,66,88,75,91</span><br><span class="line">29 math,liujialing,85,86,41,75,93,42,85,75</span><br><span class="line">30 english,huangxiaoming,85,86,41,75,93,42,85</span><br><span class="line">31 algorithm,huangdatou,48,58,67,86,15,33,85</span><br><span class="line">32 algorithm,huangzitao,85,86,41,75,93,42,85,75</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据解释"><a href="#数据解释" class="headerlink" title="数据解释"></a>数据解释</h3><p>数据字段个数不固定：<br>第一个是课程名称，总共四个课程，computer，math，english，algorithm，<br>第二个是学生姓名，后面是每次考试的分数</p>
+<h3 id="统计需求"><a href="#统计需求" class="headerlink" title="统计需求"></a>统计需求</h3><p>1、统计每门课程的参考人数和课程平均分</p>
+<p>2、统计每门课程参考学生的平均分，并且按课程存入不同的结果文件，要求一门课程一个结果文件，并且按平均分从高到低排序，分数保留一位小数</p>
+<p>3、求出每门课程参考学生成绩最高的学生的信息：课程，姓名和平均分</p>
+<p>第一题</p>
+<p>MRAvgScore1.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line">  1 /**</span><br><span class="line">  2  * 需求：统计每门课程的参考人数和课程平均分</span><br><span class="line">  3  * */</span><br><span class="line">  4 public class MRAvgScore1 &#123;</span><br><span class="line">  5 </span><br><span class="line">  6     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">  7         </span><br><span class="line">  8         Configuration conf1 = new Configuration();</span><br><span class="line">  9         Configuration conf2 = new Configuration();</span><br><span class="line"> 10         </span><br><span class="line"> 11         Job job1 = Job.getInstance(conf1);</span><br><span class="line"> 12         Job job2 = Job.getInstance(conf2);</span><br><span class="line"> 13             </span><br><span class="line"> 14         job1.setJarByClass(MRAvgScore1.class);</span><br><span class="line"> 15         job1.setMapperClass(AvgScoreMapper1.class);</span><br><span class="line"> 16         //job.setReducerClass(MFReducer.class);</span><br><span class="line"> 17             </span><br><span class="line"> 18         job1.setOutputKeyClass(Text.class);</span><br><span class="line"> 19         job1.setOutputValueClass(DoubleWritable.class);</span><br><span class="line"> 20         </span><br><span class="line"> 21         Path inputPath1 = new Path(&quot;D:\\MR\\hw\\work3\\input&quot;);</span><br><span class="line"> 22         Path outputPath1 = new Path(&quot;D:\\MR\\hw\\work3\\output_hw1_1&quot;);</span><br><span class="line"> 23             </span><br><span class="line"> 24         FileInputFormat.setInputPaths(job1, inputPath1);</span><br><span class="line"> 25         FileOutputFormat.setOutputPath(job1, outputPath1);</span><br><span class="line"> 26         </span><br><span class="line"> 27         </span><br><span class="line"> 28         job2.setMapperClass(AvgScoreMapper2.class);</span><br><span class="line"> 29         job2.setReducerClass(AvgScoreReducer2.class);</span><br><span class="line"> 30             </span><br><span class="line"> 31         job2.setOutputKeyClass(Text.class);</span><br><span class="line"> 32         job2.setOutputValueClass(DoubleWritable.class);</span><br><span class="line"> 33         </span><br><span class="line"> 34         Path inputPath2 = new Path(&quot;D:\\MR\\hw\\work3\\output_hw1_1&quot;);</span><br><span class="line"> 35         Path outputPath2 = new Path(&quot;D:\\MR\\hw\\work3\\output_hw1_end&quot;);</span><br><span class="line"> 36             </span><br><span class="line"> 37         FileInputFormat.setInputPaths(job2, inputPath2);</span><br><span class="line"> 38         FileOutputFormat.setOutputPath(job2, outputPath2);</span><br><span class="line"> 39         </span><br><span class="line"> 40         JobControl control = new JobControl(&quot;AvgScore&quot;);</span><br><span class="line"> 41         </span><br><span class="line"> 42         ControlledJob aJob = new ControlledJob(job1.getConfiguration());</span><br><span class="line"> 43         ControlledJob bJob = new ControlledJob(job2.getConfiguration());</span><br><span class="line"> 44         </span><br><span class="line"> 45         bJob.addDependingJob(aJob);</span><br><span class="line"> 46         </span><br><span class="line"> 47         control.addJob(aJob);</span><br><span class="line"> 48         control.addJob(bJob);</span><br><span class="line"> 49         </span><br><span class="line"> 50         Thread thread = new Thread(control);</span><br><span class="line"> 51         thread.start();</span><br><span class="line"> 52         </span><br><span class="line"> 53         while(!control.allFinished()) &#123;</span><br><span class="line"> 54             thread.sleep(1000);</span><br><span class="line"> 55         &#125;</span><br><span class="line"> 56         System.exit(0);</span><br><span class="line"> 57         </span><br><span class="line"> 58     &#125;</span><br><span class="line"> 59     </span><br><span class="line"> 60     </span><br><span class="line"> 61     </span><br><span class="line"> 62     /**</span><br><span class="line"> 63      * 数据类型：computer,huangxiaoming,85,86,41,75,93,42,85</span><br><span class="line"> 64      * </span><br><span class="line"> 65      * 需求：统计每门课程的参考人数和课程平均分</span><br><span class="line"> 66      * </span><br><span class="line"> 67      * 分析：以课程名称+姓名作为key，以平均分数作为value</span><br><span class="line"> 68      * */</span><br><span class="line"> 69     public static class AvgScoreMapper1 extends Mapper&lt;LongWritable, Text, Text, DoubleWritable&gt;&#123;</span><br><span class="line"> 70         </span><br><span class="line"> 71         @Override</span><br><span class="line"> 72         protected void map(LongWritable key, Text value,Context context)</span><br><span class="line"> 73                 throws IOException, InterruptedException &#123;</span><br><span class="line"> 74             </span><br><span class="line"> 75             String[] splits = value.toString().split(&quot;,&quot;);</span><br><span class="line"> 76             //拼接成要输出的key</span><br><span class="line"> 77             String outKey = splits[0]+&quot;\t&quot;+splits[1];</span><br><span class="line"> 78             int length = splits.length;</span><br><span class="line"> 79             int sum = 0;</span><br><span class="line"> 80             //求出成绩的总和</span><br><span class="line"> 81             for(int i=2;i&lt;length;i++) &#123;</span><br><span class="line"> 82                 sum += Integer.parseInt(splits[i]);</span><br><span class="line"> 83             &#125;</span><br><span class="line"> 84             //求出平均分</span><br><span class="line"> 85             double outValue = sum / (length - 2);</span><br><span class="line"> 86             </span><br><span class="line"> 87             context.write(new Text(outKey), new DoubleWritable(outValue));</span><br><span class="line"> 88             </span><br><span class="line"> 89         &#125;</span><br><span class="line"> 90         </span><br><span class="line"> 91     &#125;</span><br><span class="line"> 92     </span><br><span class="line"> 93     /**</span><br><span class="line"> 94      * 对第一次MapReduce输出的结果进一步计算，第一步输出结果样式为</span><br><span class="line"> 95      *  math    huangjiaju    82.0</span><br><span class="line"> 96      *  math    huanglei    74.0</span><br><span class="line"> 97      *    math    huangxiaoming    83.0</span><br><span class="line"> 98      *    math    liujialing    72.0</span><br><span class="line"> 99      *    math    liutao    56.0</span><br><span class="line">100      *    math    wangbaoqiang    72.0</span><br><span class="line">101      *    math    xuzheng    69.0</span><br><span class="line">102      * </span><br><span class="line">103      *    需求：统计每门课程的参考人数和课程平均分 </span><br><span class="line">104      *    分析：以课程名称作为key，以分数作为value进行 输出</span><br><span class="line">105      * </span><br><span class="line">106      * */</span><br><span class="line">107     public static class AvgScoreMapper2 extends Mapper&lt;LongWritable, Text, Text, DoubleWritable&gt;&#123;</span><br><span class="line">108         </span><br><span class="line">109         @Override</span><br><span class="line">110         protected void map(LongWritable key, Text value,Context context)</span><br><span class="line">111                 throws IOException, InterruptedException &#123;</span><br><span class="line">112             </span><br><span class="line">113             String[] splits = value.toString().split(&quot;\t&quot;);</span><br><span class="line">114             String outKey = splits[0];</span><br><span class="line">115             String outValue = splits[2];</span><br><span class="line">116             </span><br><span class="line">117             context.write(new Text(outKey), new DoubleWritable(Double.parseDouble(outValue)));</span><br><span class="line">118         &#125;</span><br><span class="line">119         </span><br><span class="line">120     &#125;</span><br><span class="line">121     </span><br><span class="line">122     /**</span><br><span class="line">123      * 针对同一门课程，对values进行遍历计数，看看有多少人参加了考试，并计算出平均成绩</span><br><span class="line">124      * */</span><br><span class="line">125     public static class AvgScoreReducer2 extends Reducer&lt;Text, DoubleWritable, Text, Text&gt;&#123;</span><br><span class="line">126         </span><br><span class="line">127         @Override</span><br><span class="line">128         protected void reduce(Text key, Iterable&lt;DoubleWritable&gt; values,</span><br><span class="line">129                 Context context) throws IOException, InterruptedException &#123;</span><br><span class="line">130             </span><br><span class="line">131             int count = 0;</span><br><span class="line">132             double sum = 0;</span><br><span class="line">133             for(DoubleWritable value : values) &#123;</span><br><span class="line">134                 count++;</span><br><span class="line">135                 sum += value.get();</span><br><span class="line">136             &#125;</span><br><span class="line">137             </span><br><span class="line">138             double avg = sum / count;</span><br><span class="line">139             String outValue = count + &quot;\t&quot; + avg;</span><br><span class="line">140             context.write(key, new Text(outValue));</span><br><span class="line">141         &#125;</span><br><span class="line">142         </span><br><span class="line">143     &#125;</span><br><span class="line">144     </span><br><span class="line">145     </span><br><span class="line">146 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二题</p>
+<p>MRAvgScore2.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class MRAvgScore2 &#123;</span><br><span class="line"> 2 </span><br><span class="line"> 3     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 4         </span><br><span class="line"> 5         Configuration conf = new Configuration();</span><br><span class="line"> 6         </span><br><span class="line"> 7         Job job = Job.getInstance(conf);</span><br><span class="line"> 8             </span><br><span class="line"> 9         job.setJarByClass(MRAvgScore2.class);</span><br><span class="line">10         job.setMapperClass(ScoreMapper3.class);</span><br><span class="line">11         job.setReducerClass(ScoreReducer3.class);</span><br><span class="line">12             </span><br><span class="line">13         job.setOutputKeyClass(StudentBean.class);</span><br><span class="line">14         job.setOutputValueClass(NullWritable.class);</span><br><span class="line">15         </span><br><span class="line">16         job.setPartitionerClass(CoursePartitioner.class);</span><br><span class="line">17         job.setNumReduceTasks(4);</span><br><span class="line">18         </span><br><span class="line">19         Path inputPath = new Path(&quot;D:\\MR\\hw\\work3\\output_hw1_1&quot;);</span><br><span class="line">20         Path outputPath = new Path(&quot;D:\\MR\\hw\\work3\\output_hw2_1&quot;);</span><br><span class="line">21             </span><br><span class="line">22         FileInputFormat.setInputPaths(job, inputPath);</span><br><span class="line">23         FileOutputFormat.setOutputPath(job, outputPath);</span><br><span class="line">24         boolean isDone = job.waitForCompletion(true);</span><br><span class="line">25         System.exit(isDone ? 0 : 1);</span><br><span class="line">26     &#125;</span><br><span class="line">27     </span><br><span class="line">28     </span><br><span class="line">29     public static class ScoreMapper3 extends Mapper&lt;LongWritable, Text, StudentBean, NullWritable&gt;&#123;</span><br><span class="line">30         </span><br><span class="line">31         @Override</span><br><span class="line">32         protected void map(LongWritable key, Text value,Context context)</span><br><span class="line">33                 throws IOException, InterruptedException &#123;</span><br><span class="line">34             </span><br><span class="line">35             String[] splits = value.toString().split(&quot;\t&quot;);</span><br><span class="line">36             </span><br><span class="line">37             double score = Double.parseDouble(splits[2]);</span><br><span class="line">38             DecimalFormat df = new DecimalFormat(&quot;#.0&quot;);</span><br><span class="line">39             df.format(score);</span><br><span class="line">40             </span><br><span class="line">41             StudentBean student = new StudentBean(splits[0],splits[1],score);</span><br><span class="line">42             </span><br><span class="line">43             context.write(student, NullWritable.get());</span><br><span class="line">44             </span><br><span class="line">45         &#125;</span><br><span class="line">46         </span><br><span class="line">47     &#125;</span><br><span class="line">48     </span><br><span class="line">49     public static class ScoreReducer3 extends Reducer&lt;StudentBean, NullWritable, StudentBean, NullWritable&gt;&#123;</span><br><span class="line">50         </span><br><span class="line">51         @Override</span><br><span class="line">52         protected void reduce(StudentBean key, Iterable&lt;NullWritable&gt; values,Context context)</span><br><span class="line">53                 throws IOException, InterruptedException &#123;</span><br><span class="line">54 </span><br><span class="line">55             for(NullWritable nvl : values)&#123;</span><br><span class="line">56                 context.write(key, nvl);</span><br><span class="line">57             &#125;</span><br><span class="line">58             </span><br><span class="line">59         &#125;</span><br><span class="line">60     &#125;</span><br><span class="line">61 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>StudentBean.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class StudentBean implements WritableComparable&lt;StudentBean&gt;&#123;</span><br><span class="line"> 2     private String course;</span><br><span class="line"> 3     private String name;</span><br><span class="line"> 4     private double avgScore;</span><br><span class="line"> 5     </span><br><span class="line"> 6     public String getCourse() &#123;</span><br><span class="line"> 7         return course;</span><br><span class="line"> 8     &#125;</span><br><span class="line"> 9     public void setCourse(String course) &#123;</span><br><span class="line">10         this.course = course;</span><br><span class="line">11     &#125;</span><br><span class="line">12     public String getName() &#123;</span><br><span class="line">13         return name;</span><br><span class="line">14     &#125;</span><br><span class="line">15     public void setName(String name) &#123;</span><br><span class="line">16         this.name = name;</span><br><span class="line">17     &#125;</span><br><span class="line">18     public double getavgScore() &#123;</span><br><span class="line">19         return avgScore;</span><br><span class="line">20     &#125;</span><br><span class="line">21     public void setavgScore(double avgScore) &#123;</span><br><span class="line">22         this.avgScore = avgScore;</span><br><span class="line">23     &#125;</span><br><span class="line">24     public StudentBean(String course, String name, double avgScore) &#123;</span><br><span class="line">25         super();</span><br><span class="line">26         this.course = course;</span><br><span class="line">27         this.name = name;</span><br><span class="line">28         this.avgScore = avgScore;</span><br><span class="line">29     &#125;</span><br><span class="line">30     public StudentBean() &#123;</span><br><span class="line">31         super();</span><br><span class="line">32     &#125;</span><br><span class="line">33     </span><br><span class="line">34     @Override</span><br><span class="line">35     public String toString() &#123;</span><br><span class="line">36         return course + &quot;\t&quot; + name + &quot;\t&quot; + avgScore;</span><br><span class="line">37     &#125;</span><br><span class="line">38     @Override</span><br><span class="line">39     public void readFields(DataInput in) throws IOException &#123;</span><br><span class="line">40         course = in.readUTF();</span><br><span class="line">41         name = in.readUTF();</span><br><span class="line">42         avgScore = in.readDouble();</span><br><span class="line">43     &#125;</span><br><span class="line">44     @Override</span><br><span class="line">45     public void write(DataOutput out) throws IOException &#123;</span><br><span class="line">46         out.writeUTF(course);</span><br><span class="line">47         out.writeUTF(name);</span><br><span class="line">48         out.writeDouble(avgScore);</span><br><span class="line">49     &#125;</span><br><span class="line">50     @Override</span><br><span class="line">51     public int compareTo(StudentBean stu) &#123;</span><br><span class="line">52         double diffent =  this.avgScore - stu.avgScore;</span><br><span class="line">53         if(diffent == 0) &#123;</span><br><span class="line">54             return 0;</span><br><span class="line">55         &#125;else &#123;</span><br><span class="line">56             return diffent &gt; 0 ? -1 : 1;</span><br><span class="line">57         &#125;</span><br><span class="line">58     &#125;</span><br><span class="line">59     </span><br><span class="line">60     </span><br><span class="line">61 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三题</p>
+<p>MRScore3.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><span class="line">  1 public class MRScore3 &#123;</span><br><span class="line">  2 </span><br><span class="line">  3     public static void main(String[] args) throws Exception &#123;</span><br><span class="line">  4         </span><br><span class="line">  5         Configuration conf1 = new Configuration();</span><br><span class="line">  6         Configuration conf2 = new Configuration();</span><br><span class="line">  7         </span><br><span class="line">  8         Job job1 = Job.getInstance(conf1);</span><br><span class="line">  9         Job job2 = Job.getInstance(conf2);</span><br><span class="line"> 10             </span><br><span class="line"> 11         job1.setJarByClass(MRScore3.class);</span><br><span class="line"> 12         job1.setMapperClass(MRMapper3_1.class);</span><br><span class="line"> 13         //job.setReducerClass(ScoreReducer3.class);</span><br><span class="line"> 14         </span><br><span class="line"> 15         </span><br><span class="line"> 16         job1.setMapOutputKeyClass(IntWritable.class);</span><br><span class="line"> 17         job1.setMapOutputValueClass(StudentBean.class);</span><br><span class="line"> 18         job1.setOutputKeyClass(IntWritable.class);</span><br><span class="line"> 19         job1.setOutputValueClass(StudentBean.class);</span><br><span class="line"> 20         </span><br><span class="line"> 21         job1.setPartitionerClass(CoursePartitioner2.class);</span><br><span class="line"> 22         </span><br><span class="line"> 23         job1.setNumReduceTasks(4);</span><br><span class="line"> 24         </span><br><span class="line"> 25         Path inputPath = new Path(&quot;D:\\MR\\hw\\work3\\input&quot;);</span><br><span class="line"> 26         Path outputPath = new Path(&quot;D:\\MR\\hw\\work3\\output_hw3_1&quot;);</span><br><span class="line"> 27             </span><br><span class="line"> 28         FileInputFormat.setInputPaths(job1, inputPath);</span><br><span class="line"> 29         FileOutputFormat.setOutputPath(job1, outputPath);</span><br><span class="line"> 30         </span><br><span class="line"> 31         job2.setMapperClass(MRMapper3_2.class);</span><br><span class="line"> 32         job2.setReducerClass(MRReducer3_2.class);</span><br><span class="line"> 33         </span><br><span class="line"> 34         job2.setMapOutputKeyClass(IntWritable.class);</span><br><span class="line"> 35         job2.setMapOutputValueClass(StudentBean.class);</span><br><span class="line"> 36         job2.setOutputKeyClass(StudentBean.class);</span><br><span class="line"> 37         job2.setOutputValueClass(NullWritable.class);</span><br><span class="line"> 38         </span><br><span class="line"> 39         Path inputPath2 = new Path(&quot;D:\\MR\\hw\\work3\\output_hw3_1&quot;);</span><br><span class="line"> 40         Path outputPath2 = new Path(&quot;D:\\MR\\hw\\work3\\output_hw3_end&quot;);</span><br><span class="line"> 41             </span><br><span class="line"> 42         FileInputFormat.setInputPaths(job2, inputPath2);</span><br><span class="line"> 43         FileOutputFormat.setOutputPath(job2, outputPath2);</span><br><span class="line"> 44         </span><br><span class="line"> 45         JobControl control = new JobControl(&quot;Score3&quot;);</span><br><span class="line"> 46         </span><br><span class="line"> 47         ControlledJob aJob = new ControlledJob(job1.getConfiguration());</span><br><span class="line"> 48         ControlledJob bJob = new ControlledJob(job2.getConfiguration());</span><br><span class="line"> 49         </span><br><span class="line"> 50         bJob.addDependingJob(aJob);</span><br><span class="line"> 51         </span><br><span class="line"> 52         control.addJob(aJob);</span><br><span class="line"> 53         control.addJob(bJob);</span><br><span class="line"> 54         </span><br><span class="line"> 55         Thread thread = new Thread(control);</span><br><span class="line"> 56         thread.start();</span><br><span class="line"> 57         </span><br><span class="line"> 58         while(!control.allFinished()) &#123;</span><br><span class="line"> 59             thread.sleep(1000);</span><br><span class="line"> 60         &#125;</span><br><span class="line"> 61         System.exit(0);</span><br><span class="line"> 62         </span><br><span class="line"> 63 </span><br><span class="line"> 64     &#125;</span><br><span class="line"> 65     </span><br><span class="line"> 66     </span><br><span class="line"> 67     </span><br><span class="line"> 68     </span><br><span class="line"> 69     public static class MRMapper3_1 extends Mapper&lt;LongWritable, Text, IntWritable, StudentBean&gt;&#123;</span><br><span class="line"> 70         </span><br><span class="line"> 71         StudentBean outKey = new StudentBean();</span><br><span class="line"> 72         IntWritable outValue = new IntWritable();</span><br><span class="line"> 73         List&lt;String&gt; scoreList = new ArrayList&lt;&gt;();</span><br><span class="line"> 74         </span><br><span class="line"> 75         protected void map(LongWritable key, Text value, Context context) throws java.io.IOException ,InterruptedException &#123;</span><br><span class="line"> 76             </span><br><span class="line"> 77             scoreList.clear();</span><br><span class="line"> 78             String[] splits = value.toString().split(&quot;,&quot;);</span><br><span class="line"> 79             long sum = 0;</span><br><span class="line"> 80             </span><br><span class="line"> 81             for(int i=2;i&lt;splits.length;i++) &#123;</span><br><span class="line"> 82                 scoreList.add(splits[i]);</span><br><span class="line"> 83                 sum += Long.parseLong(splits[i]);</span><br><span class="line"> 84             &#125;</span><br><span class="line"> 85             </span><br><span class="line"> 86             Collections.sort(scoreList);</span><br><span class="line"> 87             outValue.set(Integer.parseInt(scoreList.get(scoreList.size()-1)));</span><br><span class="line"> 88             </span><br><span class="line"> 89             double avg = sum * 1.0/(splits.length-2);</span><br><span class="line"> 90             outKey.setCourse(splits[0]);</span><br><span class="line"> 91             outKey.setName(splits[1]);</span><br><span class="line"> 92             outKey.setavgScore(avg);</span><br><span class="line"> 93             </span><br><span class="line"> 94             context.write(outValue, outKey);</span><br><span class="line"> 95                                 </span><br><span class="line"> 96         &#125;;</span><br><span class="line"> 97     &#125;</span><br><span class="line"> 98     </span><br><span class="line"> 99     </span><br><span class="line">100     </span><br><span class="line">101     public static class MRMapper3_2 extends Mapper&lt;LongWritable, Text,IntWritable, StudentBean &gt;&#123;</span><br><span class="line">102         </span><br><span class="line">103         StudentBean outValue = new StudentBean();</span><br><span class="line">104         IntWritable outKey = new IntWritable();</span><br><span class="line">105         </span><br><span class="line">106         protected void map(LongWritable key, Text value, Context context) throws java.io.IOException ,InterruptedException &#123;</span><br><span class="line">107             </span><br><span class="line">108             String[] splits = value.toString().split(&quot;\t&quot;);</span><br><span class="line">109             outKey.set(Integer.parseInt(splits[0]));</span><br><span class="line">110             </span><br><span class="line">111             outValue.setCourse(splits[1]);</span><br><span class="line">112             outValue.setName(splits[2]);</span><br><span class="line">113             outValue.setavgScore(Double.parseDouble(splits[3]));</span><br><span class="line">114             </span><br><span class="line">115             context.write(outKey, outValue);</span><br><span class="line">116             </span><br><span class="line">117             </span><br><span class="line">118         &#125;;</span><br><span class="line">119     &#125;</span><br><span class="line">120     </span><br><span class="line">121     </span><br><span class="line">122     public static class MRReducer3_2 extends Reducer&lt;IntWritable, StudentBean, StudentBean, NullWritable&gt;&#123;</span><br><span class="line">123         </span><br><span class="line">124         StudentBean outKey = new StudentBean();</span><br><span class="line">125         </span><br><span class="line">126         @Override</span><br><span class="line">127         protected void reduce(IntWritable key, Iterable&lt;StudentBean&gt; values,Context context)</span><br><span class="line">128                 throws IOException, InterruptedException &#123;</span><br><span class="line">129             </span><br><span class="line">130             int length = values.toString().length();</span><br><span class="line">131             </span><br><span class="line">132             for(StudentBean value : values) &#123;</span><br><span class="line">133                 outKey = value;</span><br><span class="line">134             &#125;</span><br><span class="line">135             </span><br><span class="line">136             context.write(outKey, NullWritable.get());</span><br><span class="line">137             </span><br><span class="line">138         &#125;</span><br><span class="line">139     &#125;</span><br><span class="line">140     </span><br><span class="line">141     </span><br><span class="line">142 &#125;</span><br></pre></td></tr></table></figure>
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-24-Hadoop学习之路（二十四）YARN的资源调度.html" class="pre-post btn btn-default" title='Hadoop学习之路（二十四）YARN的资源调度'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十四）YARN的资源调度</span>
+    </a>
+    
+    
+    <a href="/2018-04-29-Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节.html" class="next-post btn btn-default" title='Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop源码学习－脚本命令（hadoop fs -ls)执行细节</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#学生成绩—增强版"><span class="toc-text">学生成绩—增强版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据信息"><span class="toc-text">数据信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据解释"><span class="toc-text">数据解释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#统计需求"><span class="toc-text">统计需求</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

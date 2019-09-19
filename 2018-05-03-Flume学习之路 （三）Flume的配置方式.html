@@ -1,0 +1,459 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Flume">
+
+
+<meta name="description" content="** Flume学习之路 （三）Flume的配置方式：** &lt;Excerpt in index | 首页摘要&gt;
+​        Flume学习之路 （三）Flume的配置方式
+
+&...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Flume学习之路 （三）Flume的配置方式 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Flume学习之路 （三）Flume的配置方式">
+            
+            Flume学习之路 （三）Flume的配置方式
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Flume/">Flume</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/05/03</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Flume学习之路 （三）Flume的配置方式：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Flume学习之路 （三）Flume的配置方式</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、单一代理流配置"><a href="#一、单一代理流配置" class="headerlink" title="一、单一代理流配置"></a>一、单一代理流配置</h2><h3 id="1-1-官网介绍"><a href="#1-1-官网介绍" class="headerlink" title="1.1　官网介绍"></a>1.1　官网介绍</h3><p><a href="http://flume.apache.org/FlumeUserGuide.html#avro-source" target="_blank" rel="noopener">http://flume.apache.org/FlumeUserGuide.html#avro-source</a></p>
+<p>通过一个通道将来源和接收器链接。需要列出源，接收器和通道，为给定的代理，然后指向源和接收器及通道。一个源的实例可以指定多个通道，但只能指定一个接收器实例。格式如下：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505194245456-451959321.png" alt="img"></p>
+<p>实例解析：一个代理名为agent_foo，外部通过avro客户端，并且发送数据通过内存通道给hdfs。在配置文件foo.config的可能看起来像这样：</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505194704534-537614658.png" alt="img"></p>
+<p>案例说明：这将使事件流从avro-appserver-src-1到hdfs-sink-1通过内存通道mem-channel-1。当代理开始foo.config作为其配置文件，它会实例化流。</p>
+<p><strong>配置单个组件</strong></p>
+<p>定义流之后，需要设置每个源，接收器和通道的属性。可以分别设定组件的属性值。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505200346302-895681544.png" alt="img"></p>
+<p>“type”属性必须为每个组件设置，以了解它需要什么样的对象。每个源，接收器和通道类型有其自己的一套，它所需的性能，以实现预期的功能。所有这些，必须根据需要设置。在前面的例子中，从hdfs-sink-1中的流到HDFS，通过内存通道mem-channel-1的avro-appserver-src-1源。下面是 一个例子，显示了这些组件的配置。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505200538929-1864653830.png" alt="img"></p>
+<h3 id="1-2-测试示例（一）"><a href="#1-2-测试示例（一）" class="headerlink" title="1.2　测试示例（一）"></a>1.2　测试示例（一）</h3><p>通过flume来监控一个目录，当目录中有新文件时，将文件内容输出到控制台。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#配置一个agent，agent的名称可以自定义（如a1）</span><br><span class="line">#指定agent的sources（如s1）、sinks（如k1）、channels（如c1）</span><br><span class="line">#分别指定agent的sources，sinks,channels的名称 名称可以自定义</span><br><span class="line">a1.sources = s1  </span><br><span class="line">a1.sinks = k1  </span><br><span class="line">a1.channels = c1  </span><br><span class="line">   </span><br><span class="line">#描述source</span><br><span class="line">#配置目录scource</span><br><span class="line">a1.sources.s1.type =spooldir  </span><br><span class="line">a1.sources.s1.spoolDir =/home/hadoop/logs  </span><br><span class="line">a1.sources.s1.fileHeader= true  </span><br><span class="line">a1.sources.s1.channels =c1  </span><br><span class="line">   </span><br><span class="line">#配置sink </span><br><span class="line">a1.sinks.k1.type = logger  </span><br><span class="line">a1.sinks.k1.channel = c1  </span><br><span class="line">   </span><br><span class="line">#配置channel(内存做缓存)</span><br><span class="line">a1.channels.c1.type = memory</span><br></pre></td></tr></table></figure>
+
+<p>启动命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng agent --conf conf --conf-file /home/hadoop/apps/flume/examples/case_spool.properties --name a1 -Dflume.root.logger=INFO,console</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506194342069-922154308.png" alt="img"></p>
+<p>将123.log移动到logs目录</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506194412852-76543455.png" alt="img"></p>
+<p>运行结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506194423110-835413271.png" alt="img"></p>
+<h3 id="1-3-测试案例（二）"><a href="#1-3-测试案例（二）" class="headerlink" title="1.3　测试案例（二）"></a>1.3　测试案例（二）</h3><p>案例2：实时模拟从web服务器中读取数据到hdfs中</p>
+<p>此处使用exec source详细参考<a href="http://www.cnblogs.com/qingyunzong/p/8995554.html" target="_blank" rel="noopener">http://www.cnblogs.com/qingyunzong/p/8995554.html</a></p>
+<p>里面的2.3Exec Source介绍</p>
+<p><a href="https://www.cnblogs.com/qingyunzong/p/8996155.html#_labelTop" target="_blank" rel="noopener">回到顶部</a></p>
+<h2 id="二、单代理多流配置"><a href="#二、单代理多流配置" class="headerlink" title="二、单代理多流配置"></a>二、单代理多流配置</h2><p>单个Flume代理可以包含几个独立的流。你可以在一个配置文件中列出多个源，接收器和通道。这些组件可以连接形成多个流。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505194245456-451959321.png" alt="img"></p>
+<p>可以连接源和接收器到其相应的通道，设置两个不同的流。例如，如果需要设置一个agent_foo代理两个流，一个从外部Avro客户端到HDFS，另外一个是tail的输出到Avro接收器，然后在这里是做一个配置</p>
+<h3 id="2-1-官方案例"><a href="#2-1-官方案例" class="headerlink" title="2.1　官方案例"></a>2.1　官方案例</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506195038031-773927667.png" alt="img"></p>
+<h2 id="三、配置多代理流程"><a href="#三、配置多代理流程" class="headerlink" title="三、配置多代理流程"></a>三、配置多代理流程</h2><p>设置一个多层的流，需要有一个指向下一跳avro源的第一跳的avro 接收器。这将导致第一Flume代理转发事件到下一个Flume代理。例如，如果定期发送的文件，每个事件（1文件）AVRO客户端使用本地Flume 代理，那么这个当地的代理可以转发到另一个有存储的代理。</p>
+<p>配置如下</p>
+<h3 id="3-1-官方案例"><a href="#3-1-官方案例" class="headerlink" title="3.1　官方案例"></a>3.1　官方案例</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506195144875-828067342.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506195203532-676409754.png" alt="img"></p>
+<p>这里连接从weblog-agent的avro-forward-sink 到hdfs-agent的avro-collection-source收集源。最终结果从外部源的appserver最终存储在HDFS的事件。</p>
+<h3 id="3-2-测试案例"><a href="#3-2-测试案例" class="headerlink" title="3.2　测试案例"></a>3.2　测试案例</h3><p>case_avro.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = s1</span><br><span class="line">a1.sinks = k1</span><br><span class="line">a1.channels = c1</span><br><span class="line"></span><br><span class="line">a1.sources.s1.type = avro</span><br><span class="line">a1.sources.s1.channels = c1</span><br><span class="line">a1.sources.s1.bind = 192.168.123.102</span><br><span class="line">a1.sources.s1.port = 22222</span><br><span class="line"></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = 1000</span><br><span class="line">a1.channels.c1.transactionCapacity = 100</span><br><span class="line"></span><br><span class="line">a1.sinks.k1.type = logger</span><br><span class="line">a1.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>case_avro_sink.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">a2.sources = s1</span><br><span class="line">a2.sinks = k1</span><br><span class="line">a2.channels = c1</span><br><span class="line"> </span><br><span class="line">a2.sources.s1.type = syslogtcp</span><br><span class="line">a2.sources.s1.channels = c1</span><br><span class="line">a2.sources.s1.host = 192.168.123.102</span><br><span class="line">a2.sources.s1.port = 33333</span><br><span class="line"> </span><br><span class="line">a2.channels.c1.type = memory</span><br><span class="line">a2.channels.c1.capacity = 1000</span><br><span class="line">a2.channels.c1.transactionCapacity = 100</span><br><span class="line"> </span><br><span class="line">a2.sinks.k1.type = avro</span><br><span class="line">a2.sinks.k1.hostname = 192.168.123.102</span><br><span class="line">a2.sinks.k1.port = 22222</span><br><span class="line">a2.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>说明：case_avro_sink.properties是前面的Agent，case_avro.properties是后面的Agent</p>
+<p><strong>#**</strong>先启动Avro<strong><strong>的Source,</strong></strong>监听端口**</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_avro.properties --name a1 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506200609968-1667465574.png" alt="img"></p>
+<p><strong>#**</strong>再启动Avro<strong>**的Sink</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_avro_sink.properties --name a2 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506201628366-1736224639.png" alt="img"></p>
+<p>可以看到已经建立连接</p>
+<p><strong><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506201510416-1301773498.png" alt="img"></strong></p>
+<p><strong>#**</strong>在Avro Sink<strong>**上生成测试log</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@hadoop1 ~]$ echo &quot;hello flume avro sink&quot; | nc 192.168.123.102 33333</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506201816067-1646840986.png" alt="img"></p>
+<p>查看其它结果</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506202008780-1105774708.png" alt="img"></p>
+<h2 id="四、多路复用流"><a href="#四、多路复用流" class="headerlink" title="四、多路复用流"></a>四、多路复用流</h2><p>Flume支持扇出流从一个源到多个通道。有两种模式的扇出，复制和复用。在复制流的事件被发送到所有的配置通道。在复用的情况下，事件被发送到合格的渠 道只有一个子集。扇出流，需要指定源和扇出通道的规则。这是通过添加一个通道“选择”，可以复制或复用。再进一步指定选择的规则，如果它是一个多路。如果你 不指定一个选择，则默认情况下它复制。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180505194245456-451959321.png" alt="img"></p>
+<p>复用的选择集的属性进一步分叉。这需要指定一个事件属性映射到一组通道。选择配置属性中的每个事件头检查。如果指定的值相匹配，那么该事件被发送到所有的通道映射到该值。如果没有匹配，那么该事件被发送到设置为默认配置的通道。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506202356393-170234215.png" alt="img"></p>
+<p>映射允许每个值通道可以重叠。默认值可以包含任意数量的通道。下面的示例中有一个单一的流复用两条路径。代理有一个单一的avro源和连接道两个接收器的两个通道。</p>
+<h3 id="4-1-官方案例"><a href="#4-1-官方案例" class="headerlink" title="4.1　官方案例"></a>4.1　官方案例</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201805/1228818-20180506202430234-980795967.png" alt="img"></p>
+<p>“State”作为Header的选择检查。如果值是“CA”，然后将其发送到mem-channel-1，如果它的“AZ”的，那么jdbc- channel-2，如果它的“NY”那么发到这两个。如果“State”头未设置或不匹配的任何三个，然后去默认的mem-channel-1通道。</p>
+<h3 id="4-2-测试案例（一）复制"><a href="#4-2-测试案例（一）复制" class="headerlink" title="4.2　测试案例（一）复制"></a>4.2　测试案例（一）复制</h3><p>case_replicate_sink.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">a1.sources = s1</span><br><span class="line">a1.sinks = k1 k2</span><br><span class="line">a1.channels = c1 c2</span><br><span class="line"></span><br><span class="line">a1.sources.s1.type = syslogtcp</span><br><span class="line">a1.sources.s1.channels = c1 c2</span><br><span class="line">a1.sources.s1.host = 192.168.123.102</span><br><span class="line">a1.sources.s1.port = 6666</span><br><span class="line">a1.sources.s1.selector.type = replicating</span><br><span class="line"></span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = 1000</span><br><span class="line">a1.channels.c1.transactionCapacity = 100</span><br><span class="line"></span><br><span class="line">a1.channels.c2.type = memory</span><br><span class="line">a1.channels.c2.capacity = 1000</span><br><span class="line">a1.channels.c2.transactionCapacity = 100</span><br><span class="line"></span><br><span class="line">a1.sinks.k1.type = avro</span><br><span class="line">a1.sinks.k1.hostname = 192.168.123.102</span><br><span class="line">a1.sinks.k1.port = 7777</span><br><span class="line">a1.sinks.k1.channel = c1</span><br><span class="line"></span><br><span class="line">a1.sinks.k1.type = avro</span><br><span class="line">a1.sinks.k1.hostname = 192.168.123.102</span><br><span class="line">a1.sinks.k1.port = 7777</span><br><span class="line">a1.sinks.k1.channel = c2</span><br></pre></td></tr></table></figure>
+
+<p>case_replicate_s1.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a2.sources = s1</span><br><span class="line">a2.sinks = k1</span><br><span class="line">a2.channels = c1</span><br><span class="line"> </span><br><span class="line">a2.sources.s1.type = avro</span><br><span class="line">a2.sources.s1.channels = c1</span><br><span class="line">a2.sources.s1.host = 192.168.123.102</span><br><span class="line">a2.sources.s1.port = 7777</span><br><span class="line"> </span><br><span class="line">a2.channels.c1.type = memory</span><br><span class="line">a2.channels.c1.capacity = 1000</span><br><span class="line">a2.channels.c1.transactionCapacity = 100</span><br><span class="line"> </span><br><span class="line">a2.sinks.k1.type = logger</span><br><span class="line">a2.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+
+<p>case_replicate_s2.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">a3.sources = s1</span><br><span class="line">a3.sinks = k1</span><br><span class="line">a3.channels = c1</span><br><span class="line"></span><br><span class="line">a3.sources.s1.type = avro</span><br><span class="line">a3.sources.s1.channels = c1</span><br><span class="line">a3.sources.s1.host = 192.168.123.102</span><br><span class="line">a3.sources.s1.port = 7777</span><br><span class="line"></span><br><span class="line">a3.channels.c1.type = memory</span><br><span class="line">a3.channels.c1.capacity = 1000</span><br><span class="line">a3.channels.c1.transactionCapacity = 100</span><br><span class="line"></span><br><span class="line">a3.sinks.k1.type = logger</span><br><span class="line">a3.sinks.k1.channel = c1</span><br></pre></td></tr></table></figure>
+
+<p><strong>#**</strong>先启动Avro<strong><strong>的Source,</strong></strong>监听端口**</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_replicate_s1.properties --name a2 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_replicate_s2.properties --name a3 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>#**</strong>再启动Avro<strong>**的Sink</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flume-ng agent --conf conf --conf-file ~/apps/flume/examples/case_replicate_sink.properties --name a1 -Dflume.root.logger=DEBUG,console -Dorg.apache.flume.log.printconfig=true -Dorg.apache.flume.log.rawdata=true</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>#**</strong>生成测试log**</p>
+<p>echo “hello via channel selector” | nc 192.168.123.102 6666</p>
+<h3 id="4-3-测试案例（二）复用"><a href="#4-3-测试案例（二）复用" class="headerlink" title="4.3　测试案例（二）复用"></a>4.3　测试案例（二）复用</h3><p>case_multi_sink.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">#2个channel和2个sink的配置文件</span><br><span class="line">a1.sources = r1</span><br><span class="line">a1.sinks = k1 k2</span><br><span class="line">a1.channels = c1 c2</span><br><span class="line"> </span><br><span class="line"># Describe/configure the source</span><br><span class="line">a1.sources.r1.type = org.apache.flume.source.http.HTTPSource</span><br><span class="line">a1.sources.r1.port = 5140</span><br><span class="line">a1.sources.r1.host = 0.0.0.0</span><br><span class="line">a1.sources.r1.selector.type = multiplexing</span><br><span class="line">a1.sources.r1.channels = c1 c2</span><br><span class="line"> </span><br><span class="line">a1.sources.r1.selector.header = state</span><br><span class="line">a1.sources.r1.selector.mapping.CZ = c1</span><br><span class="line">a1.sources.r1.selector.mapping.US = c2</span><br><span class="line">a1.sources.r1.selector.default = c1</span><br><span class="line"> </span><br><span class="line"># Describe the sink</span><br><span class="line">a1.sinks.k1.type = avro</span><br><span class="line">a1.sinks.k1.channel = c1</span><br><span class="line">a1.sinks.k1.hostname = 172.25.4.23</span><br><span class="line">a1.sinks.k1.port = 4545</span><br><span class="line"> </span><br><span class="line">a1.sinks.k2.type = avro</span><br><span class="line">a1.sinks.k2.channel = c2</span><br><span class="line">a1.sinks.k2.hostname = 172.25.4.33</span><br><span class="line">a1.sinks.k2.port = 4545</span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a1.channels.c1.type = memory</span><br><span class="line">a1.channels.c1.capacity = 1000</span><br><span class="line">a1.channels.c1.transactionCapacity = 100</span><br><span class="line"> </span><br><span class="line">a1.channels.c2.type = memory</span><br><span class="line">a1.channels.c2.capacity = 1000</span><br><span class="line">a1.channels.c2.transactionCapacity = 100</span><br></pre></td></tr></table></figure>
+
+<p>case_ multi _s1.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># Name the components on this agent</span><br><span class="line">a2.sources = r1</span><br><span class="line">a2.sinks = k1</span><br><span class="line">a2.channels = c1</span><br><span class="line"> </span><br><span class="line"># Describe/configure the source</span><br><span class="line">a2.sources.r1.type = avro</span><br><span class="line">a2.sources.r1.channels = c1</span><br><span class="line">a2.sources.r1.bind = 172.25.4.23</span><br><span class="line">a2.sources.r1.port = 4545</span><br><span class="line"> </span><br><span class="line"># Describe the sink</span><br><span class="line">a2.sinks.k1.type = logger</span><br><span class="line"> a2.sinks.k1.channel = c1</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a2.channels.c1.type = memory</span><br><span class="line">a2.channels.c1.capacity = 1000</span><br><span class="line">a2.channels.c1.transactionCapacity = 100</span><br></pre></td></tr></table></figure>
+
+<p>case_ multi _s2.properties</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># Name the components on this agent</span><br><span class="line">a3.sources = r1</span><br><span class="line">a3.sinks = k1</span><br><span class="line">a3.channels = c1</span><br><span class="line"> </span><br><span class="line"># Describe/configure the source</span><br><span class="line">a3.sources.r1.type = avro</span><br><span class="line">a3.sources.r1.channels = c1</span><br><span class="line">a3.sources.r1.bind = 172.25.4.33</span><br><span class="line">a3.sources.r1.port = 4545</span><br><span class="line"> </span><br><span class="line"># Describe the sink</span><br><span class="line">a3.sinks.k1.type = logger</span><br><span class="line"> a3.sinks.k1.channel = c1</span><br><span class="line"></span><br><span class="line"># Use a channel which buffers events in memory</span><br><span class="line">a3.channels.c1.type = memory</span><br><span class="line">a3.channels.c1.capacity = 1000</span><br><span class="line">a3.channels.c1.transactionCapacity = 100</span><br></pre></td></tr></table></figure>
+
+<p><strong>#**</strong>先启动Avro<strong><strong>的Source,</strong></strong>监听端口**</p>
+<p>flume-ng agent -c . -f case_ multi _s1.conf -n a2 -Dflume.root.logger=INFO,console</p>
+<p>flume-ng agent -c . -f case_ multi _s2.conf -n a3 -Dflume.root.logger=INFO,console</p>
+<p><strong>#**</strong>再启动Avro<strong>**的Sink</strong></p>
+<p>flume-ng agent -c . -f case_multi_sink.conf -n a1-Dflume.root.logger=INFO,console</p>
+<p><strong>#**</strong>根据配置文件生成测试的header** <strong>为state**</strong>的POST<strong>**请求</strong></p>
+<p>curl -X POST -d ‘[{ “headers” :{“state” : “CZ”},”body” : “TEST1”}]’ <a href="http://localhost:5140" target="_blank" rel="noopener">http://localhost:5140</a></p>
+<p>curl -X POST -d ‘[{ “headers” :{“state” : “US”},”body” : “TEST2”}]’ <a href="http://localhost:5140" target="_blank" rel="noopener">http://localhost:5140</a></p>
+<p>curl -X POST -d ‘[{ “headers” :{“state” : “SH”},”body” : “TEST3”}]’ <a href="http://localhost:5140" target="_blank" rel="noopener">http://localhost:5140</a></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-05-04-Kafka学习之路 （一）Kafka的简介.html" class="pre-post btn btn-default" title='Kafka学习之路 （一）Kafka的简介'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Kafka学习之路 （一）Kafka的简介</span>
+    </a>
+    
+    
+    <a href="/2018-05-02-Flume学习之路 （二）Flume的Source类型.html" class="next-post btn btn-default" title='Flume学习之路 （二）Flume的Source类型'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Flume学习之路 （二）Flume的Source类型</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、单一代理流配置"><span class="toc-text">一、单一代理流配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-官网介绍"><span class="toc-text">1.1　官网介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-测试示例（一）"><span class="toc-text">1.2　测试示例（一）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-测试案例（二）"><span class="toc-text">1.3　测试案例（二）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、单代理多流配置"><span class="toc-text">二、单代理多流配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-官方案例"><span class="toc-text">2.1　官方案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、配置多代理流程"><span class="toc-text">三、配置多代理流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-官方案例"><span class="toc-text">3.1　官方案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-测试案例"><span class="toc-text">3.2　测试案例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、多路复用流"><span class="toc-text">四、多路复用流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-官方案例"><span class="toc-text">4.1　官方案例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-测试案例（一）复制"><span class="toc-text">4.2　测试案例（一）复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-测试案例（二）复用"><span class="toc-text">4.3　测试案例（二）复用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

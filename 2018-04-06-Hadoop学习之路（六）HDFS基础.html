@@ -1,0 +1,386 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（六）HDFS基础：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（六）HDFS基础
+
+&lt;The r...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（六）HDFS基础 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（六）HDFS基础">
+            
+            Hadoop学习之路（六）HDFS基础
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/06</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（六）HDFS基础：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（六）HDFS基础</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="HDFS前言"><a href="#HDFS前言" class="headerlink" title="HDFS前言"></a>HDFS前言</h2><p>HDFS：Hadoop Distributed File System ，Hadoop分布式文件系统，主要用来解决海量数据的存储问题</p>
+<h3 id="设计思想"><a href="#设计思想" class="headerlink" title="设计思想"></a>设计思想</h3><p>1、分散均匀存储 dfs.blocksize = 128M</p>
+<p>2、备份冗余存储 dfs.replication = 3</p>
+<h3 id="在大数据系统中作用"><a href="#在大数据系统中作用" class="headerlink" title="在大数据系统中作用"></a>在大数据系统中作用</h3><p>为各类分布式运算框架（如：mapreduce，spark，tez，……）提供数据存储服务。</p>
+<h3 id="重点概念"><a href="#重点概念" class="headerlink" title="重点概念"></a>重点概念</h3><p>文件切块，副本存放，元数据</p>
+<h2 id="HDFS的概念和特性"><a href="#HDFS的概念和特性" class="headerlink" title="HDFS的概念和特性"></a><strong>HDFS的概念和特性</strong></h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a><strong>概念</strong></h3><p><strong>首先，它是一个文件系统</strong>，用于存储文件，通过统一的命名空间——目录树来定位文件</p>
+<p><strong>其次，它是分布式的</strong>，由很多服务器联合起来实现其功能，集群中的服务器有各自的角色；</p>
+<h3 id="重要特性"><a href="#重要特性" class="headerlink" title="重要特性"></a><strong>重要特性</strong></h3><p>（1）HDFS中的文件在物理上是<strong>分块存储（block）</strong>，块的大小可以通过配置参数( dfs.blocksize)来规定，默认大小在hadoop2.x版本中是128M，老版本中是64M</p>
+<p>（2）HDFS文件系统会给客户端提供一个<strong>统一的抽象目录树</strong>，客户端通过路径来访问文件，形如：hdfs://namenode:port/dir-a/dir-b/dir-c/file.data</p>
+<p>（3）<strong>目录结构及文件分块信息**</strong>(元数据)**的管理由namenode节点承担</p>
+<p>——namenode是HDFS集群主节点，负责维护整个hdfs文件系统的目录树，以及每一个路径（文件）所对应的block块信息（block的id，及所在的datanode服务器）</p>
+<p>（4）文件的各个block的存储管理由datanode节点承担</p>
+<p>—- datanode是HDFS集群从节点，每一个block都可以在多个datanode上存储多个副本（副本数量也可以通过参数设置dfs.replication）</p>
+<p>（5）HDFS是设计成适应一次写入，多次读出的场景，且不支持文件的修改</p>
+<p><em>(注：适合用来做数据分析，并不适合用来做网盘应用，因为，不便修改，延迟大，网络开销大，成本太高)</em></p>
+<h2 id="图解HDFS"><a href="#图解HDFS" class="headerlink" title="图解HDFS"></a>图解HDFS</h2><p>通过上面的描述我们知道，hdfs很多特点：</p>
+<p>　　保存多个副本，且提供容错机制，副本丢失或宕机自动恢复（默认存3份）。</p>
+<p>　　运行在廉价的机器上</p>
+<p>　　适合大数据的处理。HDFS默认会将文件分割成block，，在hadoop2.x以上版本默认128M为1个block。然后将block按键值对存储在HDFS上，并将键值对的映射存到内存中。如果小文件太多，那内存的负担会很重。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308190320147-1328604927.png" alt="img"></p>
+<p>如上图所示，HDFS也是按照Master和Slave的结构。分NameNode、SecondaryNameNode、DataNode这几个角色。<br>　　　　NameNode：是Master节点，是大领导。管理数据块映射；处理客户端的读写请求；配置副本策略；管理HDFS的名称空间；<br>　　　　SecondaryNameNode：是一个小弟，分担大哥namenode的工作量；是NameNode的冷备份；合并fsimage和fsedits然后再发给namenode。<br>　　　　DataNode：Slave节点，奴隶，干活的。负责存储client发来的数据块block；执行数据块的读写操作。<br>　　　　热备份：b是a的热备份，如果a坏掉。那么b马上运行代替a的工作。<br>　　　　冷备份：b是a的冷备份，如果a坏掉。那么b不能马上代替a工作。但是b上存储a的一些信息，减少a坏掉之后的损失。<br>　　　　fsimage:元数据镜像文件（文件系统的目录树。）<br>　　　　edits：元数据的操作日志（针对文件系统做的修改操作记录）<br>　　　　namenode内存中存储的是=fsimage+edits。<br>　　　　SecondaryNameNode负责定时默认1小时，从namenode上，获取fsimage和edits来进行合并，然后再发送给namenode。减少namenode的工作量。</p>
+<h2 id="HDFS的局限性"><a href="#HDFS的局限性" class="headerlink" title="HDFS的局限性"></a>HDFS的局限性</h2><p>　　1）低延时数据访问。在用户交互性的应用中，应用需要在ms或者几个s的时间内得到响应。由于HDFS为高吞吐率做了设计，也因此牺牲了快速响应。对于低延时的应用，可以考虑使用HBase或者Cassandra。<br>　　2）大量的小文件。标准的HDFS数据块的大小是64M，存储小文件并不会浪费实际的存储空间，但是无疑会增加了在NameNode上的元数据，大量的小文件会影响整个集群的性能。</p>
+<p>　　　　前面我们知道，Btrfs为小文件做了优化-inline file，对于小文件有很好的空间优化和访问时间优化。<br>　　3）多用户写入，修改文件。HDFS的文件只能有一个写入者，而且写操作只能在文件结尾以追加的方式进行。它不支持多个写入者，也不支持在文件写入后，对文件的任意位置的修改。<br>　　　　但是在大数据领域，分析的是已经存在的数据，这些数据一旦产生就不会修改，因此，HDFS的这些特性和设计局限也就很容易理解了。HDFS为大数据领域的数据分析，提供了非常重要而且十分基础的文件存储功能。</p>
+<h2 id="HDFS保证可靠性的措施"><a href="#HDFS保证可靠性的措施" class="headerlink" title="HDFS保证可靠性的措施"></a>HDFS保证可靠性的措施</h2><p>　　1）冗余备份</p>
+<p>　　　　每个文件存储成一系列数据块（Block）。为了容错，文件的所有数据块都会有副本（副本数量即复制因子，课配置）（dfs.replication）</p>
+<p>　　2）副本存放</p>
+<p>　　　　采用机架感知（Rak-aware）的策略来改进数据的可靠性、高可用和网络带宽的利用率</p>
+<p>　　3）心跳检测</p>
+<p>　　　　NameNode周期性地从集群中的每一个DataNode接受心跳包和块报告，收到心跳包说明该DataNode工作正常</p>
+<p>　　4）安全模式</p>
+<p>　　　　系统启动时，NameNode会进入一个安全模式。此时不会出现数据块的写操作。</p>
+<p>　　5）数据完整性检测</p>
+<p>　　　　HDFS客户端软件实现了对HDFS文件内容的校验和（Checksum）检查（dfs.bytes-per-checksum）。　</p>
+<h2 id="单点故障（单点失效）问题"><a href="#单点故障（单点失效）问题" class="headerlink" title="单点故障（单点失效）问题"></a>单点故障（单点失效）问题</h2><h3 id="单点故障问题"><a href="#单点故障问题" class="headerlink" title="单点故障问题"></a>单点故障问题</h3><p>　　如果NameNode失效，那么客户端或MapReduce作业均无法读写查看文件</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>　　1）启动一个拥有文件系统元数据的新NameNode（这个一般不采用，因为复制元数据非常耗时间）</p>
+<p>　　2）配置一对活动-备用（Active-Sandby）NameNode，活动NameNode失效时，备用NameNode立即接管，用户不会有明显中断感觉。</p>
+<p>　　　　共享编辑日志文件（借助NFS、zookeeper等）</p>
+<p>　　　　DataNode同时向两个NameNode汇报数据块信息</p>
+<p>　　　　客户端采用特定机制处理 NameNode失效问题，该机制对用户透明</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-07-Hadoop学习之路（七）Hadoop集群shell常用命令.html" class="pre-post btn btn-default" title='Hadoop学习之路（七）Hadoop集群shell常用命令'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（七）Hadoop集群shell常用命令</span>
+    </a>
+    
+    
+    <a href="/2018-04-05-Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题.html" class="next-post btn btn-default" title='Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（五）Hadoop集群搭建模式和各模式问题</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS前言"><span class="toc-text">HDFS前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#设计思想"><span class="toc-text">设计思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在大数据系统中作用"><span class="toc-text">在大数据系统中作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重点概念"><span class="toc-text">重点概念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS的概念和特性"><span class="toc-text">HDFS的概念和特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概念"><span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#重要特性"><span class="toc-text">重要特性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图解HDFS"><span class="toc-text">图解HDFS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS的局限性"><span class="toc-text">HDFS的局限性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HDFS保证可靠性的措施"><span class="toc-text">HDFS保证可靠性的措施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单点故障（单点失效）问题"><span class="toc-text">单点故障（单点失效）问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#单点故障问题"><span class="toc-text">单点故障问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方案"><span class="toc-text">解决方案</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

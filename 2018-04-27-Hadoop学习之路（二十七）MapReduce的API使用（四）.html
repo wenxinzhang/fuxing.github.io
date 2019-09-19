@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（二十七）MapReduce的API使用（四）：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（二十七）M...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（二十七）MapReduce的API使用（四） |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（二十七）MapReduce的API使用（四）">
+            
+            Hadoop学习之路（二十七）MapReduce的API使用（四）
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/27</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（二十七）MapReduce的API使用（四）：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（二十七）MapReduce的API使用（四）</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>第一题</p>
+<p>下面是三种商品的销售数据 </p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180324160210598-546517385.png" alt="img"></p>
+<p>要求：根据以上数据，用 MapReduce 统计出如下数据：</p>
+<p>1、每种商品的销售总金额，并降序排序</p>
+<p>2、每种商品销售额最多的三周</p>
+<p>第二题：MapReduce 题</p>
+<p>现有如下数据文件需要处理:</p>
+<p>格式：CSV</p>
+<p>数据样例：</p>
+<p>user_a,location_a,2018-01-01 08:00:00,60</p>
+<p>user_a,location_a,2018-01-01 09:00:00,60</p>
+<p>user_a,location_b,2018-01-01 10:00:00,60</p>
+<p>user_a,location_a,2018-01-01 11:00:00,60</p>
+<p>字段：用户 ID，位置 ID，开始时间，停留时长（分钟）</p>
+<p>数据意义：某个用户在某个位置从某个时刻开始停留了多长时间</p>
+<p>处理逻辑： 对同一个用户，在同一个位置，连续的多条记录进行合并</p>
+<p>合并原则：开始时间取最早的，停留时长加和</p>
+<p>要求：请编写 MapReduce 程序实现</p>
+<p>其他：只有数据样例，没有数据。</p>
+<p>UserLocationMR.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br></pre></td><td class="code"><pre><span class="line">  1 /**</span><br><span class="line">  2 测试数据：</span><br><span class="line">  3 user_a    location_a    2018-01-01 08:00:00    60</span><br><span class="line">  4 user_a    location_a    2018-01-01 09:00:00    60</span><br><span class="line">  5 user_a    location_a    2018-01-01 11:00:00    60</span><br><span class="line">  6 user_a    location_a    2018-01-01 12:00:00    60</span><br><span class="line">  7 user_a    location_b    2018-01-01 10:00:00    60</span><br><span class="line">  8 user_a    location_c    2018-01-01 08:00:00    60</span><br><span class="line">  9 user_a    location_c    2018-01-01 09:00:00    60</span><br><span class="line"> 10 user_a    location_c    2018-01-01 10:00:00    60</span><br><span class="line"> 11 user_b    location_a    2018-01-01 15:00:00    60</span><br><span class="line"> 12 user_b    location_a    2018-01-01 16:00:00    60</span><br><span class="line"> 13 user_b    location_a    2018-01-01 18:00:00    60</span><br><span class="line"> 14 </span><br><span class="line"> 15 </span><br><span class="line"> 16 结果数据：</span><br><span class="line"> 17 user_a    location_a    2018-01-01 08:00:00    120</span><br><span class="line"> 18 user_a    location_a    2018-01-01 11:00:00    120</span><br><span class="line"> 19 user_a    location_b    2018-01-01 10:00:00    60</span><br><span class="line"> 20 user_a    location_c    2018-01-01 08:00:00    180</span><br><span class="line"> 21 user_b    location_a    2018-01-01 15:00:00    120</span><br><span class="line"> 22 user_b    location_a    2018-01-01 18:00:00    60</span><br><span class="line"> 23 </span><br><span class="line"> 24 </span><br><span class="line"> 25  */</span><br><span class="line"> 26 public class UserLocationMR &#123;</span><br><span class="line"> 27 </span><br><span class="line"> 28     public static void main(String[] args) throws Exception &#123;</span><br><span class="line"> 29         // 指定hdfs相关的参数</span><br><span class="line"> 30         Configuration conf = new Configuration();</span><br><span class="line"> 31         //        conf.set(&quot;fs.defaultFS&quot;, &quot;hdfs://hadoop02:9000&quot;);</span><br><span class="line"> 32         //        System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;hadoop&quot;);</span><br><span class="line"> 33 </span><br><span class="line"> 34         Job job = Job.getInstance(conf);</span><br><span class="line"> 35         // 设置jar包所在路径</span><br><span class="line"> 36         job.setJarByClass(UserLocationMR.class);</span><br><span class="line"> 37 </span><br><span class="line"> 38         // 指定mapper类和reducer类</span><br><span class="line"> 39         job.setMapperClass(UserLocationMRMapper.class);</span><br><span class="line"> 40         job.setReducerClass(UserLocationMRReducer.class);</span><br><span class="line"> 41 </span><br><span class="line"> 42         // 指定maptask的输出类型</span><br><span class="line"> 43         job.setMapOutputKeyClass(UserLocation.class);</span><br><span class="line"> 44         job.setMapOutputValueClass(NullWritable.class);</span><br><span class="line"> 45         // 指定reducetask的输出类型</span><br><span class="line"> 46         job.setOutputKeyClass(UserLocation.class);</span><br><span class="line"> 47         job.setOutputValueClass(NullWritable.class);</span><br><span class="line"> 48 </span><br><span class="line"> 49         job.setGroupingComparatorClass(UserLocationGC.class);</span><br><span class="line"> 50 </span><br><span class="line"> 51         // 指定该mapreduce程序数据的输入和输出路径</span><br><span class="line"> 52         Path inputPath = new Path(&quot;D:\\武文\\second\\input&quot;);</span><br><span class="line"> 53         Path outputPath = new Path(&quot;D:\\武文\\second\\output2&quot;);</span><br><span class="line"> 54         FileSystem fs = FileSystem.get(conf);</span><br><span class="line"> 55         if (fs.exists(outputPath)) &#123;</span><br><span class="line"> 56             fs.delete(outputPath, true);</span><br><span class="line"> 57         &#125;</span><br><span class="line"> 58         FileInputFormat.setInputPaths(job, inputPath);</span><br><span class="line"> 59         FileOutputFormat.setOutputPath(job, outputPath);</span><br><span class="line"> 60 </span><br><span class="line"> 61         // 最后提交任务</span><br><span class="line"> 62         boolean waitForCompletion = job.waitForCompletion(true);</span><br><span class="line"> 63         System.exit(waitForCompletion ? 0 : 1);</span><br><span class="line"> 64     &#125;</span><br><span class="line"> 65 </span><br><span class="line"> 66     private static class UserLocationMRMapper extends Mapper&lt;LongWritable, Text, UserLocation, NullWritable&gt; &#123;</span><br><span class="line"> 67 </span><br><span class="line"> 68         UserLocation outKey = new UserLocation();</span><br><span class="line"> 69 </span><br><span class="line"> 70         /**</span><br><span class="line"> 71          * value = user_a,location_a,2018-01-01 12:00:00,60</span><br><span class="line"> 72          */</span><br><span class="line"> 73         @Override</span><br><span class="line"> 74         protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line"> 75 </span><br><span class="line"> 76             String[] split = value.toString().split(&quot;,&quot;);</span><br><span class="line"> 77 </span><br><span class="line"> 78             outKey.set(split);</span><br><span class="line"> 79 </span><br><span class="line"> 80             context.write(outKey, NullWritable.get());</span><br><span class="line"> 81         &#125;</span><br><span class="line"> 82     &#125;</span><br><span class="line"> 83 </span><br><span class="line"> 84     private static class UserLocationMRReducer extends Reducer&lt;UserLocation, NullWritable, UserLocation, NullWritable&gt; &#123;</span><br><span class="line"> 85 </span><br><span class="line"> 86         SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="line"> 87 </span><br><span class="line"> 88         UserLocation outKey = new UserLocation();</span><br><span class="line"> 89 </span><br><span class="line"> 90         /**</span><br><span class="line"> 91          * user_a    location_a    2018-01-01 08:00:00    60</span><br><span class="line"> 92          * user_a    location_a    2018-01-01 09:00:00    60</span><br><span class="line"> 93          * user_a    location_a    2018-01-01 11:00:00    60</span><br><span class="line"> 94          * user_a    location_a    2018-01-01 12:00:00    60</span><br><span class="line"> 95          */</span><br><span class="line"> 96         @Override</span><br><span class="line"> 97         protected void reduce(UserLocation key, Iterable&lt;NullWritable&gt; values, Context context) throws IOException, InterruptedException &#123;</span><br><span class="line"> 98 </span><br><span class="line"> 99             int count = 0;</span><br><span class="line">100             for (NullWritable nvl : values) &#123;</span><br><span class="line">101                 count++;</span><br><span class="line">102                 // 如果是这一组key-value中的第一个元素时，直接赋值给outKey对象。基础对象</span><br><span class="line">103                 if (count == 1) &#123;</span><br><span class="line">104                     // 复制值</span><br><span class="line">105                     outKey.set(key);</span><br><span class="line">106                 &#125; else &#123;</span><br><span class="line">107 </span><br><span class="line">108                     // 有可能连续，有可能不连续，  连续则继续变量， 否则输出</span><br><span class="line">109                     long current_timestamp = 0;</span><br><span class="line">110                     long last_timestamp = 0;</span><br><span class="line">111                     try &#123;</span><br><span class="line">112                         // 这是新遍历出来的记录的时间戳</span><br><span class="line">113                         current_timestamp = sdf.parse(key.getTime()).getTime();</span><br><span class="line">114                         // 这是上一条记录的时间戳 和 停留时间之和</span><br><span class="line">115                         last_timestamp = sdf.parse(outKey.getTime()).getTime() + outKey.getDuration() * 60 * 1000;</span><br><span class="line">116                     &#125; catch (ParseException e) &#123;</span><br><span class="line">117                         e.printStackTrace();</span><br><span class="line">118                     &#125;</span><br><span class="line">119 </span><br><span class="line">120                     // 如果相等，证明是连续记录，所以合并</span><br><span class="line">121                     if (current_timestamp == last_timestamp) &#123;</span><br><span class="line">122 </span><br><span class="line">123                         outKey.setDuration(outKey.getDuration() + key.getDuration());</span><br><span class="line">124 </span><br><span class="line">125                     &#125; else &#123;</span><br><span class="line">126 </span><br><span class="line">127                         // 先输出上一条记录</span><br><span class="line">128                         context.write(outKey, nvl);</span><br><span class="line">129 </span><br><span class="line">130                         // 然后再次记录当前遍历到的这一条记录</span><br><span class="line">131                         outKey.set(key);</span><br><span class="line">132                     &#125;</span><br><span class="line">133                 &#125;</span><br><span class="line">134             &#125;</span><br><span class="line">135             // 最后无论如何，还得输出最后一次</span><br><span class="line">136             context.write(outKey, NullWritable.get());</span><br><span class="line">137         &#125;</span><br><span class="line">138     &#125;</span><br><span class="line">139 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>UserLocation.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">  1 public class UserLocation implements WritableComparable&lt;UserLocation&gt; &#123;</span><br><span class="line">  2 </span><br><span class="line">  3     private String userid;</span><br><span class="line">  4     private String locationid;</span><br><span class="line">  5     private String time;</span><br><span class="line">  6     private long duration;</span><br><span class="line">  7 </span><br><span class="line">  8     @Override</span><br><span class="line">  9     public String toString() &#123;</span><br><span class="line"> 10         return userid + &quot;\t&quot; + locationid + &quot;\t&quot; + time + &quot;\t&quot; + duration;</span><br><span class="line"> 11     &#125;</span><br><span class="line"> 12 </span><br><span class="line"> 13     public UserLocation() &#123;</span><br><span class="line"> 14         super();</span><br><span class="line"> 15     &#125;</span><br><span class="line"> 16     </span><br><span class="line"> 17     public void set(String[] split)&#123;</span><br><span class="line"> 18         this.setUserid(split[0]);</span><br><span class="line"> 19         this.setLocationid(split[1]);</span><br><span class="line"> 20         this.setTime(split[2]);</span><br><span class="line"> 21         this.setDuration(Long.parseLong(split[3]));</span><br><span class="line"> 22     &#125;</span><br><span class="line"> 23     </span><br><span class="line"> 24     public void set(UserLocation ul)&#123;</span><br><span class="line"> 25         this.setUserid(ul.getUserid());</span><br><span class="line"> 26         this.setLocationid(ul.getLocationid());</span><br><span class="line"> 27         this.setTime(ul.getTime());</span><br><span class="line"> 28         this.setDuration(ul.getDuration());</span><br><span class="line"> 29     &#125;</span><br><span class="line"> 30 </span><br><span class="line"> 31     public UserLocation(String userid, String locationid, String time, long duration) &#123;</span><br><span class="line"> 32         super();</span><br><span class="line"> 33         this.userid = userid;</span><br><span class="line"> 34         this.locationid = locationid;</span><br><span class="line"> 35         this.time = time;</span><br><span class="line"> 36         this.duration = duration;</span><br><span class="line"> 37     &#125;</span><br><span class="line"> 38 </span><br><span class="line"> 39     public String getUserid() &#123;</span><br><span class="line"> 40         return userid;</span><br><span class="line"> 41     &#125;</span><br><span class="line"> 42 </span><br><span class="line"> 43     public void setUserid(String userid) &#123;</span><br><span class="line"> 44         this.userid = userid;</span><br><span class="line"> 45     &#125;</span><br><span class="line"> 46 </span><br><span class="line"> 47     public String getLocationid() &#123;</span><br><span class="line"> 48         return locationid;</span><br><span class="line"> 49     &#125;</span><br><span class="line"> 50 </span><br><span class="line"> 51     public void setLocationid(String locationid) &#123;</span><br><span class="line"> 52         this.locationid = locationid;</span><br><span class="line"> 53     &#125;</span><br><span class="line"> 54 </span><br><span class="line"> 55     public String getTime() &#123;</span><br><span class="line"> 56         return time;</span><br><span class="line"> 57     &#125;</span><br><span class="line"> 58 </span><br><span class="line"> 59     public void setTime(String time) &#123;</span><br><span class="line"> 60         this.time = time;</span><br><span class="line"> 61     &#125;</span><br><span class="line"> 62 </span><br><span class="line"> 63     public long getDuration() &#123;</span><br><span class="line"> 64         return duration;</span><br><span class="line"> 65     &#125;</span><br><span class="line"> 66 </span><br><span class="line"> 67     public void setDuration(long duration) &#123;</span><br><span class="line"> 68         this.duration = duration;</span><br><span class="line"> 69     &#125;</span><br><span class="line"> 70 </span><br><span class="line"> 71     @Override</span><br><span class="line"> 72     public void write(DataOutput out) throws IOException &#123;</span><br><span class="line"> 73         // TODO Auto-generated method stub</span><br><span class="line"> 74         out.writeUTF(userid);</span><br><span class="line"> 75         out.writeUTF(locationid);</span><br><span class="line"> 76         out.writeUTF(time);</span><br><span class="line"> 77         out.writeLong(duration);</span><br><span class="line"> 78     &#125;</span><br><span class="line"> 79 </span><br><span class="line"> 80     @Override</span><br><span class="line"> 81     public void readFields(DataInput in) throws IOException &#123;</span><br><span class="line"> 82         // TODO Auto-generated method stub</span><br><span class="line"> 83         this.userid = in.readUTF();</span><br><span class="line"> 84         this.locationid = in.readUTF();</span><br><span class="line"> 85         this.time = in.readUTF();</span><br><span class="line"> 86         this.duration = in.readLong();</span><br><span class="line"> 87     &#125;</span><br><span class="line"> 88 </span><br><span class="line"> 89     /**</span><br><span class="line"> 90      * 排序规则</span><br><span class="line"> 91      * </span><br><span class="line"> 92      * 按照 userid  locationid  和  time 排序  都是 升序</span><br><span class="line"> 93      */</span><br><span class="line"> 94     @Override</span><br><span class="line"> 95     public int compareTo(UserLocation o) &#123;</span><br><span class="line"> 96 </span><br><span class="line"> 97         int diff_userid = o.getUserid().compareTo(this.getUserid());</span><br><span class="line"> 98         if(diff_userid == 0)&#123;</span><br><span class="line"> 99             </span><br><span class="line">100             int diff_location = o.getLocationid().compareTo(this.getLocationid());</span><br><span class="line">101             if(diff_location == 0)&#123;</span><br><span class="line">102                 </span><br><span class="line">103                 int diff_time = o.getTime().compareTo(this.getTime());</span><br><span class="line">104                 if(diff_time == 0)&#123;</span><br><span class="line">105                     return 0;</span><br><span class="line">106                 &#125;else&#123;</span><br><span class="line">107                     return diff_time &gt; 0 ? -1 : 1;</span><br><span class="line">108                 &#125;</span><br><span class="line">109                 </span><br><span class="line">110             &#125;else&#123;</span><br><span class="line">111                 return diff_location &gt; 0 ? -1 : 1;</span><br><span class="line">112             &#125;</span><br><span class="line">113             </span><br><span class="line">114         &#125;else&#123;</span><br><span class="line">115             return diff_userid &gt; 0 ? -1 : 1;</span><br><span class="line">116         &#125;</span><br><span class="line">117     &#125;</span><br><span class="line">118 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>UserLocationGC.java</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> 1 public class UserLocationGC extends WritableComparator&#123;</span><br><span class="line"> 2     </span><br><span class="line"> 3     public UserLocationGC()&#123;</span><br><span class="line"> 4         super(UserLocation.class, true);</span><br><span class="line"> 5     &#125;</span><br><span class="line"> 6 </span><br><span class="line"> 7     @Override</span><br><span class="line"> 8     public int compare(WritableComparable a, WritableComparable b) &#123;</span><br><span class="line"> 9 </span><br><span class="line">10         UserLocation ul_a = (UserLocation)a;</span><br><span class="line">11         UserLocation ul_b = (UserLocation)b;</span><br><span class="line">12 </span><br><span class="line">13         int diff_userid = ul_a.getUserid().compareTo(ul_b.getUserid());</span><br><span class="line">14         if(diff_userid == 0)&#123;</span><br><span class="line">15             </span><br><span class="line">16             int diff_location = ul_a.getLocationid().compareTo(ul_b.getLocationid());</span><br><span class="line">17             if(diff_location == 0)&#123;</span><br><span class="line">18                 </span><br><span class="line">19                 return 0;</span><br><span class="line">20                 </span><br><span class="line">21             &#125;else&#123;</span><br><span class="line">22                 return diff_location &gt; 0 ? -1 : 1;</span><br><span class="line">23             &#125;</span><br><span class="line">24             </span><br><span class="line">25         &#125;else&#123;</span><br><span class="line">26             return diff_userid &gt; 0 ? -1 : 1;</span><br><span class="line">27         &#125;</span><br><span class="line">28     &#125;</span><br><span class="line">29 &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>第三题：MapReduce 题–倒排索引</p>
+<p>概念： 倒排索引（Inverted Index），也常被称为反向索引、置入档案或反向档案，是一种索引方法， 被用来存储在全文搜索下某个单词在一个文档或者一组文档中的存储位置的映射。它是文档 检索系统中最常用的数据结构。了解详情可自行百度</p>
+<p>有两份数据：</p>
+<p>mapreduce-4-1.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">huangbo love xuzheng</span><br><span class="line">huangxiaoming love baby huangxiaoming love yangmi</span><br><span class="line">liangchaowei love liujialing</span><br><span class="line">huangxiaoming xuzheng huangbo wangbaoqiang</span><br></pre></td></tr></table></figure>
+
+
+
+<p>mapreduce-4-2.txt</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hello huangbo</span><br><span class="line">hello xuzheng</span><br><span class="line">hello huangxiaoming</span><br></pre></td></tr></table></figure>
+
+<p>题目一：编写 MapReduce 求出以下格式的结果数据：统计每个关键词在每个文档中当中的 第几行出现了多少次 例如，huangxiaoming 关键词的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">huangixaoming mapreduce-4-1.txt:2,2; mapreduce-4-1.txt:4,1;mapreduce-4-2.txt:3,1</span><br></pre></td></tr></table></figure>
+
+
+
+<p>以上答案的意义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">关键词 huangxiaoming 在第一份文档 mapreduce-4-1.txt 中的第 2 行出现了 2 次</span><br><span class="line">关键词 huangxiaoming 在第一份文档 mapreduce-4-1.txt 中的第 4 行出现了 1 次</span><br><span class="line">关键词 huangxiaoming 在第二份文档 mapreduce-4-2.txt 中的第 3 行出现了 1 次</span><br></pre></td></tr></table></figure>
+
+<p>题目二：编写 MapReduce 程序求出每个关键词在每个文档出现了多少次，并且按照出现次 数降序排序</p>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">huangixaoming mapreduce-4-1.txt,3;mapreduce-4-2.txt,1</span><br></pre></td></tr></table></figure>
+
+<p>以上答案的含义： 表示关键词 huangxiaoming 在第一份文档 mapreduce-4-1.txt 中出现了 3 次，在第二份文档mapreduce-4-2.txt 中出现了 1 次</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-28-Hadoop学习之路（二十八）MapReduce的API使用（五）.html" class="pre-post btn btn-default" title='Hadoop学习之路（二十八）MapReduce的API使用（五）'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十八）MapReduce的API使用（五）</span>
+    </a>
+    
+    
+    <a href="/2018-04-26-Hadoop学习之路（二十六）MapReduce的API使用（三）.html" class="next-post btn btn-default" title='Hadoop学习之路（二十六）MapReduce的API使用（三）'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（二十六）MapReduce的API使用（三）</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <p>暂无目录</p>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

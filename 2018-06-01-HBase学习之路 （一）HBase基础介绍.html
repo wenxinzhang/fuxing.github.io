@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="HBase">
+
+
+<meta name="description" content="** HBase学习之路 （一）HBase基础介绍：** &lt;Excerpt in index | 首页摘要&gt;
+​        HBase学习之路 （一）HBase基础介绍
+
+&lt...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    HBase学习之路 （一）HBase基础介绍 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="HBase学习之路 （一）HBase基础介绍">
+            
+            HBase学习之路 （一）HBase基础介绍
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/HBase/">HBase</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/06/01</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** HBase学习之路 （一）HBase基础介绍：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        HBase学习之路 （一）HBase基础介绍</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="产生背景"><a href="#产生背景" class="headerlink" title="产生背景"></a>产生背景</h2><p>自 1970 年以来，关系数据库用于数据存储和维护有关问题的解决方案。大数据的出现后， 好多公司实现处理大数据并从中受益，并开始选择像 Hadoop 的解决方案。Hadoop 使用分 布式文件系统，用于存储大数据，并使用 MapReduce 来处理。Hadoop 擅长于存储各种格式 的庞大的数据，任意的格式甚至非结构化的处理。</p>
+<p>Hadoop 的限制</p>
+<p>Hadoop 只能执行批量处理，并且只以顺序方式访问数据。这意味着必须搜索整个数据集， 即使是最简单的搜索工作。 当处理结果在另一个庞大的数据集，也是按顺序处理一个巨大的数据集。在这一点上，一个 新的解决方案，需要访问数据中的任何点（随机访问）单元。</p>
+<p>Hadoop 随机存取数据库</p>
+<p>应用程序，如 HBase，Cassandra，CouchDB，Dynamo 和 MongoDB 都是一些存储大量数据和 以随机方式访问数据的数据库。</p>
+<p>总结：</p>
+<p>（1）海量数据量存储成为瓶颈，单台机器无法负载大量数据</p>
+<p>（2）单台机器 IO 读写请求成为海量数据存储时候高并发大规模请求的瓶颈</p>
+<p>（3）随着数据规模越来越大，大量业务场景开始考虑数据存储横向水平扩展，使得存储服 务可以增加/删除，而目前的关系型数据库更专注于一台机器</p>
+<h2 id="HBase简介"><a href="#HBase简介" class="headerlink" title="HBase简介"></a>HBase简介</h2><p><strong>HBase 是 BigTable 的开源（源码使用 Java 编写）版本。是 Apache Hadoop 的数据库，是建 立在 HDFS 之上，被设计用来提供高可靠性、高性能、列存储、可伸缩、多版本的 NoSQL 的分布式数据存储系统，实现对大型数据的实时、随机的读写访问。</strong></p>
+<p><strong>HBase 依赖于 HDFS 做底层的数据存储，BigTable 依赖 Google GFS 做数据存储</strong></p>
+<p><strong>HBase 依赖于 MapReduce 做数据计算，BigTable 依赖 Google MapReduce 做数据计算</strong></p>
+<p><strong>HBase 依赖于 ZooKeeper 做服务协调，BigTable 依赖 Google Chubby 做服务协调</strong></p>
+<p>NoSQL = NO SQL</p>
+<p>NoSQL = Not Only SQL：会有一些把 NoSQL 数据的原生查询语句封装成 SQL，比如 HBase 就有 Phoenix 工具</p>
+<h3 id="关系型数据库-和-非关系型数据库的典型代表"><a href="#关系型数据库-和-非关系型数据库的典型代表" class="headerlink" title="关系型数据库 和 非关系型数据库的典型代表"></a>关系型数据库 和 非关系型数据库的典型代表</h3><p>NoSQL：hbase, redis, mongodb</p>
+<p>RDBMS：mysql,oracle,sql server,db2</p>
+<h3 id="HBase-这个-NoSQL-数据库的要点"><a href="#HBase-这个-NoSQL-数据库的要点" class="headerlink" title="HBase 这个 NoSQL 数据库的要点"></a>HBase 这个 NoSQL 数据库的要点</h3><p>① 它介于 NoSQL 和 RDBMS 之间，<strong>仅能通过主键(rowkey)和主键的 range 来检索数据</strong></p>
+<p>② HBase 查询数据功能很简单，<strong>不支持 join 等复杂操作</strong></p>
+<p>③ 不支持复杂的事务，<strong>只支持行级事务</strong>(可通过 hive 支持来实现多表 join 等复杂操作)。</p>
+<p>④ <strong>HBase 中支持的数据类型：byte[]（底层所有数据的存储都是字节数组）</strong></p>
+<p>⑤ <strong>主要用来存储结构化和半结构化的松散数据。</strong></p>
+<h3 id="结构化、半结构化和非结构化"><a href="#结构化、半结构化和非结构化" class="headerlink" title="结构化、半结构化和非结构化"></a>结构化、半结构化和非结构化</h3><p><strong>结构化</strong>：数据结构字段含义确定，清晰，典型的如数据库中的表结构</p>
+<p><strong>半结构化</strong>：具有一定结构，但语义不够确定，典型的如 HTML 网页，有些字段是确定的(title)， 有些不确定(table)</p>
+<p><strong>非结构化</strong>：杂乱无章的数据，很难按照一个概念去进行抽取，无规律性</p>
+<p>与 Hadoop 一样，HBase 目标主要依靠横向扩展，通过不断增加廉价的商用服务器，来增加 计算和存储能力。</p>
+<h3 id="HBase-中的表特点"><a href="#HBase-中的表特点" class="headerlink" title="HBase 中的表特点"></a>HBase 中的表特点</h3><p>1、<strong>大</strong>：一个表可以有上十亿行，上百万列</p>
+<p>2、<strong>面向列</strong>：面向列(族)的存储和权限控制，列(簇)独立检索。</p>
+<p>3、<strong>稀疏</strong>：对于为空(null)的列，并不占用存储空间，因此，表可以设计的非常稀疏。</p>
+<p>4、<strong>无模式</strong>：每行都有一个可排序的主键和任意多的列，列可以根据需要动态的增加，同一 张表中不同的行可以有截然不同的列</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180328184005972-1939218640.png" alt="img"></p>
+<h2 id="HBase表结构逻辑视图"><a href="#HBase表结构逻辑视图" class="headerlink" title="HBase表结构逻辑视图"></a>HBase表结构逻辑视图</h2><p>初次接触HBase，可能看到以下描述会懵：<strong>“基于列存储”，“稀疏MAP”，“RowKey”,“ColumnFamily”。</strong></p>
+<p>其实没那么高深，我们需要分两步来理解HBase, 就能够理解为什么HBase能够“快速地”“分布式地”处理“大量数据”了。</p>
+<p>　　<strong>1.内存结构</strong></p>
+<p>　　<strong>2.文件存储结构</strong></p>
+<h3 id="名词概念"><a href="#名词概念" class="headerlink" title="名词概念"></a><strong>名词概念</strong></h3><p>加入我们有如下一张表</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180328185514080-1540820263.png" alt="img"></p>
+<h4 id="Rowkey的概念"><a href="#Rowkey的概念" class="headerlink" title="Rowkey的概念"></a>Rowkey的概念</h4><p><strong>Rowkey的概念和mysql中的主键是完全一样的，Hbase使用Rowkey来唯一的区分某一行的数据。</strong></p>
+<p>由于Hbase只支持3中查询方式：</p>
+<p>1、基于Rowkey的单行查询</p>
+<p>2、基于Rowkey的范围扫描</p>
+<p>3、全表扫描</p>
+<p>因此，Rowkey对Hbase的性能影响非常大，Rowkey的设计就显得尤为的重要。设计的时候要兼顾基于Rowkey的单行查询也要键入Rowkey的范围扫描。具体Rowkey要如何设计后续会整理相关的文章做进一步的描述。这里大家只要有一个概念就是Rowkey的设计极为重要。</p>
+<p>rowkey 行键可以是任意字符串(最大长度是 <strong>64KB</strong>，实际应用中长度一般为 10-100bytes)，最好是 16。在 HBase 内部，rowkey 保存为字节数组。<strong>HBase 会对表中的数据按照 rowkey 排序 (字典顺序)</strong></p>
+<h4 id="Column的概念"><a href="#Column的概念" class="headerlink" title="Column的概念"></a><strong>Column的概念</strong></h4><p>列，可理解成MySQL列。</p>
+<h4 id="ColumnFamily的概念"><a href="#ColumnFamily的概念" class="headerlink" title="ColumnFamily的概念"></a>ColumnFamily的概念</h4><p>列族, HBase引入的概念。</p>
+<p>Hbase通过列族划分数据的存储，列族下面可以包含任意多的列，实现灵活的数据存取。就像是家族的概念，我们知道一个家族是由于很多个的家庭组成的。列族也类似，列族是由一个一个的列组成（任意多）。</p>
+<p>Hbase表的创建的时候就必须指定列族。就像关系型数据库创建的时候必须指定具体的列是一样的。</p>
+<p>Hbase的列族不是越多越好，官方推荐的是列族最好小于或者等于3。我们使用的场景一般是1个列族。</p>
+<h4 id="TimeStamp的概念"><a href="#TimeStamp的概念" class="headerlink" title="TimeStamp的概念"></a>TimeStamp的概念</h4><p>TimeStamp对Hbase来说至关重要，因为它是实现Hbase多版本的关键。在Hbase中使用不同的timestame来标识相同rowkey行对应的不通版本的数据。</p>
+<p>HBase 中通过 rowkey 和 columns 确定的为一个存储单元称为 cell。每个 cell 都保存着同一份 数据的多个版本。版本通过时间戳来索引。时间戳的类型是 64 位整型。时间戳可以由 hbase(在数据写入时</p>
+<p>自动)赋值，此时时间戳是精确到毫秒的当前系统时间。时间戳也可以由 客户显式赋值。如果应用程序要避免数据版本冲突，就必须自己生成具有唯一性的时间戳。 每个 cell 中，不同版本的数据按照时间</p>
+<p>倒序排序，即最新的数据排在最前面。</p>
+<p>为了避免数据存在过多版本造成的的管理 (包括存贮和索引)负担，hbase 提供了两种数据版 本回收方式：</p>
+<p>　　<strong>保存数据的最后 n 个版本</strong></p>
+<p>　　<strong>保存最近一段时间内的版本（设置数据的生命周期 TTL）。</strong></p>
+<p>用户可以针对每个列簇进行设置。</p>
+<h4 id="单元格（Cell）"><a href="#单元格（Cell）" class="headerlink" title="单元格（Cell）"></a>单元格（Cell）</h4><p>由{rowkey, column( = + ), version} 唯一确定的单元。 Cell 中的数据是没有类型的，全部是字节码形式存贮。</p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-06-02-HBase学习之路 （二）HBase集群安装.html" class="pre-post btn btn-default" title='HBase学习之路 （二）HBase集群安装'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            HBase学习之路 （二）HBase集群安装</span>
+    </a>
+    
+    
+    <a href="/2018-05-08-Kafka学习之路 （五）Kafka在zookeeper中的存储.html" class="next-post btn btn-default" title='Kafka学习之路 （五）Kafka在zookeeper中的存储'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Kafka学习之路 （五）Kafka在zookeeper中的存储</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#产生背景"><span class="toc-text">产生背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase简介"><span class="toc-text">HBase简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关系型数据库-和-非关系型数据库的典型代表"><span class="toc-text">关系型数据库 和 非关系型数据库的典型代表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase-这个-NoSQL-数据库的要点"><span class="toc-text">HBase 这个 NoSQL 数据库的要点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#结构化、半结构化和非结构化"><span class="toc-text">结构化、半结构化和非结构化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HBase-中的表特点"><span class="toc-text">HBase 中的表特点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HBase表结构逻辑视图"><span class="toc-text">HBase表结构逻辑视图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#名词概念"><span class="toc-text">名词概念</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Rowkey的概念"><span class="toc-text">Rowkey的概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Column的概念"><span class="toc-text">Column的概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ColumnFamily的概念"><span class="toc-text">ColumnFamily的概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#TimeStamp的概念"><span class="toc-text">TimeStamp的概念</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#单元格（Cell）"><span class="toc-text">单元格（Cell）</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>

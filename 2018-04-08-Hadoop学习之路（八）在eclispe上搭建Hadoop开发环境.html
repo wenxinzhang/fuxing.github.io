@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Hadoop">
+
+
+<meta name="description" content="** Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境：** &lt;Excerpt in index | 首页摘要&gt;
+​        Hadoop学习之路（八）在e...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境">
+            
+            Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Hadoop/">Hadoop</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Hadoop/">Hadoop</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2018/04/08</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Hadoop学习之路（八）在eclispe上搭建Hadoop开发环境</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<h2 id="一、添加插件"><a href="#一、添加插件" class="headerlink" title="一、添加插件"></a>一、添加插件</h2><p>将hadoop-eclipse-plugin-2.7.5.jar放入eclipse的plugins文件夹中</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308154051462-1401508460.png" alt="img"></p>
+<h2 id="二、在Windows上安装Hadoop2-7-5"><a href="#二、在Windows上安装Hadoop2-7-5" class="headerlink" title="二、在Windows上安装Hadoop2.7.5"></a>二、在Windows上安装Hadoop2.7.5</h2><p>版本最好与Linux集群中的hadoop版本保持一致</p>
+<h3 id="1、将hadoop-2-7-5-centos-6-7-tar-gz解压到Windows上的C盘software目录中"><a href="#1、将hadoop-2-7-5-centos-6-7-tar-gz解压到Windows上的C盘software目录中" class="headerlink" title="1、将hadoop-2.7.5-centos-6.7.tar.gz解压到Windows上的C盘software目录中"></a>1、将hadoop-2.7.5-centos-6.7.tar.gz解压到Windows上的C盘software目录中</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308154339115-1805232233.png" alt="img"></p>
+<h3 id="2、配置hadoop的环境变量"><a href="#2、配置hadoop的环境变量" class="headerlink" title="2、配置hadoop的环境变量"></a>2、配置hadoop的环境变量</h3><p>HADOOP_HOME=C:\software\hadoop-2.7.5</p>
+<p>Path=C:\software\hadoop-2.7.5\bin</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308154510997-103258140.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308154557609-1388278579.png" alt="img"></p>
+<h3 id="3、修改Hadoop安装目录C-software-hadoop-2-7-5-etc-hadoop中hadoop-env-cmd"><a href="#3、修改Hadoop安装目录C-software-hadoop-2-7-5-etc-hadoop中hadoop-env-cmd" class="headerlink" title="3、修改Hadoop安装目录C:\software\hadoop-2.7.5\etc\hadoop中hadoop-env.cmd"></a>3、修改Hadoop安装目录C:\software\hadoop-2.7.5\etc\hadoop中hadoop-env.cmd</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308154859077-1127422408.png" alt="img"></p>
+<h3 id="4、查看Hadoop版本"><a href="#4、查看Hadoop版本" class="headerlink" title="4、查看Hadoop版本"></a>4、查看Hadoop版本</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308155021341-738318916.png" alt="img"></p>
+<h3 id="5、添加Windows支持文件"><a href="#5、添加Windows支持文件" class="headerlink" title="5、添加Windows支持文件"></a>5、添加Windows支持文件</h3><p>因为安装的Hadoop编译的版本是CentOS6.7的版本，在Windows上运行需要添加文件</p>
+<p>1）winutils.exe 放在windows平台中你安装的hadoop的bin目录下</p>
+<p>2)  hadoop.dll 放在windows操作系统的 c:/windows/system32目录下</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308155406046-1355832744.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308155443757-1039726356.png" alt="img"></p>
+<h3 id="6、重新启动eclipse"><a href="#6、重新启动eclipse" class="headerlink" title="6、重新启动eclipse"></a>6、重新启动eclipse</h3><h2 id="三、eclipse中的配置"><a href="#三、eclipse中的配置" class="headerlink" title="三、eclipse中的配置"></a>三、eclipse中的配置</h2><h3 id="1、重新启动eclipse-打开windows-gt-Preferences的Hadoop-Map-Reduce中设置安装目录"><a href="#1、重新启动eclipse-打开windows-gt-Preferences的Hadoop-Map-Reduce中设置安装目录" class="headerlink" title="1、重新启动eclipse,打开windows-&gt;Preferences的Hadoop Map/Reduce中设置安装目录"></a>1、重新启动eclipse,打开windows-&gt;Preferences的Hadoop Map/Reduce中设置安装目录</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308155752096-511832683.png" alt="img"></p>
+<h3 id="2、打开Windows-gt-Open-Perspective中的Map-Reduce，在此perspective下进行hadoop程序开发"><a href="#2、打开Windows-gt-Open-Perspective中的Map-Reduce，在此perspective下进行hadoop程序开发" class="headerlink" title="2、打开Windows-&gt;Open Perspective中的Map/Reduce，在此perspective下进行hadoop程序开发"></a>2、打开Windows-&gt;Open Perspective中的Map/Reduce，在此perspective下进行hadoop程序开发</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308155934297-243834670.png" alt="img"></p>
+<h3 id="3、打开Windows-gt-Show-View中的Map-Reduce-Locations，如下图右键选择New-Hadoop-location…新建hadoop连接。"><a href="#3、打开Windows-gt-Show-View中的Map-Reduce-Locations，如下图右键选择New-Hadoop-location…新建hadoop连接。" class="headerlink" title="3、打开Windows-&gt;Show View中的Map/Reduce Locations，如下图右键选择New Hadoop location…新建hadoop连接。"></a>3、打开Windows-&gt;Show View中的Map/Reduce Locations，如下图右键选择New Hadoop location…新建hadoop连接。</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308160103914-1316418968.png" alt="img"></p>
+<h3 id="4、配置相关信息"><a href="#4、配置相关信息" class="headerlink" title="4、配置相关信息"></a>4、配置相关信息</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308160325842-467885961.png" alt="img"></p>
+<h3 id="5、配置成功之后再右侧显示如下"><a href="#5、配置成功之后再右侧显示如下" class="headerlink" title="5、配置成功之后再右侧显示如下"></a>5、配置成功之后再右侧显示如下</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308180013559-1845551841.png" alt="img"></p>
+<h2 id="四、创建HDFS项目"><a href="#四、创建HDFS项目" class="headerlink" title="四、创建HDFS项目"></a>四、创建HDFS项目</h2><h3 id="1、创建一个java-project"><a href="#1、创建一个java-project" class="headerlink" title="1、创建一个java project"></a>1、创建一个java project</h3><p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308180220231-1398031805.png" alt="img"></p>
+<h3 id="2、添加jar包这里使用第二种"><a href="#2、添加jar包这里使用第二种" class="headerlink" title="2、添加jar包这里使用第二种"></a>2、添加jar包这里使用第二种</h3><p>有三种方式可以往项目中添加jar依赖:</p>
+<p>　　1）直接创建一个lib文件夹，然后放入对应的依赖包，最后add build path</p>
+<p>　　　　优点：移植方便<br>　　　　缺点：项目臃肿</p>
+<p>　　2）在eclipse中创建user libarary, 然后引入</p>
+<p>　　　　优点：解决了不同项目中的相同jar的重复依赖问题， 不是直接放入，是引入的方式<br>　　　　缺点：移植不方便</p>
+<p>　　3）最后直接使用maven管理jar依赖</p>
+<p>　　　　完美解决方案：使用maven 我们在项目中只需要编写好：pom.xml文件即可</p>
+<p>目前只是操作HDFS，所以只需要引入common和HDFS相关的jar包即可。</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308180447392-1207856159.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308180829174-1230824972.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308180901189-1859717267.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308181018133-1939062048.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308181056211-110785669.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308181137589-681113668.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308181211631-1848268606.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308182643690-1637352725.png" alt="img"></p>
+<p>Hadoop的common、hdfs、MapReduce、yarn的相关jar包的位置在安装目录的C:\software\hadoop-2.7.5\share\hadoop文件夹中，各自文件夹下的jar包是核心jar包，lib下的jar包是核心jar包的依赖jar包，都需要引入</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308181726194-2039286732.png" alt="img"></p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308182747306-479197237.png" alt="img"></p>
+<p>hdfs的jar包用相同的方法引入</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308182858537-1478007176.png" alt="img"></p>
+<p>这样项目就成功引入了common和hdfs相关的jar包</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308182950690-131271322.png" alt="img"></p>
+<h3 id="3、创建测试类"><a href="#3、创建测试类" class="headerlink" title="3、创建测试类"></a>3、创建测试类</h3><p><img src="https://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="img"> View Code</p>
+<p>测试之前</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308184855904-14807455.png" alt="img"></p>
+<p>测试之后</p>
+<p><img src="https://images2018.cnblogs.com/blog/1228818/201803/1228818-20180308185056617-1042374587.png" alt="img"></p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    <a href="/2018-04-09-Hadoop学习之路（九）HDFS深入理解.html" class="pre-post btn btn-default" title='Hadoop学习之路（九）HDFS深入理解'>
+        <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（九）HDFS深入理解</span>
+    </a>
+    
+    
+    <a href="/2018-04-07-Hadoop学习之路（七）Hadoop集群shell常用命令.html" class="next-post btn btn-default" title='Hadoop学习之路（七）Hadoop集群shell常用命令'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Hadoop学习之路（七）Hadoop集群shell常用命令</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、添加插件"><span class="toc-text">一、添加插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、在Windows上安装Hadoop2-7-5"><span class="toc-text">二、在Windows上安装Hadoop2.7.5</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、将hadoop-2-7-5-centos-6-7-tar-gz解压到Windows上的C盘software目录中"><span class="toc-text">1、将hadoop-2.7.5-centos-6.7.tar.gz解压到Windows上的C盘software目录中</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、配置hadoop的环境变量"><span class="toc-text">2、配置hadoop的环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、修改Hadoop安装目录C-software-hadoop-2-7-5-etc-hadoop中hadoop-env-cmd"><span class="toc-text">3、修改Hadoop安装目录C:\software\hadoop-2.7.5\etc\hadoop中hadoop-env.cmd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、查看Hadoop版本"><span class="toc-text">4、查看Hadoop版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、添加Windows支持文件"><span class="toc-text">5、添加Windows支持文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6、重新启动eclipse"><span class="toc-text">6、重新启动eclipse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、eclipse中的配置"><span class="toc-text">三、eclipse中的配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、重新启动eclipse-打开windows-gt-Preferences的Hadoop-Map-Reduce中设置安装目录"><span class="toc-text">1、重新启动eclipse,打开windows-&gt;Preferences的Hadoop Map/Reduce中设置安装目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、打开Windows-gt-Open-Perspective中的Map-Reduce，在此perspective下进行hadoop程序开发"><span class="toc-text">2、打开Windows-&gt;Open Perspective中的Map/Reduce，在此perspective下进行hadoop程序开发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、打开Windows-gt-Show-View中的Map-Reduce-Locations，如下图右键选择New-Hadoop-location…新建hadoop连接。"><span class="toc-text">3、打开Windows-&gt;Show View中的Map/Reduce Locations，如下图右键选择New Hadoop location…新建hadoop连接。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、配置相关信息"><span class="toc-text">4、配置相关信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、配置成功之后再右侧显示如下"><span class="toc-text">5、配置成功之后再右侧显示如下</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、创建HDFS项目"><span class="toc-text">四、创建HDFS项目</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、创建一个java-project"><span class="toc-text">1、创建一个java project</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、添加jar包这里使用第二种"><span class="toc-text">2、添加jar包这里使用第二种</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、创建测试类"><span class="toc-text">3、创建测试类</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
