@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="福星">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://zhangfuxin.cn">
+    <!--SEO-->
+
+<meta name="keywords" content="Scala">
+
+
+<meta name="description" content="** Scala打印九九乘法表的5种实现：** &lt;Excerpt in index | 首页摘要&gt;
+​        Scala打印九九乘法表的5种实现
+
+&lt;The rest ...">
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+<title>
+    
+    Scala打印九九乘法表的5种实现 |
+    
+    福星
+</title>
+
+<link rel="alternate" href="/atom.xml" title="福星" type="application/atom+xml">
+
+
+<link rel="icon" href="/favicon.ico">
+
+    
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.7.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    
+<div class="hide">
+    <script type="text/javascript">
+    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+    document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+</div>
+
+
+
+
+    
+
+<script>
+(function() {
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+</head></html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+<body>
+    <header class="main-header"  style="background-image:url(
+    http://snippet.shenliyang.com/img/banner.jpg)"
+     >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='福 星'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+            <!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+            <img src="/img/branding.png" alt="Snippet 博客主题" class="img-responsive center-block">
+            
+        </div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                        <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://zhangfuxin.cn">
+                        福星</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/"><i class="fa "></i>
+                                首页</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Linux/"><i class="fa "></i>
+                                Linux</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Hadoop/"><i class="fa "></i>
+                                Hadoop</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Spark/"><i class="fa "></i>
+                                Spark</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Java/"><i class="fa "></i>
+                                Java</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/Python/"><i class="fa "></i>
+                                Python</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/algorithm/"><i class="fa "></i>
+                                算法</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/categories/工具/"><i class="fa "></i>
+                                工具</a>
+                        </li>
+                        
+                        <li role="presentation" class="text-center">
+                            <a href="/archives/"><i class="fa "></i>
+                                时间轴</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Scala打印九九乘法表的5种实现">
+            
+            Scala打印九九乘法表的5种实现
+            
+        </h1>
+        <div class="post-meta">
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a class="category-link" href="/categories/Spark/">Spark</a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            <a class="tag-link" href="/tags/Scala/">Scala</a>
+            
+        </span>
+    </span>
+    
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">
+            2019/09/25</span>
+    </span>
+    
+    <span class="fa-wrap">
+        <i class="fa fa-eye"></i>
+        <span id="busuanzi_value_page_pv"></span>
+    </span>
+    
+    
+</div>
+        
+        
+    </div>
+    
+    <div class="post-body post-content">
+        <p>** Scala打印九九乘法表的5种实现：** &lt;Excerpt in index | 首页摘要&gt;</p>
+<p>​        Scala打印九九乘法表的5种实现</p>
+<a id="more"></a>
+<p>&lt;The rest of contents | 余下全文&gt;</p>
+<p>使用scala打印九九乘法表，可以有多种实现方法，实现的过程充分的体现的scala语言的优势和巨大的简洁性和高效性，</p>
+<p>下面我用了5种方法实现九九乘法表。</p>
+<p>使用类似于java，c++等指令风格的的编程实现，源码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里打印倒向九九乘法口诀表</span></span><br><span class="line"><span class="comment">/*指令风格的编程实现九九乘法表*/</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printMultiTable</span></span>() &#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">1</span> <span class="comment">//这里只有i在作用范围内</span></span><br><span class="line">  <span class="keyword">while</span> (i &lt;= <span class="number">9</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> j = i <span class="comment">//这里只有i和j在作用范围内</span></span><br><span class="line">    <span class="keyword">while</span> (j &lt;= <span class="number">9</span>) &#123;</span><br><span class="line">      <span class="keyword">val</span> prod = (i * j).toString() <span class="comment">//这里只有i和j和prod在作用范围内</span></span><br><span class="line">      <span class="keyword">var</span> k = prod.length() <span class="comment">//这里只有i和j和prod和k在作用范围内</span></span><br><span class="line">      <span class="keyword">while</span> (k &lt; <span class="number">4</span>) &#123;</span><br><span class="line">        print(<span class="string">" "</span>)</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">      &#125;</span><br><span class="line">      print(i + <span class="string">"*"</span> + j + <span class="string">"="</span> + prod)</span><br><span class="line">      j += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// i和j让在作用范围内，但是k已经不在作用范围内。</span></span><br><span class="line">    println()</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//i仍在范围内，j，prod，和k脱离了范围</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 执行的结果如下：</p>
+<p>   1<em>1=1   1</em>2=2   1<em>3=3   1</em>4=4   1<em>5=5   1</em>6=6   1<em>7=7   1</em>8=8   1<em>9=9<br>   2</em>2=4   2<em>3=6   2</em>4=8  2<em>5=10  2</em>6=12  2<em>7=14  2</em>8=16  2<em>9=18<br>   3</em>3=9  3<em>4=12  3</em>5=15  3<em>6=18  3</em>7=21  3<em>8=24  3</em>9=27<br>  4<em>4=16  4</em>5=20  4<em>6=24  4</em>7=28  4<em>8=32  4</em>9=36<br>  5<em>5=25  5</em>6=30  5<em>7=35  5</em>8=40  5<em>9=45<br>  6</em>6=36  6<em>7=42  6</em>8=48  6<em>9=54<br>  7</em>7=49  7<em>8=56  7</em>9=63<br>  8<em>8=64  8</em>9=72<br>  9*9=81</p>
+<p>发现是倒向的乘法口诀，</p>
+<p>下面我们修改代码打印一个正向的九九乘法表，关键在while（j &lt;=i） 这个条件。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 打印正向的九九乘法表</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printMultiTable2</span></span>() &#123;</span><br><span class="line">  <span class="keyword">var</span> i = <span class="number">1</span> <span class="comment">//这里只有i在作用范围内</span></span><br><span class="line">  <span class="keyword">while</span> (i &lt;= <span class="number">9</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> j = <span class="number">1</span> <span class="comment">//这里只有i和j在作用范围内</span></span><br><span class="line">    <span class="keyword">while</span> (j &lt;= i) &#123;</span><br><span class="line">      <span class="keyword">val</span> prod = (i * j).toString() <span class="comment">//这里只有i和j和prod在作用范围内</span></span><br><span class="line">      <span class="keyword">var</span> k = prod.length() <span class="comment">//这里只有i和j和prod和k在作用范围内</span></span><br><span class="line">      <span class="keyword">while</span> (k &lt; <span class="number">4</span>) &#123;</span><br><span class="line">        print(<span class="string">" "</span>)</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">      &#125;</span><br><span class="line">      print(j + <span class="string">"*"</span> + i + <span class="string">"="</span> + prod)</span><br><span class="line">      j += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// i和j让在作用范围内，但是k已经不在作用范围内。</span></span><br><span class="line">    println()</span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">//i仍在范围内，j，prod，和k脱离了范围</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行结果如下：</p>
+<p>   1<em>1=1<br>   1</em>2=2   2<em>2=4<br>   1</em>3=3   2<em>3=6   3</em>3=9<br>   1<em>4=4   2</em>4=8  3<em>4=12  4</em>4=16<br>   1<em>5=5  2</em>5=10  3<em>5=15  4</em>5=20  5<em>5=25<br>   1</em>6=6  2<em>6=12  3</em>6=18  4<em>6=24  5</em>6=30  6<em>6=36<br>   1</em>7=7  2<em>7=14  3</em>7=21  4<em>7=28  5</em>7=35  6<em>7=42  7</em>7=49<br>   1<em>8=8  2</em>8=16  3<em>8=24  4</em>8=32  5<em>8=40  6</em>8=48  7<em>8=56  8</em>8=64<br>   1<em>9=9  2</em>9=18  3<em>9=27  4</em>9=36  5<em>9=45  6</em>9=54  7<em>9=63  8</em>9=72  9*9=81</p>
+<p>scala的语法简洁性，和函数式的风格，我们可以使用函数风格实现该功能发现代码量会减少很多，逻辑也更加清晰：</p>
+<p>源码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//打印：打印乘法口诀发</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeRowSeq</span></span>(row: <span class="type">Int</span>) =</span><br><span class="line">  <span class="keyword">for</span> (col &lt;- <span class="number">1</span> to row) <span class="keyword">yield</span> &#123;</span><br><span class="line">    <span class="keyword">val</span> prod = (row * col).toString()</span><br><span class="line">    <span class="keyword">val</span> padding = <span class="string">" "</span> * (<span class="number">4</span> - prod.length())</span><br><span class="line">    col + <span class="string">"*"</span> + row + <span class="string">"="</span> + prod + padding</span><br><span class="line">  &#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">makeRow</span></span>(row: <span class="type">Int</span>) = makeRowSeq(row).mkString</span><br><span class="line"><span class="comment">/*函数风格的编程实现九九乘法表*/</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiTable</span></span>() = &#123;</span><br><span class="line">  <span class="keyword">val</span> tableSeq = <span class="keyword">for</span> (row &lt;- <span class="number">1</span> to <span class="number">9</span>) <span class="keyword">yield</span> makeRow(row)</span><br><span class="line">  println(tableSeq.mkString(<span class="string">"\n"</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 执行结果如下：</p>
+<p>1<em>1=1<br>1</em>2=2   2<em>2=4<br>1</em>3=3   2<em>3=6   3</em>3=9<br>1<em>4=4   2</em>4=8   3<em>4=12  4</em>4=16<br>1<em>5=5   2</em>5=10  3<em>5=15  4</em>5=20  5<em>5=25<br>1</em>6=6   2<em>6=12  3</em>6=18  4<em>6=24  5</em>6=30  6<em>6=36<br>1</em>7=7   2<em>7=14  3</em>7=21  4<em>7=28  5</em>7=35  6<em>7=42  7</em>7=49<br>1<em>8=8   2</em>8=16  3<em>8=24  4</em>8=32  5<em>8=40  6</em>8=48  7<em>8=56  8</em>8=64<br>1<em>9=9   2</em>9=18  3<em>9=27  4</em>9=36  5<em>9=45  6</em>9=54  7<em>9=63  8</em>9=72  9*9=81 </p>
+<p>使用scala的for循环嵌套的方式实现该功能，代码可以更加简洁，只需要5,6行代码即可实现，</p>
+<p>充分体现了scala的语言的强大性。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiTable2</span></span>() = &#123;</span><br><span class="line">  <span class="keyword">for</span>(row &lt;- <span class="number">1</span> to <span class="number">9</span> ; col &lt;- <span class="number">1</span> to row)&#123;</span><br><span class="line">    <span class="keyword">val</span> prod = (row * col).toString()</span><br><span class="line">    <span class="keyword">val</span> padding = <span class="string">" "</span> * (<span class="number">4</span> - prod.length())</span><br><span class="line">    print(col + <span class="string">"*"</span> + row + <span class="string">"="</span> + prod + padding)</span><br><span class="line">    <span class="keyword">if</span>(row == col) println()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 执行结果如下：</p>
+<p>1<em>1=1<br>1</em>2=2   2<em>2=4<br>1</em>3=3   2<em>3=6   3</em>3=9<br>1<em>4=4   2</em>4=8   3<em>4=12  4</em>4=16<br>1<em>5=5   2</em>5=10  3<em>5=15  4</em>5=20  5<em>5=25<br>1</em>6=6   2<em>6=12  3</em>6=18  4<em>6=24  5</em>6=30  6<em>6=36<br>1</em>7=7   2<em>7=14  3</em>7=21  4<em>7=28  5</em>7=35  6<em>7=42  7</em>7=49<br>1<em>8=8   2</em>8=16  3<em>8=24  4</em>8=32  5<em>8=40  6</em>8=48  7<em>8=56  8</em>8=64<br>1<em>9=9   2</em>9=18  3<em>9=27  4</em>9=36  5<em>9=45  6</em>9=54  7<em>9=63  8</em>9=72  9*9=81 </p>
+<p>可以使用for嵌套循环和scala的s（）方法，使实现更加简单，scala果然博大精深，</p>
+<p>源码如下：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">multiTable3</span> </span>= &#123;</span><br><span class="line">  (</span><br><span class="line">    <span class="keyword">for</span> (</span><br><span class="line">      i &lt;- <span class="number">1</span> to <span class="number">9</span>;</span><br><span class="line">      j &lt;- <span class="number">1</span> to i;</span><br><span class="line">      ss = <span class="string">s"<span class="subst">$j</span>*<span class="subst">$i</span>=<span class="subst">$&#123;i * j&#125;</span>\t"</span></span><br><span class="line">    ) <span class="keyword">yield</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (j == i) <span class="string">s"<span class="subst">$ss</span>\n"</span> <span class="keyword">else</span> ss</span><br><span class="line">    &#125;).foreach(print);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 执行结果如下：</p>
+<p>1<em>1=1<br>1</em>2=2    2<em>2=4<br>1</em>3=3    2<em>3=6    3</em>3=9<br>1<em>4=4    2</em>4=8    3<em>4=12    4</em>4=16<br>1<em>5=5    2</em>5=10    3<em>5=15    4</em>5=20    5<em>5=25<br>1</em>6=6    2<em>6=12    3</em>6=18    4<em>6=24    5</em>6=30    6<em>6=36<br>1</em>7=7    2<em>7=14    3</em>7=21    4<em>7=28    5</em>7=35    6<em>7=42    7</em>7=49<br>1<em>8=8    2</em>8=16    3<em>8=24    4</em>8=32    5<em>8=40    6</em>8=48    7<em>8=56    8</em>8=64<br>1<em>9=9    2</em>9=18    3<em>9=27    4</em>9=36    5<em>9=45    6</em>9=54    7<em>9=63    8</em>9=72    9*9=81   </p>
+<p>作者： <a href="http://www.cnblogs.com/honeybee/" target="_blank" rel="noopener">丹江湖畔养蜂子的赵大爹</a><br>出处：<a href="http://www.cnblogs.com/honeybee/" target="_blank" rel="noopener">http://www.cnblogs.com/honeybee/</a> </p>
+
+    </div>
+    
+    <div class="post-footer">
+        <div>
+            
+            转载声明：
+            商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="https://github.com/wenxinzhang" target="_blank">福星</a>
+            
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+    <a href="/2019-09-18-Parquet文件存储格式.html" class="next-post btn btn-default" title='Parquet文件存储格式'>
+        <span class="hidden-lg">下一篇</span>
+        <span class="hidden-xs">
+            Parquet文件存储格式</span><i class="fa fa-angle-right fa-fw"></i>
+    </a>
+    
+</div>
+
+<div id="comments">
+    
+
+<div id="vcomments" class="valine"></div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="/assets/valine.min.js"></script>
+<script>
+new Valine({
+    av: AV,
+    el: '#vcomments',
+    appId: 'UckE9LEIQ8aoa3MH1Kio27rB-gzGzoHsz',
+    appKey: '7HC9xCVYQdshKqFRDmULFm5G',
+    placeholder: '说点什么吧',
+    notify: false,
+    verify: true,
+    avatar: 'mm',
+    meta: 'nick,mail'.split(','),
+    pageSize: '10',
+    path: window.location.pathname,
+    lang: 'zh-CN'.toLowerCase()
+})
+</script>
+
+
+</div>
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">
+            文章目录
+        </h3>
+        
+        <p>暂无目录</p>
+        
+    </div>
+</aside>
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+<a id="back-to-top" class="icon-btn hide">
+    <i class="fa fa-chevron-up"></i>
+</a>
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+    访问量:
+    <strong id="busuanzi_value_site_pv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    &nbsp; | &nbsp;
+    访客数:
+    <strong id="busuanzi_value_site_uv">
+        <i class="fa fa-spinner fa-spin"></i>
+    </strong>
+    
+</div>
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy;
+                    2018
+                </span> |
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> |
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/app.js?rev=@@hash"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"log":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"right","width":200,"height":350},"mobile":{"show":true}});</script></body>
+</html>
